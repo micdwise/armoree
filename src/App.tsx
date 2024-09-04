@@ -2,23 +2,17 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import { Brand } from '@patternfly/react-core';
+import pfLogo from '../node_modules/@patternfly/react-core/dist/styles/assets/images/logo__pf--reverse--base.png';
+
+export const BrandBasic: React.FunctionComponent = () => (
+  <Brand src={pfLogo} alt="Patternfly Logo" widths={{ default: '200px', md: '400px', xl: '600px' }} />
+);
+
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrandBasic />
     </div>
   );
 }
