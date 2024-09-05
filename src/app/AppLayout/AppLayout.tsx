@@ -1,23 +1,32 @@
 import * as React from 'react';
 import {
+  Button,
   Masthead,
   MastheadMain,
+  MastheadToggle,
   Nav,
   NavList,
   Page,
   PageSidebar,
   PageSidebarBody
  } from '@patternfly/react-core';
+import { BarsIcon } from '@patternfly/react-icons';
 
 interface IAppLayout {
   children: React.ReactNode;
 }
 
 const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = React.useState(true);
   const Header = (
     <Masthead>
+      <MastheadToggle>
+        <Button variant="plain" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Global navigation">
+          <BarsIcon />
+        </Button>
+      </MastheadToggle>
       <MastheadMain>
-        Mast head
+        Armoree
       </MastheadMain>
     </Masthead>
   );
@@ -35,7 +44,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     <Page
       mainContainerId={pageId}
       header={Header}
-      sidebar={Sidebar}>
+      sidebar={sidebarOpen && Sidebar}>
       {children}
       </Page>
   );
