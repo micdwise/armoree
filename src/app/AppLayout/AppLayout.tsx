@@ -26,21 +26,19 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
   const Header = (
     <Masthead>
-      <MastheadToggle>
-        <Button variant="plain" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Global navigation">
-          <BarsIcon />
-        </Button>
-      </MastheadToggle>
-      <MastheadMain>
-        Armoree
-      </MastheadMain>
-      <MastheadToggle>
+      
+      <MastheadMain><MastheadToggle>
         <Flex>
           <FlexItem align={{default: 'alignRight'}}>
           <BellIcon />
           </FlexItem>
         </Flex>
+      </MastheadToggle><MastheadToggle>
+        <Button icon={<BarsIcon />} variant="plain" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Global navigation" />
       </MastheadToggle>
+        Armoree
+      </MastheadMain>
+      
     </Masthead>
   );
 
@@ -86,7 +84,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   return (
     <Page
       mainContainerId={pageId}
-      header={Header}
+      masthead={Header}
       sidebar={sidebarOpen && Sidebar}>
       {children}
       </Page>

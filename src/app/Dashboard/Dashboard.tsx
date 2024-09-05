@@ -11,7 +11,7 @@ import {
  } from '@patternfly/react-core';
 
 const CardHorizontalSplitDemo: React.FunctionComponent = () => (
-  <Card id="card-demo-horizontal-split-example" isFlat>
+  <Card id="card-demo-horizontal-split-example" >
     <Grid md={6}>
       <GridItem
         style={{
@@ -39,7 +39,7 @@ const CardHorizontalSplitDemo: React.FunctionComponent = () => (
 );
 
 const Dashboard: React.FunctionComponent = () => (
-  <PageSection>
+  <PageSection hasBodyWrapper={false}>
     <CardHorizontalSplitDemo />
   </PageSection>
 );

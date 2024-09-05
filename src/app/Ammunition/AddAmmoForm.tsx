@@ -1,17 +1,19 @@
 import React from 'react';
-import { 
-  Modal,
-  ModalVariant,
-  Button,
-  Form,
-  FormGroup,
-  Popover,
-  TextInput
- } from '@patternfly/react-core';
+import {
+	Button,
+	Form,
+	FormGroup,
+	Popover,
+	TextInput
+} from '@patternfly/react-core';
+import {
+	Modal,
+	ModalVariant
+} from '@patternfly/react-core/deprecated';
 import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
 import formStyles from '@patternfly/react-styles/css/components/Form/form';
 
-const ModalWithForm: React.FunctionComponent = () => {
+export const ModalWithForm: React.FunctionComponent = () => {
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [nameValue, setNameValue] = React.useState('');
   const [emailValue, setEmailValue] = React.useState('');
@@ -55,7 +57,7 @@ const ModalWithForm: React.FunctionComponent = () => {
         <Form id="modal-with-form-form">
           <FormGroup
             label="Name"
-            labelIcon={
+            labelHelp={
               <Popover
                 headerContent={
                   <div>
@@ -108,7 +110,7 @@ const ModalWithForm: React.FunctionComponent = () => {
           </FormGroup>
           <FormGroup
             label="E-mail"
-            labelIcon={
+            labelHelp={
               <Popover
                 headerContent={
                   <div>
@@ -157,7 +159,7 @@ const ModalWithForm: React.FunctionComponent = () => {
           </FormGroup>
           <FormGroup
             label="Address"
-            labelIcon={
+            labelHelp={
               <Popover
                 headerContent={
                   <div>
@@ -208,5 +210,3 @@ const ModalWithForm: React.FunctionComponent = () => {
     </React.Fragment>
   );
 };
-
-export { ModalWithForm };
