@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { 
   Button,
   Flex,
@@ -21,6 +22,12 @@ interface Repository {
   workspaces: string;
   lastCommit: string;
 }
+
+function ShowAddForm() {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+};
 
 const TableSelectable: React.FunctionComponent = () => {
   // In real usage, this data would come from some external source like an API via props.
@@ -141,7 +148,7 @@ const TableSelectable: React.FunctionComponent = () => {
       <div>
       <Flex>
           <FlexItem align={{default: 'alignRight'}}>
-            <Button variant="primary" size='sm' onClick={() => {ModalWithForm}}>Add</Button>
+            <Button variant="primary" size='sm' onClick={ModalWithForm}>Add</Button>
           </FlexItem>
         </Flex>
         
