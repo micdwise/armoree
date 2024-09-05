@@ -1,15 +1,19 @@
 import * as React from 'react';
+import { NavLink, useLocation} from 'react-router-dom';
 import {
   Button,
   Masthead,
   MastheadMain,
   MastheadToggle,
   Nav,
+  NavExpandable,
+  NavItem,
   NavList,
   Page,
   PageSidebar,
   PageSidebarBody
  } from '@patternfly/react-core';
+ import { IAppRoute, IAppRouteGroup, routes } from '../routes'
 import { BarsIcon } from '@patternfly/react-icons';
 
 interface IAppLayout {
@@ -31,10 +35,40 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     </Masthead>
   );
 
+  const location = useLocation();
+
+  const renderNavItem = (route: IAppRoute, index: number) => (
+    <NavItem key={'${route.label}-${index}'} id={'${route.label}-${index}'} isActive={route.path === location.pathname}>
+      <NavLink exact={route.exact} to={route.path}>
+        {route.label}
+      </NavLink>
+    </NavItem>
+  );
+
+  const renderNavGroup = (group: IAppRouteGroup, groupIndex: number) => (
+    <NavExpandable
+      key={`${group.label}-${groupIndex}`}
+      id={`${group.label}-${groupIndex}`}
+      title={group.label}
+      isActive={group.routes.some((route) => route.path === location.pathname)}>
+      {group.routes.map((route, idx) => route.label && renderNavItem(route, idx))}
+    </NavExpandable>
+  );
+
+  const Navigation = (
+    <Nav id="nav-primary-simple">
+      <NavList id="nav-list-simple">
+        {routes.map(
+          (route, idx) => route.label && (!route.routes ? renderNavItem(route, idx) : renderNavGroup(route, idx))
+        )}
+      </NavList>
+    </Nav>
+  );
+
   const Sidebar = (
     <PageSidebar>
       <PageSidebarBody>
-        Side Bar
+        {Navigation}
       </PageSidebarBody>
     </PageSidebar>
   );
