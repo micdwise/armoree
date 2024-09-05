@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from '@app/logo.svg';
+import '@app/App.css';
 
 import { Brand } from '@patternfly/react-core';
 import pfLogo from '../node_modules/@patternfly/react-core/dist/styles/assets/images/logo__pf--reverse--base.png';

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Route, useLocation, RouteComponentProps, Switch } from 'react-router-dom';
-import { Ammunition } from './Ammunition/Ammunition';
-import { Firearms } from './Firearms/Firearms'
-import { Dashboard } from './Dashboard/Dashboard'
-import { useDocumentTitle } from './utils/usedocumentTitle';
-import { NotFound } from './NotFound/NotFound'
+import { Ammunition } from '@app/Ammunition/Ammunition';
+import { Firearms } from '@app/Firearms/Firearms'
+import { Dashboard } from '@app/Dashboard/Dashboard'
+import { useDocumentTitle } from '@app/utils/usedocumentTitle';
+import { NotFound } from '@app/NotFound/NotFound'
 
 
 let routeFocusTimer: number;

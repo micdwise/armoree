@@ -2,6 +2,8 @@ import * as React from 'react';
 import { NavLink, useLocation} from 'react-router-dom';
 import {
   Button,
+  Flex,
+  FlexItem,
   Masthead,
   MastheadMain,
   MastheadToggle,
@@ -13,8 +15,8 @@ import {
   PageSidebar,
   PageSidebarBody
  } from '@patternfly/react-core';
- import { IAppRoute, IAppRouteGroup, routes } from '../routes'
-import { BarsIcon } from '@patternfly/react-icons';
+ import { IAppRoute, IAppRouteGroup, routes } from '@app/routes'
+import { BarsIcon, BellIcon } from '@patternfly/react-icons';
 
 interface IAppLayout {
   children: React.ReactNode;
@@ -32,6 +34,13 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       <MastheadMain>
         Armoree
       </MastheadMain>
+      <MastheadToggle>
+        <Flex>
+          <FlexItem align={{default: 'alignRight'}}>
+          <BellIcon />
+          </FlexItem>
+        </Flex>
+      </MastheadToggle>
     </Masthead>
   );
 
