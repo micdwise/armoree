@@ -13,7 +13,7 @@ import {
 import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
 import formStyles from '@patternfly/react-styles/css/components/Form/form';
 
-export const ModalWithForm: React.FunctionComponent = () => {
+const AddAmmoForm: React.FunctionComponent = () => {
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [nameValue, setNameValue] = React.useState('');
   const [emailValue, setEmailValue] = React.useState('');
@@ -37,11 +37,11 @@ export const ModalWithForm: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <Button variant="primary" onClick={handleModalToggle}>
-        Show modal with form
+        Add Ammunition
       </Button>
       <Modal
         variant={ModalVariant.small}
-        title="Create account"
+        title="Add Ammunition"
         description="Enter your personal information below to create an account."
         isOpen={isModalOpen}
         onClose={handleModalToggle}
@@ -56,7 +56,7 @@ export const ModalWithForm: React.FunctionComponent = () => {
       >
         <Form id="modal-with-form-form">
           <FormGroup
-            label="Name"
+            label="Manufacturer"
             labelHelp={
               <Popover
                 headerContent={
@@ -109,7 +109,7 @@ export const ModalWithForm: React.FunctionComponent = () => {
             />
           </FormGroup>
           <FormGroup
-            label="E-mail"
+            label="Brand"
             labelHelp={
               <Popover
                 headerContent={
@@ -158,7 +158,7 @@ export const ModalWithForm: React.FunctionComponent = () => {
             />
           </FormGroup>
           <FormGroup
-            label="Address"
+            label="Caliber"
             labelHelp={
               <Popover
                 headerContent={
@@ -210,3 +210,5 @@ export const ModalWithForm: React.FunctionComponent = () => {
     </React.Fragment>
   );
 };
+
+export { AddAmmoForm }

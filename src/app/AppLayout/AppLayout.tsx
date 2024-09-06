@@ -3,11 +3,6 @@ import { NavLink, useLocation} from 'react-router-dom';
 import {
   Button,
   ButtonVariant,
-  Dropdown,
-  DropdownList,
-  DropEvent,
-  Flex,
-  FlexItem,
   Masthead,
   MastheadContent,
   MastheadMain,
@@ -19,14 +14,13 @@ import {
   Page,
   PageSidebar,
   PageSidebarBody,
-  Popper,
   Toolbar,
   ToolbarContent,
   ToolbarGroup,
   ToolbarItem
  } from '@patternfly/react-core';
  import { IAppRoute, IAppRouteGroup, routes } from '@app/routes'
-import { BarsIcon, BellIcon, CogIcon, QuestionCircleIcon } from '@patternfly/react-icons';
+import { BarsIcon, BellIcon, CogIcon,  } from '@patternfly/react-icons';
 import { AboutModalBasic } from '@app/AppLayout/About';
 
 interface IAppLayout {
@@ -105,7 +99,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   );
 
   const Sidebar = (
-    <PageSidebar>
+    <PageSidebar >
       <PageSidebarBody>
         {Navigation}
       </PageSidebarBody>

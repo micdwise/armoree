@@ -1,11 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
 import { 
-  Button,
-  Flex,
-  FlexItem
-} from '@patternfly/react-core';
-import { 
   Table,
   Thead,
   Tr,
@@ -30,7 +25,8 @@ const TableSelectable: React.FunctionComponent = () => {
     { name: 'b', branches: 'two', prs: 'k', workspaces: 'four', lastCommit: 'five' },
     { name: 'c', branches: 'two', prs: 'k', workspaces: 'four', lastCommit: 'five' },
     { name: 'd', branches: 'two', prs: 'k', workspaces: 'four', lastCommit: 'five' },
-    { name: 'e', branches: 'two', prs: 'b', workspaces: 'four', lastCommit: 'five' }
+    { name: 'e', branches: 'two', prs: 'b', workspaces: 'four', lastCommit: 'five' },
+    { name: 'mine', branches: 'three', prs: 'z', workspaces: 'six', lastCommit: 'seven'}
   ];
 
   const columnNames = {

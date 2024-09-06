@@ -9,3 +9,7 @@ body,
   --pf-v5-c-content--blockquote--BorderLeftColor: var(--pf-v5-global--palette--cyan-600); /* changes all <blockquote> left border color to --pf-v5-global--palette--cyan-600 */
   --pf-v5-c-content--hr--BackgroundColor: var(--pf-v5-global--palette--gold-500); /* changes a <hr> color to --pf-v5-global--palette--gold-500 */
 }
+
+.pf-v5-c-sidebar {
+  --pf-v6-c-sidebar-BackroundColor: green;
+}
