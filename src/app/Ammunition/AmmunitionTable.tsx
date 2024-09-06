@@ -10,34 +10,34 @@ import {
 } from '@patternfly/react-table';
 
 interface Repository {
-  name: string;
-  branches: string;
-  prs: string;
-  workspaces: string;
-  lastCommit: string;
+  manufacturer: string;
+  brand: string;
+  prchsdate: string;
+  caliber: string;
+  lotnumber: string;
 };
 
 const TableSelectable: React.FunctionComponent = () => {
   // In real usage, this data would come from some external source like an API via props.
   const repositories: Repository[] = [
-    { name: 'one', branches: 'two', prs: 'a', workspaces: 'four', lastCommit: 'five' },
-    { name: 'a', branches: 'two', prs: 'k', workspaces: 'four', lastCommit: 'five' },
-    { name: 'b', branches: 'two', prs: 'k', workspaces: 'four', lastCommit: 'five' },
-    { name: 'c', branches: 'two', prs: 'k', workspaces: 'four', lastCommit: 'five' },
-    { name: 'd', branches: 'two', prs: 'k', workspaces: 'four', lastCommit: 'five' },
-    { name: 'e', branches: 'two', prs: 'b', workspaces: 'four', lastCommit: 'five' },
-    { name: 'mine', branches: 'three', prs: 'z', workspaces: 'six', lastCommit: 'seven'}
+    { manufacturer: 'one', brand: 'two', prchsdate: 'a', caliber: 'four', lotnumber: 'five' },
+    { manufacturer: 'a', brand: 'two', prchsdate: 'k', caliber: 'four', lotnumber: 'five' },
+    { manufacturer: 'b', brand: 'two', prchsdate: 'k', caliber: 'four', lotnumber: 'five' },
+    { manufacturer: 'c', brand: 'two', prchsdate: 'k', caliber: 'four', lotnumber: 'five' },
+    { manufacturer: 'd', brand: 'two', prchsdate: 'k', caliber: 'four', lotnumber: 'five' },
+    { manufacturer: 'e', brand: 'two', prchsdate: 'b', caliber: 'four', lotnumber: 'five' },
+    { manufacturer: 'mine', brand: 'three', prchsdate: 'z', caliber: 'six', lotnumber: 'seven'}
   ];
 
   const columnNames = {
-    name: 'Repositories',
-    branches: 'Branches',
-    prs: 'Pull requests',
-    workspaces: 'Workspaces',
-    lastCommit: 'Last commit'
+    manufacturer: 'Manufacturer',
+    brand: 'Brand',
+    prchdate: 'Purchase Date',
+    caliber: 'Caliber',
+    lotnumber: 'Lot Number'
   };
 
-  const isRepoSelectable = (repo: Repository) => repo.name !== 'a'; // Arbitrary logic for this example
+  const isRepoSelectable = (repo: Repository) => repo.manufacturer !== 'a'; // Arbitrary logic for this example
   const selectableRepos = repositories.filter(isRepoSelectable);
 
   // In this example, selected rows are tracked by the repo names from each row. This could be any unique identifier.
@@ -45,13 +45,13 @@ const TableSelectable: React.FunctionComponent = () => {
   const [selectedRepoNames, setSelectedRepoNames] = React.useState<string[]>([]);
   const setRepoSelected = (repo: Repository, isSelecting = true) =>
     setSelectedRepoNames((prevSelected) => {
-      const otherSelectedRepoNames = prevSelected.filter((r) => r !== repo.name);
-      return isSelecting && isRepoSelectable(repo) ? [...otherSelectedRepoNames, repo.name] : otherSelectedRepoNames;
+      const otherSelectedRepoNames = prevSelected.filter((r) => r !== repo.manufacturer);
+      return isSelecting && isRepoSelectable(repo) ? [...otherSelectedRepoNames, repo.manufacturer] : otherSelectedRepoNames;
     });
   const selectAllRepos = (isSelecting = true) =>
-    setSelectedRepoNames(isSelecting ? selectableRepos.map((r) => r.name) : []);
+    setSelectedRepoNames(isSelecting ? selectableRepos.map((r) => r.manufacturer) : []);
   const areAllReposSelected = selectedRepoNames.length === selectableRepos.length;
-  const isRepoSelected = (repo: Repository) => selectedRepoNames.includes(repo.name);
+  const isRepoSelected = (repo: Repository) => selectedRepoNames.includes(repo.manufacturer);
 
   // To allow shift+click to select/deselect multiple rows
   const [recentSelectedRowIndex, setRecentSelectedRowIndex] = React.useState<number | null>(null);
@@ -106,16 +106,16 @@ const TableSelectable: React.FunctionComponent = () => {
                 }}
                 aria-label="Row select"
               />
-              <Th>{columnNames.name}</Th>
-              <Th>{columnNames.branches}</Th>
-              <Th>{columnNames.prs}</Th>
-              <Th>{columnNames.workspaces}</Th>
-              <Th>{columnNames.lastCommit}</Th>
+              <Th>{columnNames.manufacturer}</Th>
+              <Th>{columnNames.brand}</Th>
+              <Th>{columnNames.prchdate}</Th>
+              <Th>{columnNames.caliber}</Th>
+              <Th>{columnNames.lotnumber}</Th>
             </Tr>
           </Thead>
           <Tbody>
             {repositories.map((repo, rowIndex) => (
-              <Tr key={repo.name}>
+              <Tr key={repo.manufacturer}>
                 <Td
                   select={{
                     rowIndex,
@@ -124,11 +124,11 @@ const TableSelectable: React.FunctionComponent = () => {
                     isDisabled: !isRepoSelectable(repo)
                   }}
                 />
-                <Td dataLabel={columnNames.name}>{repo.name}</Td>
-                <Td dataLabel={columnNames.branches}>{repo.branches}</Td>
-                <Td dataLabel={columnNames.prs}>{repo.prs}</Td>
-                <Td dataLabel={columnNames.workspaces}>{repo.workspaces}</Td>
-                <Td dataLabel={columnNames.lastCommit}>{repo.lastCommit}</Td>
+                <Td dataLabel={columnNames.manufacturer}>{repo.manufacturer}</Td>
+                <Td dataLabel={columnNames.brand}>{repo.brand}</Td>
+                <Td dataLabel={columnNames.prchdate}>{repo.prchsdate}</Td>
+                <Td dataLabel={columnNames.caliber}>{repo.caliber}</Td>
+                <Td dataLabel={columnNames.lotnumber}>{repo.lotnumber}</Td>
               </Tr>
             ))}
           </Tbody>
