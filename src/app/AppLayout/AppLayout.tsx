@@ -27,6 +27,7 @@ import {
  } from '@patternfly/react-core';
  import { IAppRoute, IAppRouteGroup, routes } from '@app/routes'
 import { BarsIcon, BellIcon, CogIcon, QuestionCircleIcon } from '@patternfly/react-icons';
+import { AboutModalBasic } from '@app/AppLayout/About';
 
 interface IAppLayout {
   children: React.ReactNode;
@@ -51,7 +52,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
               <Button aria-label="Settings" variant={ButtonVariant.plain} icon={<CogIcon />} />
             </ToolbarItem>
             <ToolbarItem>
-              <Button aria-label="Help" variant={ButtonVariant.plain} icon={<QuestionCircleIcon />} />
+              <AboutModalBasic />
             </ToolbarItem>
           </ToolbarGroup>
         </ToolbarGroup>
