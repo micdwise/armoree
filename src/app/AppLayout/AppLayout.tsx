@@ -5,6 +5,7 @@ import {
   Flex,
   FlexItem,
   Masthead,
+  MastheadContent,
   MastheadMain,
   MastheadToggle,
   Nav,
@@ -26,19 +27,15 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
   const Header = (
     <Masthead>
-      
-      <MastheadMain><MastheadToggle>
-        <Flex>
-          <FlexItem align={{default: 'alignRight'}}>
-          <BellIcon />
-          </FlexItem>
-        </Flex>
-      </MastheadToggle><MastheadToggle>
-        <Button icon={<BarsIcon />} variant="plain" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Global navigation" />
-      </MastheadToggle>
-        Armoree
+      <MastheadMain>
+        <MastheadToggle>
+            <Button icon={<BarsIcon />} variant="plain" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Global navigation" />
+        </MastheadToggle>
+          Armoree
       </MastheadMain>
-      
+      <MastheadContent>
+            <BellIcon />
+      </MastheadContent>
     </Masthead>
   );
 
