@@ -2,6 +2,10 @@ import * as React from 'react';
 import { NavLink, useLocation} from 'react-router-dom';
 import {
   Button,
+  ButtonVariant,
+  Dropdown,
+  DropdownList,
+  DropEvent,
   Flex,
   FlexItem,
   Masthead,
@@ -14,10 +18,15 @@ import {
   NavList,
   Page,
   PageSidebar,
-  PageSidebarBody
+  PageSidebarBody,
+  Popper,
+  Toolbar,
+  ToolbarContent,
+  ToolbarGroup,
+  ToolbarItem
  } from '@patternfly/react-core';
  import { IAppRoute, IAppRouteGroup, routes } from '@app/routes'
-import { BarsIcon, BellIcon } from '@patternfly/react-icons';
+import { BarsIcon, BellIcon, CogIcon, QuestionCircleIcon } from '@patternfly/react-icons';
 
 interface IAppLayout {
   children: React.ReactNode;
@@ -25,6 +34,31 @@ interface IAppLayout {
 
 const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
+
+  const headerToolbar = (
+    <Toolbar id="toolbar" isFullHeight isStatic>
+      <ToolbarContent>
+        <ToolbarGroup
+          variant="action-group-plain"
+          align={{ default: 'alignEnd' }}
+          gap={{ default: 'gapNone', md: 'gapMd' }}
+        >
+          <ToolbarItem>
+            <Button aria-label="Notifications" variant={ButtonVariant.plain} icon={<BellIcon />} />
+          </ToolbarItem>
+          <ToolbarGroup variant="action-group-plain" visibility={{ default: 'hidden', lg: 'visible' }}>
+            <ToolbarItem>
+              <Button aria-label="Settings" variant={ButtonVariant.plain} icon={<CogIcon />} />
+            </ToolbarItem>
+            <ToolbarItem>
+              <Button aria-label="Help" variant={ButtonVariant.plain} icon={<QuestionCircleIcon />} />
+            </ToolbarItem>
+          </ToolbarGroup>
+        </ToolbarGroup>
+      </ToolbarContent>
+    </Toolbar>
+  );
+
   const Header = (
     <Masthead>
       <MastheadMain>
@@ -34,7 +68,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
           Armoree
       </MastheadMain>
       <MastheadContent>
-            <BellIcon />
+            { headerToolbar }
       </MastheadContent>
     </Masthead>
   );
