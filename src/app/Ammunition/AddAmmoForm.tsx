@@ -158,6 +158,55 @@ const AddAmmoForm: React.FunctionComponent = () => {
             />
           </FormGroup>
           <FormGroup
+            label="Brand"
+            labelHelp={
+              <Popover
+                headerContent={
+                  <div>
+                    The
+                    <a href="https://schema.org/email" target="_blank" rel="noopener noreferrer">
+                      e-mail
+                    </a>
+                    of a
+                    <a href="https://schema.org/Person" target="_blank" rel="noopener noreferrer">
+                      person
+                    </a>
+                  </div>
+                }
+                bodyContent={
+                  <div>
+                    Valid
+                    <a href="https://schema.org/email" target="_blank" rel="noopener noreferrer">
+                      e-mail
+                    </a>
+                    address.
+                  </div>
+                }
+              >
+                <button
+                  type="button"
+                  aria-label="More info for e-mail field"
+                  onClick={(e) => e.preventDefault()}
+                  aria-describedby="modal-with-form-form-email"
+                  className={formStyles.formGroupLabelHelp}
+                >
+                  <HelpIcon />
+                </button>
+              </Popover>
+            }
+            isRequired
+            fieldId="modal-with-form-form-email"
+          >
+            <TextInput
+              isRequired
+              type="email"
+              id="modal-with-form-form-email"
+              name="modal-with-form-form-email"
+              value={emailValue}
+              onChange={handleEmailInputChange}
+            />
+          </FormGroup>
+          <FormGroup
             label="Caliber"
             labelHelp={
               <Popover
