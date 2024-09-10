@@ -1,5 +1,5 @@
 const express = require("express")
-const ammoRoutes = require("./src/ammunition/routes");
+const ammoRoutes = require("./postgresApi/src/ammunition/routes");
 
 const app = express();
 const port = 3000;
