@@ -5,9 +5,13 @@ const app = express();
 const port = 3000;
 
 app.get("/", (req, res) => {
-  res.send("This is only a shell!");
+  res.send("This is GET!");
+});
+
+app.post("/", (req, res) => {
+  res.send("This is a POST!")
 });
 
 app.use("/api/v1/ammunition", ammoRoutes);
 
-app.listen(port, () => console.log(`app listening on port ${port}`));
+app.listen(port, () => console.log(`App listening on port ${port}`));
