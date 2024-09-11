@@ -4,6 +4,6 @@ const controller = require('./controller');
 const router = Router();
 
 router.get("/", controller.getAmmunition);
-router.post("/", controller.putAmmunition);
+router.post("/", controller.postAmmunition);
 
 module.exports = router;

@@ -8,11 +8,11 @@ const getAmmunition = (req,res) => {
   });
 };
 
-const putAmmunition = (req,res) => {
+const postAmmunition = (req,res) => {
   res.send("POST is working! Yay!")
 };
 
 module.exports = {
     getAmmunition,
-    putAmmunition,
+    postAmmunition,
 };
