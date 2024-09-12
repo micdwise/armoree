@@ -15,23 +15,35 @@ import formStyles from '@patternfly/react-styles/css/components/Form/form';
 
 const AddAmmoForm: React.FunctionComponent = () => {
   const [isModalOpen, setModalOpen] = React.useState(false);
-  const [nameValue, setNameValue] = React.useState('');
-  const [emailValue, setEmailValue] = React.useState('');
-  const [addressValue, setAddressValue] = React.useState('');
+  const [manufacturerValue, setManufacturerValue] = React.useState('');
+  const [brandValue, setBrandValue] = React.useState('');
+  const [caliberValue, setCaliberValue] = React.useState('');
+  const [purchaseDateValue, setPurchaseDateValue] = React.useState('');
+  const [lotNumberValue, setLotNumberValue] = React.useState('');
+  const [qtyValue, setQtyValue] = React.useState('');
 
   const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
     setModalOpen(!isModalOpen);
   };
 
   const handleNameInputChange = (_event, value: string) => {
-    setNameValue(value);
+    setManufacturerValue(value);
   };
 
-  const handleEmailInputChange = (_event, value: string) => {
-    setEmailValue(value);
+  const handleBrandInputChange = (_event, value: string) => {
+    setBrandValue(value);
   };
-  const handleAddressInputChange = (_event, value: string) => {
-    setAddressValue(value);
+  const handleCaliberInputChange = (_event, value: string) => {
+    setCaliberValue(value);
+  };
+  const handlePurchaseDateInputChange = (_event, value: string) => {
+    setPurchaseDateValue(value);
+  };
+  const handleLotNumberInputChange = (_event, value: string) => {
+    setLotNumberValue(value);
+  };
+  const handleQtyInputChange = (_event, value: string) => {
+    setQtyValue(value);
   };
 
   return (
@@ -42,7 +54,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
       <Modal
         variant={ModalVariant.small}
         title="Add Ammunition"
-        description="Enter your personal information below to create an account."
+        description="Enter information below."
         isOpen={isModalOpen}
         onClose={handleModalToggle}
         actions={[
@@ -57,201 +69,86 @@ const AddAmmoForm: React.FunctionComponent = () => {
         <Form id="modal-with-form-form">
           <FormGroup
             label="Manufacturer"
-            labelHelp={
-              <Popover
-                headerContent={
-                  <div>
-                    The
-                    <a href="https://schema.org/name" target="_blank" rel="noopener noreferrer">
-                      name
-                    </a>
-                    of a
-                    <a href="https://schema.org/Person" target="_blank" rel="noopener noreferrer">
-                      Person
-                    </a>
-                  </div>
-                }
-                bodyContent={
-                  <div>
-                    Often composed of
-                    <a href="https://schema.org/givenName" target="_blank" rel="noopener noreferrer">
-                      givenName
-                    </a>
-                    and
-                    <a href="https://schema.org/familyName" target="_blank" rel="noopener noreferrer">
-                      familyName
-                    </a>
-                    .
-                  </div>
-                }
-              >
-                <button
-                  type="button"
-                  aria-label="More info for name field"
-                  onClick={(e) => e.preventDefault()}
-                  aria-describedby="modal-with-form-form-name"
-                  className={formStyles.formGroupLabelHelp}
-                >
-                  <HelpIcon />
-                </button>
-              </Popover>
-            }
             isRequired
-            fieldId="modal-with-form-form-name"
+            fieldId="modal-with-form-form-manufacturer"
           >
             <TextInput
               isRequired
-              type="email"
-              id="modal-with-form-form-name"
-              name="modal-with-form-form-name"
-              value={nameValue}
+              type="text"
+              id="modal-with-form-form-manufacturer"
+              name="modal-with-form-form-manufacturer"
+              value={manufacturerValue}
               onChange={handleNameInputChange}
             />
           </FormGroup>
           <FormGroup
             label="Brand"
-            labelHelp={
-              <Popover
-                headerContent={
-                  <div>
-                    The
-                    <a href="https://schema.org/email" target="_blank" rel="noopener noreferrer">
-                      e-mail
-                    </a>
-                    of a
-                    <a href="https://schema.org/Person" target="_blank" rel="noopener noreferrer">
-                      person
-                    </a>
-                  </div>
-                }
-                bodyContent={
-                  <div>
-                    Valid
-                    <a href="https://schema.org/email" target="_blank" rel="noopener noreferrer">
-                      e-mail
-                    </a>
-                    address.
-                  </div>
-                }
-              >
-                <button
-                  type="button"
-                  aria-label="More info for e-mail field"
-                  onClick={(e) => e.preventDefault()}
-                  aria-describedby="modal-with-form-form-email"
-                  className={formStyles.formGroupLabelHelp}
-                >
-                  <HelpIcon />
-                </button>
-              </Popover>
-            }
             isRequired
-            fieldId="modal-with-form-form-email"
+            fieldId="modal-with-form-form-brand"
           >
             <TextInput
               isRequired
-              type="email"
-              id="modal-with-form-form-email"
-              name="modal-with-form-form-email"
-              value={emailValue}
-              onChange={handleEmailInputChange}
-            />
-          </FormGroup>
-          <FormGroup
-            label="Brand"
-            labelHelp={
-              <Popover
-                headerContent={
-                  <div>
-                    The
-                    <a href="https://schema.org/email" target="_blank" rel="noopener noreferrer">
-                      e-mail
-                    </a>
-                    of a
-                    <a href="https://schema.org/Person" target="_blank" rel="noopener noreferrer">
-                      person
-                    </a>
-                  </div>
-                }
-                bodyContent={
-                  <div>
-                    Valid
-                    <a href="https://schema.org/email" target="_blank" rel="noopener noreferrer">
-                      e-mail
-                    </a>
-                    address.
-                  </div>
-                }
-              >
-                <button
-                  type="button"
-                  aria-label="More info for e-mail field"
-                  onClick={(e) => e.preventDefault()}
-                  aria-describedby="modal-with-form-form-email"
-                  className={formStyles.formGroupLabelHelp}
-                >
-                  <HelpIcon />
-                </button>
-              </Popover>
-            }
-            isRequired
-            fieldId="modal-with-form-form-email"
-          >
-            <TextInput
-              isRequired
-              type="email"
-              id="modal-with-form-form-email"
-              name="modal-with-form-form-email"
-              value={emailValue}
-              onChange={handleEmailInputChange}
+              type="text"
+              id="modal-with-form-form-brand"
+              name="modal-with-form-form-brand"
+              value={brandValue}
+              onChange={handleBrandInputChange}
             />
           </FormGroup>
           <FormGroup
             label="Caliber"
-            labelHelp={
-              <Popover
-                headerContent={
-                  <div>
-                    The
-                    <a href="https://schema.org/address" target="_blank" rel="noopener noreferrer">
-                      adress
-                    </a>
-                    of a
-                    <a href="https://schema.org/Person" target="_blank" rel="noopener noreferrer">
-                      person
-                    </a>
-                  </div>
-                }
-                bodyContent={
-                  <div>
-                    Valid
-                    <a href="https://schema.org/PostalAddress" target="_blank" rel="noopener noreferrer">
-                      postal address.
-                    </a>
-                  </div>
-                }
-              >
-                <button
-                  type="button"
-                  aria-label="More info for address field"
-                  onClick={(e) => e.preventDefault()}
-                  aria-describedby="modal-with-form-form-address"
-                  className={formStyles.formGroupLabelHelp}
-                >
-                  <HelpIcon />
-                </button>
-              </Popover>
-            }
             isRequired
-            fieldId="modal-with-form-form-address"
+            fieldId="modal-with-form-form-caliber"
           >
             <TextInput
               isRequired
               type="email"
-              id="modal-with-form-form-address"
-              name="modal-with-form-form-address"
-              value={addressValue}
-              onChange={handleAddressInputChange}
+              id="modal-with-form-form-caliber"
+              name="modal-with-form-form-caliber"
+              value={caliberValue}
+              onChange={handleCaliberInputChange}
+            />
+          </FormGroup>
+          <FormGroup
+            label="Purchase Date"
+            isRequired
+            fieldId="modal-with-form-form-purchase-date"
+          >
+            <TextInput
+              isRequired
+              type="email"
+              id="modal-with-form-form-purchase-date"
+              name="modal-with-form-form-purchase-date"
+              value={purchaseDateValue}
+              onChange={handlePurchaseDateInputChange}
+            />
+          </FormGroup>
+          <FormGroup
+            label="Lot Number"
+            isRequired
+            fieldId="modal-with-form-form-lot-number"
+          >
+            <TextInput
+              isRequired
+              type="email"
+              id="modal-with-form-form-lot-number"
+              name="modal-with-form-form-lot-number"
+              value={lotNumberValue}
+              onChange={handleLotNumberInputChange}
+            />
+          </FormGroup>
+          <FormGroup
+            label="Quantity"
+            isRequired
+            fieldId="modal-with-form-form-qty"
+          >
+            <TextInput
+              isRequired
+              type="email"
+              id="modal-with-form-form-lot-qty"
+              name="modal-with-form-form-lot-qty"
+              value={qtyValue}
+              onChange={handleQtyInputChange}
             />
           </FormGroup>
         </Form>

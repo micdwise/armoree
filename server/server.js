@@ -3,7 +3,7 @@ const ammoRoutes = require("./postgresApi/src/ammunition/routes");
 const firearmRoutes = require("./postgresApi/src/firearms/routes");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 app.get("/", (req, res) => {
   res.send("This is GET!");

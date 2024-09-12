@@ -113,7 +113,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       masthead={Header}
       sidebar={sidebarOpen && Sidebar}>
       {children}
-      </Page>
+    </Page>
   );
 };
 
