@@ -6,8 +6,8 @@ function getFirearms (req: Request,res: Response) {
   res.send("getFirearms is working!")
 };
 
-function postFirearms (req: Request,res: Response) {
+function createFirearms (req: Request,res: Response) {
   res.send("postFirearms is working! Yay!")
 };
 
-export { getFirearms, postFirearms};
+export { getFirearms, createFirearms};
