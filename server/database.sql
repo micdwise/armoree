@@ -16,6 +16,15 @@ CREATE TABLE ammunition (
 
 ALTER TABLE ammunition OWNER TO armoree;
 
+CREATE TABLE firearms (
+  id SERIAL PRIMARY KEY,
+  manufacturer varchar(15),
+  model varchar(15),
+  caliber varchar (5),
+  purchase_date int,
+  serial_number varchar(15),
+);
+
 INSERT INTO ammunition (
   manufacturer,
   brand,

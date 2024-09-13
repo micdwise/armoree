@@ -1,7 +1,8 @@
-const { error } = require('console');
-const pool = require('../../db');
+import { error } from 'console';
+import pool from '../../db';
+import { Request, Response } from 'express';
 
-const getAmmunition = (req,res) => {
+function getAmmunition (req: Request,res: Response) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   pool.query("SELECT * FROM ammunition", (error, results) => {
     if (error) throw error;
@@ -9,7 +10,7 @@ const getAmmunition = (req,res) => {
   });
 };
 
-const postAmmunition = async (req,res) => {
+function createAmmunition (req: Request,res: Response) {
   pool.query({
     text: 'INSERT INTO ammunition (manufacturer, brand, purchase_date, caliber, lot_number, qty) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
     values: [
@@ -25,7 +26,4 @@ const postAmmunition = async (req,res) => {
       };
 };
 
-module.exports = {
-    getAmmunition,
-    postAmmunition,
-};
+export { getAmmunition, createAmmunition };

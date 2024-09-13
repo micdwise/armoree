@@ -2,6 +2,14 @@
   "name": "react-app",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start:dev": "webpack serve --color --progress --config webpack.dev.js",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "format": "prettier --check --write ./src/**/*.{tsx,ts}",
+    "eject": "react-scripts eject"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -35,19 +43,10 @@
     "@patternfly/react-icons": "6.0.0-alpha.30",
     "@patternfly/react-styles": "6.0.0-alpha.30",
     "@patternfly/react-table": "6.0.0-alpha.88",
-
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start:dev": "webpack serve --color --progress --config webpack.dev.js",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "format": "prettier --check --write ./src/**/*.{tsx,ts}",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
