@@ -31,4 +31,7 @@ const useAmmunition = () => {
   return { data };
 };
 
+const addAmmunition = () => {
+  
+}
 export { useAmmunition };

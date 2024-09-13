@@ -10,7 +10,18 @@ const getAmmunition = (req,res) => {
 };
 
 const postAmmunition = (req,res) => {
-  res.send("POST is working! Yay!")
+  pool.query({
+    text: 'INSERT INTO ammunition (manufacturer, brand, purchase_date, caliber, lot_number, qty) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+    values: [
+      req.body.manufacturer,
+      req.body.brand, 
+      req.body.purchase_hdate, 
+      req.body.caliber, 
+      req.body.lot_number, 
+      req.body.qty]
+    }), (error, results) => {
+      return res.status(201).json(results.rows)
+    };
 };
 
 module.exports = {
