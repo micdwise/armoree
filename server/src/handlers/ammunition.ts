@@ -1,10 +1,10 @@
 import { error } from 'console';
-import pool from '../../db';
+import pool from '../db';
 import { Request, Response } from 'express';
 
 function getAmmunition (req: Request,res: Response) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  pool.query("SELECT * FROM ammunition", (error, results) => {
+  pool.query("SELECT * FROM ammunition", (error: any, results: any) => {
     if (error) throw error;
     res.status(200).json(results.rows);
   });
@@ -20,7 +20,7 @@ function createAmmunition (req: Request,res: Response) {
       req.body.caliber, 
       req.body.lot_number, 
       req.body.qty]
-    }), (error, results) => {
+    }), (error: any, results: any) => {
       if (error) throw error;
       return res.status(200).json(results);
       };

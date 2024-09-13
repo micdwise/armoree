@@ -1,7 +1,7 @@
 import express  from "express";
 import * as dotenv from "dotenv";
-import ammunitionRouter from "./postgresApi/src/routes/ammunition";
-import firearmsRouter from "./postgresApi/src/routes/firearms";
+import ammunitionRouter from "./src/routes/ammunition";
+import firearmsRouter from "./src/routes/firearms";
 
 dotenv.config();
 

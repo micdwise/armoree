@@ -1,5 +1,5 @@
 import { error } from 'console';
-import pool from '../../db';
+import pool from '../db';
 import { Request, Response } from 'express';
 
 function getFirearms (req: Request,res: Response) {
