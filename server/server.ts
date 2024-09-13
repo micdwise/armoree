@@ -1,7 +1,7 @@
 import express  from "express";
 import * as dotenv from "dotenv";
-import ammoRoutes from "./postgresApi/src/ammunition/routes";
-import firearmRoutes from "./postgresApi/src/routes/routes";
+import ammunitionRouter from "./postgresApi/src/routes/ammunition";
+import firearmsRouter from "./postgresApi/src/routes/firearms";
 
 dotenv.config();
 
@@ -18,8 +18,8 @@ app.post("/", (req, res) => {
   res.send("This is a POST!")
 });
 
-app.use("/api/v1/ammunition", ammoRoutes);
-app.use("/api/v1/firearms", firearmRoutes);
+app.use("/api/v1/ammunition", ammunitionRouter);
+app.use("/api/v1/firearms", firearmsRouter);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
