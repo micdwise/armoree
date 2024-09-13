@@ -25,30 +25,4 @@ CREATE TABLE firearms (
   serial_number varchar(15),
 );
 
-INSERT INTO ammunition (
-  manufacturer,
-  brand,
-  caliber,
-  lot_number,
-  qty
-) VALUES (
-  'American Eagle',
-  'Super',
-  '9mm',
-  '12345',
-  35
-);
-
-INSERT INTO ammunition (
-  manufacturer,
-  brand,
-  caliber,
-  lot_number,
-  qty
-) VALUES (
-  'Hornady',
-  'Critical Defens',
-  '9mm',
-  '8675309',
-  100
-);
+ALTER TABLE firearms OWNER TO armoree;
