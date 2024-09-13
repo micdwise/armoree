@@ -9,7 +9,7 @@ const getAmmunition = (req,res) => {
   });
 };
 
-const postAmmunition = (req,res) => {
+const postAmmunition = async (req,res) => {
   pool.query({
     text: 'INSERT INTO ammunition (manufacturer, brand, purchase_date, caliber, lot_number, qty) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
     values: [
@@ -20,8 +20,9 @@ const postAmmunition = (req,res) => {
       req.body.lot_number, 
       req.body.qty]
     }), (error, results) => {
-      return res.status(201).json(results.rows)
-    };
+      if (error) throw error;
+      return res.status(200).json(results);
+      };
 };
 
 module.exports = {
