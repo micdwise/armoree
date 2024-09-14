@@ -18,11 +18,11 @@ ALTER TABLE ammunition OWNER TO armoree;
 
 CREATE TABLE firearms (
   id SERIAL PRIMARY KEY,
-  manufacturer varchar(15),
-  model varchar(15),
-  caliber varchar (5),
+  manufacturer varchar (15),
+  model varchar (15),
   purchase_date int,
-  serial_number varchar(15),
+  caliber varchar (15),
+  serial_number varchar (15)
 );
 
 ALTER TABLE firearms OWNER TO armoree;
