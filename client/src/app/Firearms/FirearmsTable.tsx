@@ -8,19 +8,18 @@ import {
   Tbody,
   Td 
 } from '@patternfly/react-table';
-import { useAmmunition, Repository } from '@app/Ammunition/AmmunitionData';
+import { useFirearms, Repository } from '@app/Firearms/FirearmsData';
 import { PageBody, PageSection, Toolbar } from '@patternfly/react-core';
 
-const AmmunitionTable: React.FunctionComponent = () => {
-  const { data: repositories } = useAmmunition(); // Fetch ammunition data
+const FirearmsTable: React.FunctionComponent = () => {
+  const { data: repositories } = useFirearms(); // Fetch ammunition data
 
   const columnNames = {
     manufacturer: 'Manufacturer',
-    brand: 'Brand',
+    model: 'Model',
     prchdate: 'Purchase Date',
     caliber: 'Caliber',
-    lot_number: 'Lot Number',
-    qty: 'Quantity'
+    serial_number: 'Serial Number'
   };
 
   return (
@@ -33,22 +32,20 @@ const AmmunitionTable: React.FunctionComponent = () => {
           <Thead>
             <Tr>
               <Th>{columnNames.manufacturer}</Th>
-              <Th>{columnNames.brand}</Th>
+              <Th>{columnNames.model}</Th>
               <Th>{columnNames.prchdate}</Th>
               <Th>{columnNames.caliber}</Th>
-              <Th>{columnNames.lot_number}</Th>
-              <Th>{columnNames.qty}</Th>
+              <Th>{columnNames.serial_number}</Th>
             </Tr>
           </Thead>
           <Tbody>
             {repositories.map((repo: Repository) => (
               <Tr key={repo.id}>
                 <Td dataLabel={columnNames.manufacturer}>{repo.manufacturer}</Td>
-                <Td dataLabel={columnNames.brand}>{repo.brand}</Td>
+                <Td dataLabel={columnNames.model}>{repo.model}</Td>
                 <Td dataLabel={columnNames.prchdate}>{repo.prchsdate}</Td>
                 <Td dataLabel={columnNames.caliber}>{repo.caliber}</Td>
-                <Td dataLabel={columnNames.lot_number}>{repo.lot_number}</Td>
-                <Td dataLabel={columnNames.qty}>{repo.qty}</Td>
+                <Td dataLabel={columnNames.serial_number}>{repo.serial_number}</Td>
               </Tr>
             ))}
           </Tbody>
@@ -58,4 +55,4 @@ const AmmunitionTable: React.FunctionComponent = () => {
   );
 };
 
-export { AmmunitionTable };
+export { FirearmsTable };

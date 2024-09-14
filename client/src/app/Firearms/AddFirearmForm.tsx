@@ -13,7 +13,7 @@ import {
 import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
 import formStyles from '@patternfly/react-styles/css/components/Form/form';
 
-const AddAmmoForm: React.FunctionComponent = () => {
+const AddFirearmForm: React.FunctionComponent = () => {
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [manufacturerValue, setManufacturerValue] = React.useState('');
   const [brandValue, setBrandValue] = React.useState('');
@@ -49,7 +49,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <Button variant="primary" onClick={handleModalToggle}>
-        Add Ammunition
+        Add Firearm
       </Button>
       <Modal
         variant={ModalVariant.small}
@@ -157,4 +157,4 @@ const AddAmmoForm: React.FunctionComponent = () => {
   );
 };
 
-export { AddAmmoForm }
+export { AddFirearmForm }
