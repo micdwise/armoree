@@ -1,17 +1,16 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import {
 	Button,
 	Form,
 	FormGroup,
-	Popover,
-	TextInput
+	TextInput,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalVariant
 } from '@patternfly/react-core';
-import {
-	Modal,
-	ModalVariant
-} from '@patternfly/react-core/deprecated';
-import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
-import formStyles from '@patternfly/react-styles/css/components/Form/form';
+import { addAmmunition } from './AmmunitionData';
 
 const AddAmmoForm: React.FunctionComponent = () => {
   const [isModalOpen, setModalOpen] = React.useState(false);
@@ -46,6 +45,13 @@ const AddAmmoForm: React.FunctionComponent = () => {
     setQtyValue(value);
   };
 
+  const handleSubmitAmmo = (event: any) => {
+    event.preventDefault();
+    const newAmmunition = new FormData(event.target);
+    addAmmunition();
+    console.log(newAmmunition);
+  }
+
   return (
     <React.Fragment>
       <Button variant="primary" onClick={handleModalToggle}>
@@ -53,105 +59,115 @@ const AddAmmoForm: React.FunctionComponent = () => {
       </Button>
       <Modal
         variant={ModalVariant.small}
-        title="Add Ammunition"
-        description="Enter information below."
         isOpen={isModalOpen}
         onClose={handleModalToggle}
-        actions={[
-          <Button key="create" variant="primary" form="modal-with-form-form" onClick={handleModalToggle}>
-            Confirm
-          </Button>,
+      >
+        <ModalHeader
+          title="Add Ammunition"
+          description="Enter information below."
+        />
+          <ModalBody>
+            <Form id="modal-with-form-form" onSubmit={handleSubmitAmmo}>
+          
+              <FormGroup
+                label="Manufacturer"
+                isRequired
+                fieldId="modal-with-form-form-manufacturer"
+              >
+                <TextInput
+                  isRequired
+                  type="text"
+                  id="modal-with-form-form-manufacturer"
+                  name="manufacturer"
+                  value={manufacturerValue}
+                  onChange={handleNameInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup
+                label="Brand"
+                isRequired
+                fieldId="modal-with-form-form-brand"
+              >
+                <TextInput
+                  isRequired
+                  type="text"
+                  id="modal-with-form-form-brand"
+                  name="brand"
+                  value={brandValue}
+                  onChange={handleBrandInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup
+                label="Caliber"
+                isRequired
+                fieldId="modal-with-form-form-caliber"
+              >
+                <TextInput
+                  isRequired
+                  type="text"
+                  id="modal-with-form-form-caliber"
+                  name="caliber"
+                  value={caliberValue}
+                  onChange={handleCaliberInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup
+                label="Purchase Date"
+                isRequired
+                fieldId="modal-with-form-form-purchase-date"
+              >
+                <TextInput
+                  isRequired
+                  type="date"
+                  id="modal-with-form-form-purchase-date"
+                  name="purchase_date"
+                  value={purchaseDateValue}
+                  onChange={handlePurchaseDateInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup
+                label="Lot Number"
+                isRequired
+                fieldId="modal-with-form-form-lot-number"
+              >
+                <TextInput
+                  isRequired
+                  type="text"
+                  id="modal-with-form-form-lot-number"
+                  name="lot_number"
+                  value={lotNumberValue}
+                  onChange={handleLotNumberInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup
+                label="Quantity"
+                isRequired
+                fieldId="modal-with-form-form-qty"
+              >
+                <TextInput
+                  isRequired
+                  type="number"
+                  id="modal-with-form-form-lot-qty"
+                  name="qty"
+                  value={qtyValue}
+                  onChange={handleQtyInputChange}
+                />
+              </FormGroup>
+            </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button key="create" variant="primary" type="submit" form="modal-with-form-form">
+            Add
+          </Button>
           <Button key="cancel" variant="link" onClick={handleModalToggle}>
             Cancel
           </Button>
-        ]}
-      >
-        <Form id="modal-with-form-form">
-          <FormGroup
-            label="Manufacturer"
-            isRequired
-            fieldId="modal-with-form-form-manufacturer"
-          >
-            <TextInput
-              isRequired
-              type="text"
-              id="modal-with-form-form-manufacturer"
-              name="modal-with-form-form-manufacturer"
-              value={manufacturerValue}
-              onChange={handleNameInputChange}
-            />
-          </FormGroup>
-          <FormGroup
-            label="Brand"
-            isRequired
-            fieldId="modal-with-form-form-brand"
-          >
-            <TextInput
-              isRequired
-              type="text"
-              id="modal-with-form-form-brand"
-              name="modal-with-form-form-brand"
-              value={brandValue}
-              onChange={handleBrandInputChange}
-            />
-          </FormGroup>
-          <FormGroup
-            label="Caliber"
-            isRequired
-            fieldId="modal-with-form-form-caliber"
-          >
-            <TextInput
-              isRequired
-              type="text"
-              id="modal-with-form-form-caliber"
-              name="modal-with-form-form-caliber"
-              value={caliberValue}
-              onChange={handleCaliberInputChange}
-            />
-          </FormGroup>
-          <FormGroup
-            label="Purchase Date"
-            isRequired
-            fieldId="modal-with-form-form-purchase-date"
-          >
-            <TextInput
-              isRequired
-              type="date"
-              id="modal-with-form-form-purchase-date"
-              name="modal-with-form-form-purchase-date"
-              value={purchaseDateValue}
-              onChange={handlePurchaseDateInputChange}
-            />
-          </FormGroup>
-          <FormGroup
-            label="Lot Number"
-            isRequired
-            fieldId="modal-with-form-form-lot-number"
-          >
-            <TextInput
-              isRequired
-              type="text"
-              id="modal-with-form-form-lot-number"
-              name="modal-with-form-form-lot-number"
-              value={lotNumberValue}
-              onChange={handleLotNumberInputChange}
-            />
-          </FormGroup>
-          <FormGroup
-            label="Quantity"
-            isRequired
-            fieldId="modal-with-form-form-qty"
-          >
-            <TextInput
-              isRequired
-              type="number"
-              id="modal-with-form-form-lot-qty"
-              name="modal-with-form-form-lot-qty"
-              value={qtyValue}
-              onChange={handleQtyInputChange}
-            />
-          </FormGroup>
-        </Form>
+        </ModalFooter>
       </Modal>
     </React.Fragment>
   );

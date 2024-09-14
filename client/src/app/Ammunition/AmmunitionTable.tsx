@@ -17,7 +17,7 @@ const AmmunitionTable: React.FunctionComponent = () => {
   const columnNames = {
     manufacturer: 'Manufacturer',
     brand: 'Brand',
-    prchdate: 'Purchase Date',
+    purchase_date: 'Purchase Date',
     caliber: 'Caliber',
     lot_number: 'Lot Number',
     qty: 'Quantity'
@@ -34,7 +34,7 @@ const AmmunitionTable: React.FunctionComponent = () => {
             <Tr>
               <Th>{columnNames.manufacturer}</Th>
               <Th>{columnNames.brand}</Th>
-              <Th>{columnNames.prchdate}</Th>
+              <Th>{columnNames.purchase_date}</Th>
               <Th>{columnNames.caliber}</Th>
               <Th>{columnNames.lot_number}</Th>
               <Th>{columnNames.qty}</Th>
@@ -45,7 +45,7 @@ const AmmunitionTable: React.FunctionComponent = () => {
               <Tr key={repo.id}>
                 <Td dataLabel={columnNames.manufacturer}>{repo.manufacturer}</Td>
                 <Td dataLabel={columnNames.brand}>{repo.brand}</Td>
-                <Td dataLabel={columnNames.prchdate}>{repo.prchsdate}</Td>
+                <Td dataLabel={columnNames.purchase_date}>{repo.purchase_date}</Td>
                 <Td dataLabel={columnNames.caliber}>{repo.caliber}</Td>
                 <Td dataLabel={columnNames.lot_number}>{repo.lot_number}</Td>
                 <Td dataLabel={columnNames.qty}>{repo.qty}</Td>

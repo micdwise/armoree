@@ -4,7 +4,7 @@ export interface Repository {
   id: BigInt
   manufacturer: string;
   brand: string;
-  prchsdate: string;
+  purchase_date: string;
   caliber: string;
   lot_number: string;
   qty: string
@@ -31,13 +31,13 @@ const getAmmunition = () => {
   return { data };
 };
 
-const addAmmunition = () => {
+const addAmmunition = (newAmmunition: any) => {
   fetch('http://localhost:3001/api/v1/ammunition'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify
+    body: JSON.stringify(newAmmunition)
   }
 }
-export { getAmmunition };
+export { getAmmunition, addAmmunition };
