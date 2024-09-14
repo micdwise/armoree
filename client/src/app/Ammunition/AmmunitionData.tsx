@@ -10,7 +10,7 @@ export interface Repository {
   qty: string
 };
 
-const useAmmunition = () => {
+const getAmmunition = () => {
   const [data, setData] = useState<Repository[]>([]);
   
   const fetchAmmoData =  () => {
@@ -32,6 +32,12 @@ const useAmmunition = () => {
 };
 
 const addAmmunition = () => {
-  
+  fetch('http://localhost:3001/api/v1/ammunition'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify
+  }
 }
-export { useAmmunition };
+export { getAmmunition };

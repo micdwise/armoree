@@ -8,11 +8,11 @@ import {
   Tbody,
   Td 
 } from '@patternfly/react-table';
-import { useAmmunition, Repository } from '@app/Ammunition/AmmunitionData';
+import { getAmmunition, Repository } from '@app/Ammunition/AmmunitionData';
 import { PageBody, PageSection, Toolbar } from '@patternfly/react-core';
 
 const AmmunitionTable: React.FunctionComponent = () => {
-  const { data: repositories } = useAmmunition(); // Fetch ammunition data
+  const { data: repositories } = getAmmunition(); // Fetch ammunition data
 
   const columnNames = {
     manufacturer: 'Manufacturer',
