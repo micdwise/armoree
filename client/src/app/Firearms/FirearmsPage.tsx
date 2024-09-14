@@ -3,7 +3,7 @@ import { Flex, FlexItem, ActionGroup, PageSection, Title } from '@patternfly/rea
 import { FirearmsTable } from './FirearmsTable';
 import { AddFirearmForm } from './AddFirearmForm';
 
-const Firearms: React.FunctionComponent = () => (
+const FirearmsPage: React.FunctionComponent = () => (
   <PageSection hasBodyWrapper={false}>
     <Title headingLevel='h1' size='lg'>
       <FirearmsTable />
@@ -18,4 +18,4 @@ const Firearms: React.FunctionComponent = () => (
   </PageSection>
 );
 
-export { Firearms };
+export { FirearmsPage };

@@ -102,7 +102,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
           >
             <TextInput
               isRequired
-              type="email"
+              type="text"
               id="modal-with-form-form-caliber"
               name="modal-with-form-form-caliber"
               value={caliberValue}
@@ -116,7 +116,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
           >
             <TextInput
               isRequired
-              type="email"
+              type="date"
               id="modal-with-form-form-purchase-date"
               name="modal-with-form-form-purchase-date"
               value={purchaseDateValue}
@@ -130,7 +130,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
           >
             <TextInput
               isRequired
-              type="email"
+              type="text"
               id="modal-with-form-form-lot-number"
               name="modal-with-form-form-lot-number"
               value={lotNumberValue}
@@ -144,7 +144,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
           >
             <TextInput
               isRequired
-              type="email"
+              type="number"
               id="modal-with-form-form-lot-qty"
               name="modal-with-form-form-lot-qty"
               value={qtyValue}

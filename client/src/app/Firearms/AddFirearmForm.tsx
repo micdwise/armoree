@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import {
 	Button,
 	Form,
@@ -16,11 +16,10 @@ import formStyles from '@patternfly/react-styles/css/components/Form/form';
 const AddFirearmForm: React.FunctionComponent = () => {
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [manufacturerValue, setManufacturerValue] = React.useState('');
-  const [brandValue, setBrandValue] = React.useState('');
+  const [modelValue, setModelValue] = React.useState('');
   const [caliberValue, setCaliberValue] = React.useState('');
   const [purchaseDateValue, setPurchaseDateValue] = React.useState('');
-  const [lotNumberValue, setLotNumberValue] = React.useState('');
-  const [qtyValue, setQtyValue] = React.useState('');
+  const [serialNumberValue, setSerialNumberValue] = React.useState('');
 
   const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
     setModalOpen(!isModalOpen);
@@ -30,8 +29,8 @@ const AddFirearmForm: React.FunctionComponent = () => {
     setManufacturerValue(value);
   };
 
-  const handleBrandInputChange = (_event: FormEvent, value: string) => {
-    setBrandValue(value);
+  const handleModelInputChange = (_event: FormEvent, value: string) => {
+    setModelValue(value);
   };
   const handleCaliberInputChange = (_event: FormEvent, value: string) => {
     setCaliberValue(value);
@@ -39,11 +38,8 @@ const AddFirearmForm: React.FunctionComponent = () => {
   const handlePurchaseDateInputChange = (_event: FormEvent, value: string) => {
     setPurchaseDateValue(value);
   };
-  const handleLotNumberInputChange = (_event: FormEvent, value: string) => {
-    setLotNumberValue(value);
-  };
-  const handleQtyInputChange = (_event: FormEvent, value: string) => {
-    setQtyValue(value);
+  const handleSerialNumberInputChange = (_event: FormEvent, value: string) => {
+    setSerialNumberValue(value);
   };
 
   return (
@@ -53,7 +49,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
       </Button>
       <Modal
         variant={ModalVariant.small}
-        title="Add Ammunition"
+        title="Add Firearm"
         description="Enter information below."
         isOpen={isModalOpen}
         onClose={handleModalToggle}
@@ -82,17 +78,17 @@ const AddFirearmForm: React.FunctionComponent = () => {
             />
           </FormGroup>
           <FormGroup
-            label="Brand"
+            label="Model"
             isRequired
-            fieldId="modal-with-form-form-brand"
+            fieldId="modal-with-form-form-model"
           >
             <TextInput
               isRequired
               type="text"
               id="modal-with-form-form-brand"
               name="modal-with-form-form-brand"
-              value={brandValue}
-              onChange={handleBrandInputChange}
+              value={modelValue}
+              onChange={handleModelInputChange}
             />
           </FormGroup>
           <FormGroup
@@ -102,7 +98,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
           >
             <TextInput
               isRequired
-              type="email"
+              type="text"
               id="modal-with-form-form-caliber"
               name="modal-with-form-form-caliber"
               value={caliberValue}
@@ -116,7 +112,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
           >
             <TextInput
               isRequired
-              type="email"
+              type="date"
               id="modal-with-form-form-purchase-date"
               name="modal-with-form-form-purchase-date"
               value={purchaseDateValue}
@@ -124,31 +120,17 @@ const AddFirearmForm: React.FunctionComponent = () => {
             />
           </FormGroup>
           <FormGroup
-            label="Lot Number"
+            label="Serial Number"
             isRequired
-            fieldId="modal-with-form-form-lot-number"
+            fieldId="modal-with-form-form-serial-number"
           >
             <TextInput
               isRequired
-              type="email"
+              type="text"
               id="modal-with-form-form-lot-number"
               name="modal-with-form-form-lot-number"
-              value={lotNumberValue}
-              onChange={handleLotNumberInputChange}
-            />
-          </FormGroup>
-          <FormGroup
-            label="Quantity"
-            isRequired
-            fieldId="modal-with-form-form-qty"
-          >
-            <TextInput
-              isRequired
-              type="email"
-              id="modal-with-form-form-lot-qty"
-              name="modal-with-form-form-lot-qty"
-              value={qtyValue}
-              onChange={handleQtyInputChange}
+              value={serialNumberValue}
+              onChange={handleSerialNumberInputChange}
             />
           </FormGroup>
         </Form>

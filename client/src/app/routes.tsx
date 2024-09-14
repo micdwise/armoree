@@ -5,8 +5,8 @@ import {
   RouteComponentProps,
   Switch,
 } from "react-router-dom";
-import { Ammunition } from "@app/Ammunition/Ammunition";
-import { Firearms } from "@app/Firearms/Firearms";
+import { AmmunitionPage } from "@app/Ammunition/AmmunitionPage";
+import { FirearmsPage } from "@app/Firearms/FirearmsPage";
 import { Dashboard } from "@app/Dashboard/Dashboard";
 import { useDocumentTitle } from "@app/utils/usedocumentTitle";
 import { NotFound } from "@app/NotFound/NotFound";
@@ -41,7 +41,7 @@ const routes: AppRouteConfig[] = [
   },
 
   {
-    component: Ammunition,
+    component: AmmunitionPage,
     exact: true,
     label: "Ammunition",
     path: "/Ammunition",
@@ -49,7 +49,7 @@ const routes: AppRouteConfig[] = [
   },
 
   {
-    component: Firearms,
+    component: FirearmsPage,
     exact: true,
     label: "Firearms",
     path: "/Firearms",
