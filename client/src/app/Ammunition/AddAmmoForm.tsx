@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalVariant
 } from '@patternfly/react-core';
-import { addAmmunition } from './AmmunitionData';
+import { handleSubmitAmmo } from './AmmunitionData';
 
 const AddAmmoForm: React.FunctionComponent = () => {
   const [isModalOpen, setModalOpen] = React.useState(false);
@@ -44,13 +44,6 @@ const AddAmmoForm: React.FunctionComponent = () => {
   const handleQtyInputChange = (_event: FormEvent, value: string) => {
     setQtyValue(value);
   };
-
-  const handleSubmitAmmo = (event: any) => {
-    event.preventDefault();
-    const newAmmunition = new FormData(event.target);
-    addAmmunition();
-    console.log(newAmmunition);
-  }
 
   return (
     <React.Fragment>

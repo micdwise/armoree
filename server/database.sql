@@ -9,7 +9,7 @@ CREATE TABLE ammunition (
   manufacturer varchar(15),
   brand varchar(15),
   caliber varchar (5),
-  purchase_date int,
+  purchase_date date,
   lot_number varchar(15),
   qty integer
 );
@@ -20,7 +20,7 @@ CREATE TABLE firearms (
   id SERIAL PRIMARY KEY,
   manufacturer varchar (15),
   model varchar (15),
-  purchase_date int,
+  purchase_date date,
   caliber varchar (15),
   serial_number varchar (15)
 );
