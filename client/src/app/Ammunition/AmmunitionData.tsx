@@ -17,7 +17,7 @@ const handleSubmitAmmo = (event: any) => {
   
   console.log(newAmmunition);
 
-    fetch('http://192.168.4.91:3001/api/v1/ammunition', {
+    fetch('http://localhost:3000/api/v1/ammunition', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ const getAmmunition = () => {
   const [data, setData] = useState<Repository[]>([]);
   
   const fetchAmmoData =  () => {
-    fetch('http://localhost:3001/api/v1/ammunition')
+    fetch('http://localhost:3000/api/v1/ammunition')
       .then(res => {
         return res.json();
       }) 
