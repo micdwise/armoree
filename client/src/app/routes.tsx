@@ -41,6 +41,14 @@ const routes: AppRouteConfig[] = [
   },
 
   {
+    component: FirearmsPage,
+    exact: true,
+    label: "Firearms",
+    path: "/Firearms",
+    title: "Firearms",
+  },
+  
+  {
     component: AmmunitionPage,
     exact: true,
     label: "Ammunition",
@@ -48,13 +56,7 @@ const routes: AppRouteConfig[] = [
     title: "Ammunition",
   },
 
-  {
-    component: FirearmsPage,
-    exact: true,
-    label: "Firearms",
-    path: "/Firearms",
-    title: "Firearms",
-  },
+  
 ];
 
 const useA11yRouteChange = () => {
