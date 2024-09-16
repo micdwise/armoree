@@ -13,7 +13,7 @@ const useFirearms = () => {
   const [data, setData] = useState<Repository[]>([]);
   
   const fetchFirearmsData =  () => {
-    fetch('http://localhost:3001/api/v1/firearms')
+    fetch('http://localhost:3000/api/v1/firearms')
       .then(res => {
         return res.json();
       }) 

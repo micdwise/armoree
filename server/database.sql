@@ -1,4 +1,6 @@
-CREATE USER armoree WITH ENCRYPTED PASSWORD 'password';
+CREATE ROLE armoree WITH ENCRYPTED PASSWORD 'password';
+
+GRANT armoree TO session_user;
 
 CREATE DATABASE armoree OWNER armoree;
 
