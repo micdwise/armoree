@@ -13,7 +13,7 @@ import {
 import { handleSubmitFirearm } from "./FirearmsData";
 
 const AddFirearmForm: React.FunctionComponent = () => {
-  const [isModalOpen, setModalOpen] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [manufacturerValue, setManufacturerValue] = React.useState("");
   const [modelValue, setModelValue] = React.useState("");
   const [caliberValue, setCaliberValue] = React.useState("");
@@ -21,7 +21,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
   const [serialNumberValue, setSerialNumberValue] = React.useState("");
 
   const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
-    setModalOpen(!isModalOpen);
+    setIsModalOpen(!isModalOpen);
   };
 
   const handleNameInputChange = (_event: FormEvent, value: string) => {

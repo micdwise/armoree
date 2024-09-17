@@ -13,7 +13,7 @@ import {
 import { handleSubmitAmmo } from "./AmmunitionData";
 
 const AddAmmoForm: React.FunctionComponent = () => {
-  const [isModalOpen, setModalOpen] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [manufacturerValue, setManufacturerValue] = React.useState("");
   const [brandValue, setBrandValue] = React.useState("");
   const [caliberValue, setCaliberValue] = React.useState("");
@@ -22,7 +22,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
   const [qtyValue, setQtyValue] = React.useState("");
 
   const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
-    setModalOpen(!isModalOpen);
+    setIsModalOpen(!isModalOpen);
   };
 
   const handleNameInputChange = (_event: FormEvent, value: string) => {
