@@ -27,7 +27,7 @@ const handleSubmitAmmo = (event: any) => {
   console.log("Fired ammuntion postf");
 };
 
-const getAmmunition = () => {
+const GetAmmunition = () => {
   const [data, setData] = useState<Repository[]>([]);
 
   const fetchAmmoData = () => {
@@ -48,4 +48,4 @@ const getAmmunition = () => {
   return { data };
 };
 
-export { getAmmunition, handleSubmitAmmo };
+export { GetAmmunition, handleSubmitAmmo };

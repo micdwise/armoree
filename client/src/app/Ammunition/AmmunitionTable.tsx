@@ -1,10 +1,10 @@
 import React from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
-import { getAmmunition, Repository } from "@app/Ammunition/AmmunitionData";
+import { GetAmmunition, Repository } from "@app/Ammunition/AmmunitionData";
 import { PageBody, PageSection, Toolbar } from "@patternfly/react-core";
 
 const AmmunitionTable: React.FunctionComponent = () => {
-  const { data: repositories } = getAmmunition(); // Fetch ammunition data
+  const { data: repositories } = GetAmmunition(); // Fetch ammunition data
 
   const columnNames = {
     manufacturer: "Manufacturer",
