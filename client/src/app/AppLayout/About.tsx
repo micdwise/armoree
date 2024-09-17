@@ -1,7 +1,11 @@
 import React from "react";
-import { AboutModal, Button, Content } from "@patternfly/react-core";
+import {
+  AboutModal,
+  Button,
+  ButtonVariant,
+  Content,
+} from "@patternfly/react-core";
 import brandImg from "@assets/images/PF-IconLogo.svg";
-import { ButtonVariant } from "@patternfly/react-core";
 import { QuestionCircleIcon } from "@patternfly/react-icons";
 
 const AboutModalBasic: React.FunctionComponent = () => {

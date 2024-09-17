@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
 import { getAmmunition, Repository } from "@app/Ammunition/AmmunitionData";
 import { PageBody, PageSection, Toolbar } from "@patternfly/react-core";
