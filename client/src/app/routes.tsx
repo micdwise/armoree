@@ -47,7 +47,7 @@ const routes: AppRouteConfig[] = [
     path: "/Firearms",
     title: "Firearms",
   },
-  
+
   {
     component: AmmunitionPage,
     exact: true,
@@ -55,8 +55,6 @@ const routes: AppRouteConfig[] = [
     path: "/Ammunition",
     title: "Ammunition",
   },
-
-  
 ];
 
 const useA11yRouteChange = () => {
@@ -99,7 +97,7 @@ const flattenedRoutes: IAppRoute[] = routes.reduce(
     ...flattened,
     ...(route.routes ? route.routes : [route]),
   ],
-  [] as IAppRoute[],
+  [] as IAppRoute[]
 );
 
 const AppRoutes = (): React.ReactElement => (

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { NavLink, useLocation} from 'react-router-dom';
+import * as React from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Button,
   ButtonVariant,
@@ -17,11 +17,11 @@ import {
   Toolbar,
   ToolbarContent,
   ToolbarGroup,
-  ToolbarItem
- } from '@patternfly/react-core';
- import { IAppRoute, IAppRouteGroup, routes } from '@app/routes'
-import { BarsIcon, BellIcon, CogIcon,  } from '@patternfly/react-icons';
-import { AboutModalBasic } from '@app/AppLayout/About';
+  ToolbarItem,
+} from "@patternfly/react-core";
+import { IAppRoute, IAppRouteGroup, routes } from "@app/routes";
+import { BarsIcon, BellIcon, CogIcon } from "@patternfly/react-icons";
+import { AboutModalBasic } from "@app/AppLayout/About";
 
 interface IAppLayout {
   children: React.ReactNode;
@@ -35,15 +35,26 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       <ToolbarContent>
         <ToolbarGroup
           variant="action-group-plain"
-          align={{ default: 'alignEnd' }}
-          gap={{ default: 'gapNone', md: 'gapMd' }}
+          align={{ default: "alignEnd" }}
+          gap={{ default: "gapNone", md: "gapMd" }}
         >
           <ToolbarItem>
-            <Button aria-label="Notifications" variant={ButtonVariant.plain} icon={<BellIcon />} />
+            <Button
+              aria-label="Notifications"
+              variant={ButtonVariant.plain}
+              icon={<BellIcon />}
+            />
           </ToolbarItem>
-          <ToolbarGroup variant="action-group-plain" visibility={{ default: 'hidden', lg: 'visible' }}>
+          <ToolbarGroup
+            variant="action-group-plain"
+            visibility={{ default: "hidden", lg: "visible" }}
+          >
             <ToolbarItem>
-              <Button aria-label="Settings" variant={ButtonVariant.plain} icon={<CogIcon />} />
+              <Button
+                aria-label="Settings"
+                variant={ButtonVariant.plain}
+                icon={<CogIcon />}
+              />
             </ToolbarItem>
             <ToolbarItem>
               <AboutModalBasic />
@@ -58,20 +69,27 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     <Masthead>
       <MastheadMain>
         <MastheadToggle>
-            <Button icon={<BarsIcon />} variant="plain" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Global navigation" />
+          <Button
+            icon={<BarsIcon />}
+            variant="plain"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label="Global navigation"
+          />
         </MastheadToggle>
-          Armoree
+        Armoree
       </MastheadMain>
-      <MastheadContent>
-            { headerToolbar }
-      </MastheadContent>
+      <MastheadContent>{headerToolbar}</MastheadContent>
     </Masthead>
   );
 
   const location = useLocation();
 
   const renderNavItem = (route: IAppRoute, index: number) => (
-    <NavItem key={'${route.label}-${index}'} id={'${route.label}-${index}'} isActive={route.path === location.pathname}>
+    <NavItem
+      key={"${route.label}-${index}"}
+      id={"${route.label}-${index}"}
+      isActive={route.path === location.pathname}
+    >
       <NavLink exact={route.exact} to={route.path}>
         {route.label}
       </NavLink>
@@ -83,8 +101,11 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       key={`${group.label}-${groupIndex}`}
       id={`${group.label}-${groupIndex}`}
       title={group.label}
-      isActive={group.routes.some((route) => route.path === location.pathname)}>
-      {group.routes.map((route, idx) => route.label && renderNavItem(route, idx))}
+      isActive={group.routes.some((route) => route.path === location.pathname)}
+    >
+      {group.routes.map(
+        (route, idx) => route.label && renderNavItem(route, idx)
+      )}
     </NavExpandable>
   );
 
@@ -92,26 +113,29 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     <Nav id="nav-primary-simple">
       <NavList id="nav-list-simple">
         {routes.map(
-          (route, idx) => route.label && (!route.routes ? renderNavItem(route, idx) : renderNavGroup(route, idx))
+          (route, idx) =>
+            route.label &&
+            (!route.routes
+              ? renderNavItem(route, idx)
+              : renderNavGroup(route, idx))
         )}
       </NavList>
     </Nav>
   );
 
   const Sidebar = (
-    <PageSidebar >
-      <PageSidebarBody>
-        {Navigation}
-      </PageSidebarBody>
+    <PageSidebar>
+      <PageSidebarBody>{Navigation}</PageSidebarBody>
     </PageSidebar>
   );
 
-  const pageId = 'primary-app-container';
+  const pageId = "primary-app-container";
   return (
     <Page
       mainContainerId={pageId}
       masthead={Header}
-      sidebar={sidebarOpen && Sidebar}>
+      sidebar={sidebarOpen && Sidebar}
+    >
       {children}
     </Page>
   );
