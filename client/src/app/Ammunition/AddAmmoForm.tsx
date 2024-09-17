@@ -53,8 +53,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
       <Modal
         variant={ModalVariant.small}
         isOpen={isModalOpen}
-        onClose={handleModalToggle}
-      >
+        onClose={handleModalToggle}>
         <ModalHeader
           title="Add Ammunition"
           description="Enter information below."
@@ -64,8 +63,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
             <FormGroup
               label="Manufacturer"
               isRequired
-              fieldId="modal-with-form-form-manufacturer"
-            >
+              fieldId="modal-with-form-form-manufacturer">
               <TextInput
                 isRequired
                 type="text"
@@ -79,8 +77,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
             <FormGroup
               label="Brand"
               isRequired
-              fieldId="modal-with-form-form-brand"
-            >
+              fieldId="modal-with-form-form-brand">
               <TextInput
                 isRequired
                 type="text"
@@ -94,8 +91,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
             <FormGroup
               label="Caliber"
               isRequired
-              fieldId="modal-with-form-form-caliber"
-            >
+              fieldId="modal-with-form-form-caliber">
               <TextInput
                 isRequired
                 type="text"
@@ -109,8 +105,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
             <FormGroup
               label="Purchase Date"
               isRequired
-              fieldId="modal-with-form-form-purchase-date"
-            >
+              fieldId="modal-with-form-form-purchase-date">
               <TextInput
                 isRequired
                 type="date"
@@ -124,8 +119,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
             <FormGroup
               label="Lot Number"
               isRequired
-              fieldId="modal-with-form-form-lot-number"
-            >
+              fieldId="modal-with-form-form-lot-number">
               <TextInput
                 isRequired
                 type="text"
@@ -139,8 +133,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
             <FormGroup
               label="Quantity"
               isRequired
-              fieldId="modal-with-form-form-qty"
-            >
+              fieldId="modal-with-form-form-qty">
               <TextInput
                 isRequired
                 type="number"
@@ -157,8 +150,7 @@ const AddAmmoForm: React.FunctionComponent = () => {
             key="create"
             variant="primary"
             type="submit"
-            form="modal-with-form-form"
-          >
+            form="modal-with-form-form">
             Add
           </Button>
           <Button key="cancel" variant="link" onClick={handleModalToggle}>

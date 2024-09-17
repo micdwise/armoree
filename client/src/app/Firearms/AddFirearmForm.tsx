@@ -49,8 +49,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
       <Modal
         variant={ModalVariant.small}
         isOpen={isModalOpen}
-        onClose={handleModalToggle}
-      >
+        onClose={handleModalToggle}>
         <ModalHeader
           title="Add Firearm"
           description="Enter information below."
@@ -60,8 +59,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Manufacturer"
               isRequired
-              fieldId="modal-with-form-form-manufacturer"
-            >
+              fieldId="modal-with-form-form-manufacturer">
               <TextInput
                 isRequired
                 type="text"
@@ -75,8 +73,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Model"
               isRequired
-              fieldId="modal-with-form-form-model"
-            >
+              fieldId="modal-with-form-form-model">
               <TextInput
                 isRequired
                 type="text"
@@ -90,8 +87,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Caliber"
               isRequired
-              fieldId="modal-with-form-form-caliber"
-            >
+              fieldId="modal-with-form-form-caliber">
               <TextInput
                 isRequired
                 type="text"
@@ -105,8 +101,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Purchase Date"
               isRequired
-              fieldId="modal-with-form-form-purchase-date"
-            >
+              fieldId="modal-with-form-form-purchase-date">
               <TextInput
                 isRequired
                 type="date"
@@ -120,8 +115,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Serial Number"
               isRequired
-              fieldId="modal-with-form-form-serial-number"
-            >
+              fieldId="modal-with-form-form-serial-number">
               <TextInput
                 isRequired
                 type="text"
@@ -138,8 +132,7 @@ const AddFirearmForm: React.FunctionComponent = () => {
             key="create"
             variant="primary"
             type="submit"
-            form="modal-with-form-form"
-          >
+            form="modal-with-form-form">
             Confirm
           </Button>
           <Button key="cancel" variant="link" onClick={handleModalToggle}>

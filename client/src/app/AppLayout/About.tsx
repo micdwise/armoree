@@ -30,8 +30,7 @@ const AboutModalBasic: React.FunctionComponent = () => {
         brandImageSrc={brandImg}
         brandImageAlt="Patternfly Logo"
         backgroundImageSrc="/assets/images/pf-background.svg"
-        productName="Armoree"
-      >
+        productName="Armoree">
         <Content>
           <dl>
             <dt>CFME version</dt>

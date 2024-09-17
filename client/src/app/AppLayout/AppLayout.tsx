@@ -36,8 +36,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         <ToolbarGroup
           variant="action-group-plain"
           align={{ default: "alignEnd" }}
-          gap={{ default: "gapNone", md: "gapMd" }}
-        >
+          gap={{ default: "gapNone", md: "gapMd" }}>
           <ToolbarItem>
             <Button
               aria-label="Notifications"
@@ -47,8 +46,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
           </ToolbarItem>
           <ToolbarGroup
             variant="action-group-plain"
-            visibility={{ default: "hidden", lg: "visible" }}
-          >
+            visibility={{ default: "hidden", lg: "visible" }}>
             <ToolbarItem>
               <Button
                 aria-label="Settings"
@@ -88,8 +86,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     <NavItem
       key={"${route.label}-${index}"}
       id={"${route.label}-${index}"}
-      isActive={route.path === location.pathname}
-    >
+      isActive={route.path === location.pathname}>
       <NavLink exact={route.exact} to={route.path}>
         {route.label}
       </NavLink>
@@ -101,8 +98,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       key={`${group.label}-${groupIndex}`}
       id={`${group.label}-${groupIndex}`}
       title={group.label}
-      isActive={group.routes.some((route) => route.path === location.pathname)}
-    >
+      isActive={group.routes.some((route) => route.path === location.pathname)}>
       {group.routes.map(
         (route, idx) => route.label && renderNavItem(route, idx)
       )}
@@ -134,8 +130,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     <Page
       mainContainerId={pageId}
       masthead={Header}
-      sidebar={sidebarOpen && Sidebar}
-    >
+      sidebar={sidebarOpen && Sidebar}>
       {children}
     </Page>
   );
