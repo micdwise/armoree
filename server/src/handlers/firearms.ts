@@ -22,9 +22,9 @@ function createFirearms(req: Request, res: Response, next: any) {
       req.body.serial_number,
     ],
     (error: any, results: any) => {
-      //      if (error) {
-      //          throw error
-      //        }
+      if (error) {
+        throw error;
+      }
       res.status(201).send("Successfuly added a Firearm!");
     }
   );
