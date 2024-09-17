@@ -26,7 +26,7 @@ const handleSubmitFirearm = (event: any) => {
   console.log("Fired firearm POST");
 };
 
-const getFirearms = () => {
+const GetFirearms = () => {
   const [data, setData] = useState<Repository[]>([]);
 
   const fetchFirearmData = () => {
@@ -47,4 +47,4 @@ const getFirearms = () => {
   return { data };
 };
 
-export { getFirearms, handleSubmitFirearm };
+export { GetFirearms, handleSubmitFirearm };

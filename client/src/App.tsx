@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "@app/logo.svg";
 import "@app/App.css";
 
 import { Brand } from "@patternfly/react-core";

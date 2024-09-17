@@ -14,11 +14,11 @@ import { NotFound } from "@app/NotFound/NotFound";
 let routeFocusTimer: number;
 
 export interface IAppRoute {
-  label?: string;
+  label: string;
   component:
     | React.ComponentType<RouteComponentProps<any>>
     | React.ComponentType<any>;
-  exact?: boolean;
+  exact: boolean;
   path: string;
   title: string;
   routes?: undefined;
@@ -102,8 +102,9 @@ const flattenedRoutes: IAppRoute[] = routes.reduce(
 
 const AppRoutes = (): React.ReactElement => (
   <Switch>
-    {flattenedRoutes.map(({ path, exact, component, title }, idx) => (
+    {flattenedRoutes.map(({ label, path, exact, component, title }, idx) => (
       <RouteWithTitleUpdates
+        label={label}
         path={path}
         exact={exact}
         component={component}
