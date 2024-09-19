@@ -12,6 +12,7 @@ export interface Repository {
 
 const handleSubmitAmmo = (event: any) => {
   event.preventDefault();
+
   const data = new FormData(event.target);
   const newAmmunition = Object.fromEntries(data.entries());
 
@@ -25,11 +26,14 @@ const handleSubmitAmmo = (event: any) => {
     body: JSON.stringify(newAmmunition),
   })
     .then((response) => {
-      console.log(response);
+      if (response.ok) {
+        console.log("It works");
+      }
     })
     .catch((error) => {
       console.log(error);
     });
+
   console.log("Fired ammuntion postf");
 };
 
