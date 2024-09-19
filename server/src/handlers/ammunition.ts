@@ -27,7 +27,7 @@ function createAmmunition(req: Request, res: Response, next: any) {
       if (error) {
         throw error;
       }
-      res.status(201).send("Successfuly added ammuntion!");
+      res.sendStatus(200);
     }
   );
 }

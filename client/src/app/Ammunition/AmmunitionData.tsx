@@ -23,13 +23,13 @@ const handleSubmitAmmo = (event: any) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(newAmmunition),
-  }).then(response => {
-    return response.json();
-  }).then(jsonResponse => {
-    console.log(jsonResponse);
-  }).catch (error => {
-    console.log(error)
   })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   console.log("Fired ammuntion postf");
 };
 
