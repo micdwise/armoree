@@ -1,6 +1,13 @@
 # Armoree
 
-Used to keep an inventory of your firearm collection and ammunition.  It can be extended to manage other items in the future.
+Used to keep an inventory of your firearm collection and ammunition.  It can be extended to manage other items in the future. The current plans are to be able to display data from the database and add items and call it v0.1.
+
+Thoughts are:
+
+* run both the client and server in OCI containers
+* add the ability to set variables such as database host, database and user name at first run
+* capture more details about ammo and firearms
+* whatever else comes to mind
 
 ## Architecture
 
@@ -13,6 +20,8 @@ Postgresql can be installed locally or on a separate server.  To setup the data 
 ```psql
 psql -h [database host] -d postgres < [project directory]/server/database.sql
 ```
+
+Copy the `.env.sample` to `.env` and replace the placeholders with you database information
 
 ### API Server
 

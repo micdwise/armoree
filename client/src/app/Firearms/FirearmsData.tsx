@@ -1,36 +1,53 @@
 import { useEffect, useState } from "react";
 
 export interface Repository {
-  id: BigInt
+  id: BigInt;
   manufacturer: string;
   model: string;
-  prchsdate: string;
+  purchase_date: string;
   caliber: string;
-  serial_number: string
-};
+  serial_number: string;
+}
 
-const useFirearms = () => {
+function AddFirearms(newFirearm) {
+  fetch("http://localhost:3000/api/v1/firearms", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newFirearm),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("It works");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  console.log("Fired firearm POST");
+}
+
+const GetFirearms = () => {
   const [data, setData] = useState<Repository[]>([]);
-  
-  const fetchFirearmsData =  () => {
-    fetch('http://localhost:3000/api/v1/firearms')
-      .then(res => {
+
+  const fetchFirearmData = () => {
+    fetch("http://localhost:3000/api/v1/firearms")
+      .then((res) => {
         return res.json();
-      }) 
-      .then(data => {
-          console.log(data);
-          setData(data);
+      })
+      .then((data) => {
+        console.log(data);
+        setData(data);
       });
-    };
+  };
 
   useEffect(() => {
-    fetchFirearmsData()
+    fetchFirearmData();
   }, []);
 
   return { data };
 };
 
-const addFirearms = () => {
-  
-}
-export { useFirearms };
+export { GetFirearms, AddFirearms };

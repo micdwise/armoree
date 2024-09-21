@@ -1,26 +1,37 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent } from "react";
 import {
-	Button,
-	Form,
-	FormGroup,
-	TextInput,
+  Button,
+  Form,
+  FormGroup,
+  TextInput,
   Modal,
   ModalBody,
   ModalHeader,
   ModalFooter,
-  ModalVariant
-} from '@patternfly/react-core';
+  ModalVariant,
+} from "@patternfly/react-core";
+import { AddFirearms } from "./FirearmsData";
 
 const AddFirearmForm: React.FunctionComponent = () => {
-  const [isModalOpen, setModalOpen] = React.useState(false);
-  const [manufacturerValue, setManufacturerValue] = React.useState('');
-  const [modelValue, setModelValue] = React.useState('');
-  const [caliberValue, setCaliberValue] = React.useState('');
-  const [purchaseDateValue, setPurchaseDateValue] = React.useState('');
-  const [serialNumberValue, setSerialNumberValue] = React.useState('');
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [manufacturerValue, setManufacturerValue] = React.useState("");
+  const [modelValue, setModelValue] = React.useState("");
+  const [caliberValue, setCaliberValue] = React.useState("");
+  const [purchaseDateValue, setPurchaseDateValue] = React.useState("");
+  const [serialNumberValue, setSerialNumberValue] = React.useState("");
+
+  const handleSubmitFirearm = (event: any) => {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const newFirearm = Object.fromEntries(data.entries());
+
+    AddFirearms(newFirearm);
+
+    setIsModalOpen(!isModalOpen);
+  };
 
   const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
-    setModalOpen(!isModalOpen);
+    setIsModalOpen(!isModalOpen);
   };
 
   const handleNameInputChange = (_event: FormEvent, value: string) => {
@@ -48,24 +59,22 @@ const AddFirearmForm: React.FunctionComponent = () => {
       <Modal
         variant={ModalVariant.small}
         isOpen={isModalOpen}
-        onClose={handleModalToggle}
-      >
+        onClose={handleModalToggle}>
         <ModalHeader
           title="Add Firearm"
           description="Enter information below."
         />
         <ModalBody>
-          <Form id="modal-with-form-form">
+          <Form id="modal-with-form-form" onSubmit={handleSubmitFirearm}>
             <FormGroup
               label="Manufacturer"
               isRequired
-              fieldId="modal-with-form-form-manufacturer"
-            >
+              fieldId="modal-with-form-form-manufacturer">
               <TextInput
                 isRequired
                 type="text"
                 id="modal-with-form-form-manufacturer"
-                name="modal-with-form-form-manufacturer"
+                name="manufacturer"
                 value={manufacturerValue}
                 onChange={handleNameInputChange}
               />
@@ -74,13 +83,12 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Model"
               isRequired
-              fieldId="modal-with-form-form-model"
-            >
+              fieldId="modal-with-form-form-model">
               <TextInput
                 isRequired
                 type="text"
-                id="modal-with-form-form-brand"
-                name="modal-with-form-form-brand"
+                id="modal-with-form-form-model"
+                name="model"
                 value={modelValue}
                 onChange={handleModelInputChange}
               />
@@ -89,13 +97,12 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Caliber"
               isRequired
-              fieldId="modal-with-form-form-caliber"
-            >
+              fieldId="modal-with-form-form-caliber">
               <TextInput
                 isRequired
                 type="text"
                 id="modal-with-form-form-caliber"
-                name="modal-with-form-form-caliber"
+                name="caliber"
                 value={caliberValue}
                 onChange={handleCaliberInputChange}
               />
@@ -104,13 +111,12 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Purchase Date"
               isRequired
-              fieldId="modal-with-form-form-purchase-date"
-            >
+              fieldId="modal-with-form-form-purchase-date">
               <TextInput
                 isRequired
                 type="date"
                 id="modal-with-form-form-purchase-date"
-                name="modal-with-form-form-purchase-date"
+                name="purchase_date"
                 value={purchaseDateValue}
                 onChange={handlePurchaseDateInputChange}
               />
@@ -119,13 +125,12 @@ const AddFirearmForm: React.FunctionComponent = () => {
             <FormGroup
               label="Serial Number"
               isRequired
-              fieldId="modal-with-form-form-serial-number"
-            >
+              fieldId="modal-with-form-form-serial-number">
               <TextInput
                 isRequired
                 type="text"
-                id="modal-with-form-form-lot-number"
-                name="modal-with-form-form-lot-number"
+                id="modal-with-form-form-serial-number"
+                name="serial_number"
                 value={serialNumberValue}
                 onChange={handleSerialNumberInputChange}
               />
@@ -133,7 +138,11 @@ const AddFirearmForm: React.FunctionComponent = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-        <Button key="create" variant="primary" form="modal-with-form-form" onClick={handleModalToggle}>
+          <Button
+            key="create"
+            variant="primary"
+            type="submit"
+            form="modal-with-form-form">
             Confirm
           </Button>
           <Button key="cancel" variant="link" onClick={handleModalToggle}>
@@ -145,4 +154,4 @@ const AddFirearmForm: React.FunctionComponent = () => {
   );
 };
 
-export { AddFirearmForm }
+export { AddFirearmForm };

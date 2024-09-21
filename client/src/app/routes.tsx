@@ -18,7 +18,7 @@ export interface IAppRoute {
   component:
     | React.ComponentType<RouteComponentProps<any>>
     | React.ComponentType<any>;
-  exact?: boolean;
+  exact: boolean;
   path: string;
   title: string;
   routes?: undefined;
@@ -47,7 +47,7 @@ const routes: AppRouteConfig[] = [
     path: "/Firearms",
     title: "Firearms",
   },
-  
+
   {
     component: AmmunitionPage,
     exact: true,
@@ -55,8 +55,6 @@ const routes: AppRouteConfig[] = [
     path: "/Ammunition",
     title: "Ammunition",
   },
-
-  
 ];
 
 const useA11yRouteChange = () => {
@@ -99,13 +97,14 @@ const flattenedRoutes: IAppRoute[] = routes.reduce(
     ...flattened,
     ...(route.routes ? route.routes : [route]),
   ],
-  [] as IAppRoute[],
+  [] as IAppRoute[]
 );
 
 const AppRoutes = (): React.ReactElement => (
   <Switch>
-    {flattenedRoutes.map(({ path, exact, component, title }, idx) => (
+    {flattenedRoutes.map(({ label, path, exact, component, title }, idx) => (
       <RouteWithTitleUpdates
+        label={label}
         path={path}
         exact={exact}
         component={component}

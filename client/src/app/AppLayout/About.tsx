@@ -1,28 +1,40 @@
-import React from 'react';
-import { AboutModal, Button, Content } from '@patternfly/react-core';
-import brandImg from '@assets/images/PF-IconLogo.svg';
-import { ButtonVariant } from '@patternfly/react-core';
-import { QuestionCircleIcon } from '@patternfly/react-icons';
+import React from "react";
+import {
+  AboutModal,
+  Button,
+  ButtonVariant,
+  Content,
+} from "@patternfly/react-core";
+import brandImg from "@assets/images/PF-IconLogo.svg";
+import { QuestionCircleIcon } from "@patternfly/react-icons";
 
 const AboutModalBasic: React.FunctionComponent = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  const toggleModal = (_event: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent) => {
+  const toggleModal = (
+    _event: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent
+  ) => {
     setIsModalOpen(!isModalOpen);
   };
 
   return (
     <React.Fragment>
-      <Button aria-label="Help" variant={ButtonVariant.plain} icon={<QuestionCircleIcon />} onClick={toggleModal}/>
+      <Button
+        aria-label="Help"
+        variant={ButtonVariant.plain}
+        icon={<QuestionCircleIcon />}
+        onClick={toggleModal}
+      />
       <AboutModal
         isOpen={isModalOpen}
-        onClose={(e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent) => toggleModal(e)}
+        onClose={(
+          e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent
+        ) => toggleModal(e)}
         trademark="Trademark and copyright information here"
         brandImageSrc={brandImg}
         brandImageAlt="Patternfly Logo"
         backgroundImageSrc="/assets/images/pf-background.svg"
-        productName="Armoree"
-      >
+        productName="Armoree">
         <Content>
           <dl>
             <dt>CFME version</dt>
@@ -46,4 +58,4 @@ const AboutModalBasic: React.FunctionComponent = () => {
   );
 };
 
-export { AboutModalBasic}
+export { AboutModalBasic };
