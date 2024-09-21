@@ -14,7 +14,7 @@ import { NotFound } from "@app/NotFound/NotFound";
 let routeFocusTimer: number;
 
 export interface IAppRoute {
-  label: string;
+  label?: string;
   component:
     | React.ComponentType<RouteComponentProps<any>>
     | React.ComponentType<any>;
