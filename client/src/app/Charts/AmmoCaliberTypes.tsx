@@ -5,52 +5,46 @@ import {
   CardBody,
   CardFooter,
   Title,
-  Gallery,
 } from "@patternfly/react-core";
-import {
-  ChartDonutThreshold,
-  ChartDonutUtilization,
-} from "@patternfly/react-charts";
+import { ChartDonut, ChartThemeColor } from "@patternfly/react-charts";
 
 const AmmoCaliberTypeCard: React.FunctionComponent = () => (
   <Card id="utilization-card-4-card" component="div">
     <CardTitle>
       <Title headingLevel="h4" size="lg">
-        CPU Usage
+        Ammunition Calibers
       </Title>
     </CardTitle>
     <CardBody>
-      <ChartDonutThreshold
-        ariaDesc="Mock storage capacity"
-        ariaTitle="Mock donut utilization chart"
-        constrainToVisibleArea={true}
+      <ChartDonut
+        ariaDesc="Ammo Caliber qtys"
+        ariaTitle="Donut chart example"
+        constrainToVisibleArea
         data={[
-          { x: "Warning at 60%", y: 60 },
-          { x: "Danger at 90%", y: 90 },
+          { x: "9mm", y: 35 },
+          { x: "5.56", y: 55 },
+          { x: ".22", y: 10 },
         ]}
-        height={200}
-        labels={({ datum }) => (datum.x ? datum.x : null)}
+        labels={({ datum }) => `${datum.x}: ${datum.y}%`}
+        legendData={[
+          { name: "9mm: 35" },
+          { name: "5.56: 55" },
+          { name: ".22: 10" },
+        ]}
+        legendOrientation="vertical"
+        legendPosition="right"
+        name="chart3"
         padding={{
-          bottom: 0,
-          left: 10,
-          right: 150,
-          top: 0,
+          bottom: 20,
+          left: 20,
+          right: 140, // Adjusted to accommodate legend
+          top: 20,
         }}
-        width={350}>
-        <ChartDonutUtilization
-          data={{ x: "Storage capacity", y: 80 }}
-          labels={({ datum }) => (datum.x ? `${datum.x}: ${datum.y}%` : null)}
-          legendData={[
-            { name: `Capacity: 80%` },
-            { name: "Warning at 60%" },
-            { name: "Danger at 90%" },
-          ]}
-          legendOrientation="vertical"
-          title="80%"
-          subTitle="of 100 GBps"
-          thresholds={[{ value: 60 }, { value: 90 }]}
-        />
-      </ChartDonutThreshold>{" "}
+        subTitle="Rounds"
+        title="100"
+        themeColor={ChartThemeColor.multiOrdered}
+        width={350}
+      />
     </CardBody>
     <CardFooter>
       <a href="#">See details</a>
