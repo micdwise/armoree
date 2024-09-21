@@ -27,6 +27,6 @@
     },
   },
   "include": [
-    "src"
-, "client/webpack.dev.js"  ]
+    "src",
+    "client/webpack.dev.js"  ]
 }
