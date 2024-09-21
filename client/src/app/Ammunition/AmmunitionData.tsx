@@ -10,14 +10,7 @@ export interface Repository {
   qty: string;
 }
 
-const handleSubmitAmmo = (event: any) => {
-  event.preventDefault();
-
-  const data = new FormData(event.target);
-  const newAmmunition = Object.fromEntries(data.entries());
-
-  console.log(newAmmunition);
-
+function AddAmmunition(newAmmunition) {
   fetch("http://localhost:3000/api/v1/ammunition", {
     method: "POST",
     headers: {
@@ -33,9 +26,7 @@ const handleSubmitAmmo = (event: any) => {
     .catch((error) => {
       console.log(error);
     });
-
-  console.log("Fired ammuntion postf");
-};
+}
 
 const GetAmmunition = () => {
   const [data, setData] = useState<Repository[]>([]);
@@ -58,4 +49,4 @@ const GetAmmunition = () => {
   return { data };
 };
 
-export { GetAmmunition, handleSubmitAmmo };
+export { GetAmmunition, AddAmmunition };

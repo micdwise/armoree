@@ -9,22 +9,25 @@ export interface Repository {
   serial_number: string;
 }
 
-const handleSubmitFirearm = (event: any) => {
-  event.preventDefault();
-  const data = new FormData(event.target);
-  const newFirearm = Object.fromEntries(data.entries());
-
-  console.log(newFirearm);
-
+function AddFirearms(newFirearm) {
   fetch("http://localhost:3000/api/v1/firearms", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(newFirearm),
-  });
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("It works");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
   console.log("Fired firearm POST");
-};
+}
 
 const GetFirearms = () => {
   const [data, setData] = useState<Repository[]>([]);
@@ -47,4 +50,4 @@ const GetFirearms = () => {
   return { data };
 };
 
-export { GetFirearms, handleSubmitFirearm };
+export { GetFirearms, AddFirearms };

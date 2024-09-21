@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalVariant,
 } from "@patternfly/react-core";
-import { handleSubmitAmmo } from "./AmmunitionData";
+import { AddAmmunition } from "./AmmunitionData";
 
 const AddAmmoForm: React.FunctionComponent = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -20,6 +20,17 @@ const AddAmmoForm: React.FunctionComponent = () => {
   const [purchaseDateValue, setPurchaseDateValue] = React.useState("");
   const [lotNumberValue, setLotNumberValue] = React.useState("");
   const [qtyValue, setQtyValue] = React.useState("");
+
+  const handleSubmitAmmo = (event: any) => {
+    event.preventDefault();
+  
+    const data = new FormData(event.target);
+    const newAmmunition = Object.fromEntries(data.entries());
+  
+    AddAmmunition(newAmmunition);
+    
+    setIsModalOpen(!isModalOpen);
+  };
 
   const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
     setIsModalOpen(!isModalOpen);

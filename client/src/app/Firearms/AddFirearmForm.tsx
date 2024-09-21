@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalVariant,
 } from "@patternfly/react-core";
-import { handleSubmitFirearm } from "./FirearmsData";
+import { AddFirearms } from "./FirearmsData";
 
 const AddFirearmForm: React.FunctionComponent = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -19,6 +19,16 @@ const AddFirearmForm: React.FunctionComponent = () => {
   const [caliberValue, setCaliberValue] = React.useState("");
   const [purchaseDateValue, setPurchaseDateValue] = React.useState("");
   const [serialNumberValue, setSerialNumberValue] = React.useState("");
+
+  const handleSubmitFirearm = (event: any) => {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const newFirearm = Object.fromEntries(data.entries());
+
+    AddFirearms(newFirearm);
+
+    setIsModalOpen(!isModalOpen);
+  };
 
   const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
     setIsModalOpen(!isModalOpen);
