@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  Route,
-  useLocation,
-  RouteComponentProps,
-  Switch,
-} from "react-router-dom";
+import { Route, useLocation, Routes } from "react-router-dom";
 import { AmmunitionPage } from "@app/Ammunition/AmmunitionPage";
 import { FirearmsPage } from "@app/Firearms/FirearmsPage";
 import { Dashboard } from "@app/Dashboard/Dashboard";
@@ -15,9 +10,7 @@ let routeFocusTimer: number;
 
 export interface IAppRoute {
   label?: string;
-  component:
-    | React.ComponentType<RouteComponentProps<any>>
-    | React.ComponentType<any>;
+  Component: React.ComponentType<any>;
   exact: boolean;
   path: string;
   title: string;
@@ -33,7 +26,7 @@ export type AppRouteConfig = IAppRoute | IAppRouteGroup;
 
 const routes: AppRouteConfig[] = [
   {
-    component: Dashboard,
+    Component: Dashboard,
     exact: true,
     label: "Dashboard",
     path: "/Dashboard",
@@ -41,7 +34,7 @@ const routes: AppRouteConfig[] = [
   },
 
   {
-    component: FirearmsPage,
+    Component: FirearmsPage,
     exact: true,
     label: "Firearms",
     path: "/Firearms",
@@ -49,7 +42,7 @@ const routes: AppRouteConfig[] = [
   },
 
   {
-    component: AmmunitionPage,
+    Component: AmmunitionPage,
     exact: true,
     label: "Ammunition",
     path: "/Ammunition",
@@ -72,24 +65,24 @@ const useA11yRouteChange = () => {
   }, [pathname]);
 };
 
-const RouteWithTitleUpdates = ({
-  component: Component,
-  title,
-  ...rest
-}: IAppRoute) => {
-  useA11yRouteChange();
-  useDocumentTitle(title);
-
-  function routeWithTitle(routeProps: RouteComponentProps) {
-    return <Component {...rest} {...routeProps} />;
-  }
-
-  return <Route render={routeWithTitle} {...rest} />;
-};
+//const RouteWithTitleUpdates = ({
+//  Component: RouteComponent,
+//  title,
+//  ...rest
+//}: IAppRoute) => {
+//  useA11yRouteChange();
+//  useDocumentTitle(title);
+//
+//  function routeWithTitle() {
+//    return <RouteComponent {...rest} />;
+//  }
+//
+//  return <Route Component={routeWithTitle} {...rest} />;
+//};
 
 const PageNotFound = ({ title }: { title: string }) => {
   useDocumentTitle(title);
-  return <Route component={NotFound} />;
+  return <Route Component={NotFound} />;
 };
 
 const flattenedRoutes: IAppRoute[] = routes.reduce(
@@ -101,19 +94,20 @@ const flattenedRoutes: IAppRoute[] = routes.reduce(
 );
 
 const AppRoutes = (): React.ReactElement => (
-  <Switch>
-    {flattenedRoutes.map(({ label, path, exact, component, title }, idx) => (
-      <RouteWithTitleUpdates
+  <Routes>
+    <Route path="/" Component={Dashboard} />
+    {flattenedRoutes.map(({ label, path, exact, Component, title }, idx) => (
+      <Route
         label={label}
         path={path}
         exact={exact}
-        component={component}
+        Component={Component}
         key={idx}
         title={title}
       />
     ))}
-    <PageNotFound title="404 Page Not Found" />
-  </Switch>
+    {/*<PageNotFound title="404 Page Not Found" /> */}
+  </Routes>
 );
 
 export { AppRoutes, routes };
