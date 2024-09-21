@@ -1,0 +1,25 @@
+# Base image for container
+FROM node:alpine3.20 as base
+
+# Environment variables used
+ENV DATABASE_SERVER= DATABASE_USER= DATABASE_USER_PASSWORD= DATABASE= PORT=
+
+# Create app directory
+WORKDIR /usr/app
+
+# Copy dependency definitions
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+COPY . .
+FROM base as builder
+WORKDIR .
+RUN npm build
+
+# Expose port
+EXPOSE ${PORT}
+
+# Run the app
+ENTRYPOINT [ "node", "./server.js" ]
