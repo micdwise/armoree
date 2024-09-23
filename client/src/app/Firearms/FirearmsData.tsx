@@ -10,13 +10,16 @@ export interface Repository {
 }
 
 function AddFirearms(newFirearm) {
-  fetch("http://localhost:3000/api/v1/firearms", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newFirearm),
-  })
+  fetch(
+    `http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/firearms`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newFirearm),
+    }
+  )
     .then((response) => {
       if (response.ok) {
         console.log("It works");
@@ -33,7 +36,9 @@ const GetFirearms = () => {
   const [data, setData] = useState<Repository[]>([]);
 
   const fetchFirearmData = () => {
-    fetch("http://localhost:3000/api/v1/firearms")
+    fetch(
+      `http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/firearms`
+    )
       .then((res) => {
         return res.json();
       })
