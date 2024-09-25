@@ -136,7 +136,7 @@ module.exports = (env) => {
         template: path.resolve(__dirname, "src", "index.html"),
       }),
       new Dotenv({
-        path: "./src/.env",
+        path: ".env",
         systemvars: true,
         silent: true,
       }),
