@@ -140,9 +140,9 @@ module.exports = (env) => {
         systemvars: true,
         silent: true,
       }),
-      new CopyPlugin({
-        patterns: [{ from: "./src/favicon.png", to: "images" }],
-      }),
+      //      new CopyPlugin({
+      //        patterns: [{ from: "./src/favicon.png", to: "images" }],
+      //      }),
     ],
     resolve: {
       extensions: [".js", ".ts", ".tsx", ".jsx"],

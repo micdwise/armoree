@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
-import { GetFirearms, Repository } from "@app/Firearms/FirearmsData";
+import { GetFirearms, Firearm } from "@app/Firearms/FirearmsData";
 import { PageBody, PageSection, Toolbar } from "@patternfly/react-core";
 
 const FirearmsTable: React.FunctionComponent = () => {
@@ -29,7 +29,7 @@ const FirearmsTable: React.FunctionComponent = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {repositories.map((repo: Repository) => (
+            {repositories.map((repo: Firearm) => (
               <Tr key={repo.id}>
                 <Td dataLabel={columnNames.manufacturer}>
                   {repo.manufacturer}

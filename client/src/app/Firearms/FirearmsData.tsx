@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export interface Repository {
-  id: BigInt;
+export interface Firearm {
+  id: number;
   manufacturer: string;
   model: string;
   purchase_date: string;
@@ -33,7 +33,7 @@ function AddFirearms(newFirearm) {
 }
 
 const GetFirearms = () => {
-  const [data, setData] = useState<Repository[]>([]);
+  const [data, setData] = useState<Firearm[]>([]);
 
   const fetchFirearmData = () => {
     fetch(
