@@ -14,23 +14,23 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-COPY ./ .
+COPY . .
 
 RUN npm run build
 
 FROM node:alpine3.20 as production
 
-WORKDIR /app
+WORKDIR /buld
 
 COPY package*.json ./
 
 # Omit dev dependencies
 RUN npm ci --only=production --omit=dev
 
-COPY --from=build /app/dist ./dist
+COPY --from=build /build/dist ./dist
 
 # Expose port
 EXPOSE 9000
 
 # Run the app
-ENTRYPOINT [ "node", "/app/dist/server.js" ]
+ENTRYPOINT [ "npm", "run", "start" ]

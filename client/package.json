@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dr:surge": "node dr-surge.js",
+    "start": "sirv dist --cors --single --host --port 8080",
+    "build": "webpack --config webpack.prod.js && npm run dr:surge",
     "start:dev": "webpack serve --color --progress --config webpack.dev.js",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
     "format": "prettier --check --write ./src/**/*.{tsx,ts}",
+    "type-check": "tsc --noEmit",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
@@ -47,6 +49,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
+    "sirv-cli": "^2.0.2",
     "web-vitals": "^2.1.4"
   },
   "eslintConfig": {
