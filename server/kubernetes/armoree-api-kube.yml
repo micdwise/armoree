@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: armoree-api-pod
+  name: armoree-api-pod
+spec:
+  containers:
+    - env:
+        - name: DATABASE_PORT
+          value:
+        - name: PORT
+          value:
+        - name: DATABASE_SERVER
+          value:
+        - name: DATABASE_USER
+          value:
+        - name: DATABASE_USER_PASSWORD
+          value:
+        - name: DATABASE
+          value:
+      image:
+      name: armoree-api
+      ports:
+        - containerPort: 3000
+          hostPort: 3000

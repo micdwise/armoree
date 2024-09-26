@@ -1,7 +1,7 @@
-version: '3'
+version: "3"
 services:
   app:
-    command: npm run start
+    image:
     ports:
       - "3000:3000"
     environment:
@@ -9,4 +9,5 @@ services:
       DATABASE_USER:
       DATABASE_PASSWORD:
       DATABASE:
-      PORT:
+      DATABASE_PORT: 5432
+      PORT: 3000
