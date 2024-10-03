@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
 export interface Ammunition {
-  id: number;
-  manufacturer: string;
-  brand: string;
-  purchase_date: string;
-  caliber: string;
-  lot_number: string;
-  qty: string;
+  id?: number;
+  manufacturer?: string;
+  brand?: string;
+  purchase_date?: string;
+  caliber?: string;
+  lot_number?: string;
+  qty?: string;
 }
 
 function AddAmmunition(newAmmunition: Ammunition) {

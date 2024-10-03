@@ -9,16 +9,15 @@ import { NotFound } from "@app/NotFound/NotFound";
 let routeFocusTimer: number;
 
 export interface IAppRoute {
-  label?: string;
+  id?: string;
   Component: React.ComponentType<any>;
-  exact: boolean;
   path: string;
   title: string;
   routes?: undefined;
 }
 
 export interface IAppRouteGroup {
-  label: string;
+  id: string;
   routes: IAppRoute[];
 }
 
@@ -27,24 +26,21 @@ export type AppRouteConfig = IAppRoute | IAppRouteGroup;
 const routes: AppRouteConfig[] = [
   {
     Component: Dashboard,
-    exact: true,
-    label: "Dashboard",
+    id: "Dashboard",
     path: "/Dashboard",
     title: "Dashboard",
   },
 
   {
     Component: FirearmsPage,
-    exact: true,
-    label: "Firearms",
+    id: "Firearms",
     path: "/Firearms",
     title: "Firearms",
   },
 
   {
     Component: AmmunitionPage,
-    exact: true,
-    label: "Ammunition",
+    id: "Ammunition",
     path: "/Ammunition",
     title: "Ammunition",
   },
@@ -96,15 +92,8 @@ const flattenedRoutes: IAppRoute[] = routes.reduce(
 const AppRoutes = (): React.ReactElement => (
   <Routes>
     <Route path="/" Component={Dashboard} />
-    {flattenedRoutes.map(({ label, path, exact, Component, title }, idx) => (
-      <Route
-        label={label}
-        path={path}
-        exact={exact}
-        Component={Component}
-        key={idx}
-        title={title}
-      />
+    {flattenedRoutes.map(({ id, path, Component }, idx) => (
+      <Route id={id} path={path} Component={Component} key={idx} />
     ))}
     {/*<PageNotFound title="404 Page Not Found" /> */}
   </Routes>

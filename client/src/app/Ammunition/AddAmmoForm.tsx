@@ -23,12 +23,17 @@ const AddAmmoForm: React.FunctionComponent = () => {
 
   const handleSubmitAmmo = (event: any) => {
     event.preventDefault();
-  
+
     const data = new FormData(event.target);
+
+    console.log(data);
+
     const newAmmunition = Object.fromEntries(data.entries());
-  
+
+    console.log(newAmmunition);
+
     AddAmmunition(newAmmunition);
-    
+
     setIsModalOpen(!isModalOpen);
   };
 

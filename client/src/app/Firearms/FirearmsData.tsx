@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 export interface Firearm {
-  id: number;
-  manufacturer: string;
-  model: string;
-  purchase_date: string;
-  caliber: string;
-  serial_number: string;
+  id?: number;
+  manufacturer?: string;
+  model?: string;
+  purchase_date?: string;
+  caliber?: string;
+  serial_number?: string;
 }
 
 function AddFirearms(newFirearm: Firearm) {

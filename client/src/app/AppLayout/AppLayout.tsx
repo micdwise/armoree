@@ -87,21 +87,17 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       key={"${route.label}-${index}"}
       id={"${route.label}-${index}"}
       isActive={route.path === location.pathname}>
-      <NavLink exact={route.exact} to={route.path}>
-        {route.label}
-      </NavLink>
+      <NavLink to={route.path}>{route.id}</NavLink>
     </NavItem>
   );
 
   const renderNavGroup = (group: IAppRouteGroup, groupIndex: number) => (
     <NavExpandable
-      key={`${group.label}-${groupIndex}`}
-      id={`${group.label}-${groupIndex}`}
-      title={group.label}
+      key={`${group.id}-${groupIndex}`}
+      id={`${group.id}-${groupIndex}`}
+      title={group.id}
       isActive={group.routes.some((route) => route.path === location.pathname)}>
-      {group.routes.map(
-        (route, idx) => route.label && renderNavItem(route, idx)
-      )}
+      {group.routes.map((route, idx) => route.id && renderNavItem(route, idx))}
     </NavExpandable>
   );
 
@@ -110,7 +106,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       <NavList id="nav-list-simple">
         {routes.map(
           (route, idx) =>
-            route.label &&
+            route.id &&
             (!route.routes
               ? renderNavItem(route, idx)
               : renderNavGroup(route, idx))

@@ -2,12 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": ".",
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es2016",
+    "outDir": "./dist",
+    "listEmittedFiles": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,14 +17,12 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react-jsx",
     "paths": {
       "@app/*": ["src/app/*"],
       "@assets/*": ["node_modules/@patternfly/react-core/dist/styles/assets/*"]
-    },
+    }
   },
-  "include": [
-    "src",
-    "client/webpack.dev.js"  ]
+  "include": ["src/**/*", "client/webpack.dev.js"]
 }
