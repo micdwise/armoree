@@ -6,7 +6,7 @@ import {
   CardFooter,
   Title,
 } from "@patternfly/react-core";
-import { ChartDonut, ChartThemeColor } from "@patternfly/react-charts";
+import { ChartDonut, ChartThemeColor } from "@patternfly/react-charts/victory";
 
 const AmmoCaliberTypeCard: React.FunctionComponent = () => (
   <Card id="utilization-card-4-card" component="div">
