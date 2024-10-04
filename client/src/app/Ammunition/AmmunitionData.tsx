@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export interface Repository {
-  id: BigInt;
+export interface Ammunition {
+  id: number;
   manufacturer: string;
   brand: string;
   purchase_date: string;
@@ -11,13 +11,16 @@ export interface Repository {
 }
 
 function AddAmmunition(newAmmunition) {
-  fetch("http://localhost:3000/api/v1/ammunition", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newAmmunition),
-  })
+  fetch(
+    "http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/ammunition",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newAmmunition),
+    }
+  )
     .then((response) => {
       if (response.ok) {
         console.log("It works");
@@ -29,10 +32,12 @@ function AddAmmunition(newAmmunition) {
 }
 
 const GetAmmunition = () => {
-  const [data, setData] = useState<Repository[]>([]);
+  const [data, setData] = useState<Ammunition[]>([]);
 
   const fetchAmmoData = () => {
-    fetch("http://localhost:3000/api/v1/ammunition")
+    fetch(
+      "http://${process.env.API_URL}:@{process.env.API_PORT}/api/v1/ammunition"
+    )
       .then((res) => {
         return res.json();
       })
