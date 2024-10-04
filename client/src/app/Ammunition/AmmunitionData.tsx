@@ -12,7 +12,7 @@ export interface Ammunition {
 
 function AddAmmunition(newAmmunition) {
   fetch(
-    "http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/ammunition",
+    `http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/ammunition`,
     {
       method: "POST",
       headers: {
@@ -36,7 +36,7 @@ const GetAmmunition = () => {
 
   const fetchAmmoData = () => {
     fetch(
-      "http://${process.env.API_URL}:@{process.env.API_PORT}/api/v1/ammunition"
+      `http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/ammunition`
     )
       .then((res) => {
         return res.json();
