@@ -24,7 +24,7 @@ import {
   ChartStack,
   ChartBar,
   ChartTooltip,
-} from "@patternfly/react-charts";
+} from "@patternfly/react-charts/victory";
 import chart_color_yellow_100 from "@patternfly/react-tokens/dist/esm/chart_color_yellow_100";
 import chart_color_yellow_300 from "@patternfly/react-tokens/dist/esm/chart_color_yellow_300";
 import chart_color_orange_300 from "@patternfly/react-tokens/dist/esm/chart_color_orange_300";
