@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start:dev": "webpack serve --color --progress --config webpack.dev.js",
-    "dev:tsc": "set PORT=3000 && tsc --watch",
+    "dev:tsc": "set PORT=9000 && tsc --watch",
     "start": "react-scripts start",
     "build": "tsc --build",
     "test": "react-scripts test",

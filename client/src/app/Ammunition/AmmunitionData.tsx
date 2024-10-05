@@ -10,7 +10,7 @@ export interface Ammunition {
   qty: string;
 }
 
-function AddAmmunition(newAmmunition) {
+function AddAmmunition(newAmmunition: any) {
   fetch(
     `http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/ammunition`,
     {

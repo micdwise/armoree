@@ -5,7 +5,6 @@ import {
   ButtonVariant,
   Content,
 } from "@patternfly/react-core";
-import brandImg from "@assets/images/PF-IconLogo.svg";
 import { QuestionCircleIcon } from "@patternfly/react-icons";
 
 const AboutModalBasic: React.FunctionComponent = () => {
@@ -31,7 +30,7 @@ const AboutModalBasic: React.FunctionComponent = () => {
           e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent
         ) => toggleModal(e)}
         trademark="Trademark and copyright information here"
-        brandImageSrc={brandImg}
+        brandImageSrc={"../../../public/armoree.svg"}
         brandImageAlt="Patternfly Logo"
         backgroundImageSrc="/assets/images/pf-background.svg"
         productName="Armoree">

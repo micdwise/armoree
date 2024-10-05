@@ -87,9 +87,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       key={"${route.label}-${index}"}
       id={"${route.label}-${index}"}
       isActive={route.path === location.pathname}>
-      <NavLink exact={route.exact} to={route.path}>
-        {route.label}
-      </NavLink>
+      <NavLink to={route.path}>{route.label}</NavLink>
     </NavItem>
   );
 
