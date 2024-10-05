@@ -2,10 +2,12 @@
   "name": "react-app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start:dev": "webpack serve --color --progress --config webpack.dev.js",
+    "dev:tsc": "set PORT=3000 && tsc --watch",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "tsc --build",
     "test": "react-scripts test",
     "format": "prettier --check --write ./src/**/*.{tsx,ts}",
     "eject": "react-scripts eject"
