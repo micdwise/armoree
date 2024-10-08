@@ -20,14 +20,13 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false,
+    "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
       "@app/*": ["src/app/*"],
       "@assets/*": ["node_modules/@patternfly/react-core/dist/styles/assets/*"]
     },
   },
-  "include": [
-    "src",
-    "client/webpack.dev.js"  ]
+  "include": [ "src" ],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
