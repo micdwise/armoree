@@ -9,9 +9,9 @@ export interface Firearm {
   serial_number: string;
 }
 
-function AddFirearms(newFirearm) {
+function AddFirearms(newFirearm: any) {
   fetch(
-    `http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/firearms`,
+    `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/api/v1/firearms`,
     {
       method: "POST",
       headers: {
@@ -37,7 +37,7 @@ const GetFirearms = () => {
 
   const fetchFirearmData = () => {
     fetch(
-      `http://${process.env.API_URL}:${process.env.API_PORT}/api/v1/firearms`
+      `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/api/v1/firearms`
     )
       .then((res) => {
         return res.json();
