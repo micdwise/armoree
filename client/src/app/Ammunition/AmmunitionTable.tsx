@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
 import { GetAmmunition, Ammunition } from "@app/Ammunition/AmmunitionData";
 import { PageBody, PageSection, Toolbar } from "@patternfly/react-core";
