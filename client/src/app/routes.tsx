@@ -44,7 +44,7 @@ const routes: AppRouteConfig[] = [
   {
     Component: AmmunitionPage,
     exact: true,
-    label: "Ammunition",
+    label: "Ammunition Management",
     path: "/Ammunition",
     title: "Ammunition Management",
   },
