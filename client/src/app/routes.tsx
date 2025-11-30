@@ -44,23 +44,23 @@ const routes: AppRouteConfig[] = [
   {
     Component: AmmunitionPage,
     exact: true,
-    label: "Ammunition Management",
+    label: "Ammunition Stuff",
     path: "/Ammunition",
-    title: "Ammunition Management",
+    title: "Ammunition Stuff",
   },
 ];
 
 const useA11yRouteChange = () => {
   const { pathname } = useLocation();
   React.useEffect(() => {
-    routeFocusTimer = window.setTimeout(() => {
+    routeFocusTimer = globalThis.setTimeout(() => {
       const mainContainer = document.getElementById("primary-app-container");
       if (mainContainer) {
         mainContainer.focus();
       }
     }, 50);
     return () => {
-      window.clearTimeout(routeFocusTimer);
+      globalThis.clearTimeout(routeFocusTimer);
     };
   }, [pathname]);
 };
@@ -86,10 +86,7 @@ const PageNotFound = ({ title }: { title: string }) => {
 };
 
 const flattenedRoutes: IAppRoute[] = routes.reduce(
-  (flattened, route) => [
-    ...flattened,
-    ...(route.routes ? route.routes : [route]),
-  ],
+  (flattened, route) => [...flattened, ...(route.routes ?? [route])],
   [] as IAppRoute[]
 );
 
