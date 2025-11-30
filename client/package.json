@@ -21,7 +21,7 @@
     "rimraf": "6.0.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
-    "vite": "^5.4.8"
+    "vite": "^6.3.5"
   },
   "dependencies": {
     "@patternfly/react-charts": "8.4.0",
@@ -32,6 +32,8 @@
     "@t3-oss/env-core": "^0.11.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "victory": "^37.3.6",
+    "victory-chart": "^37.3.6",
     "zod": "^3.23.8",
     "victory": "37.3.6"
   },
