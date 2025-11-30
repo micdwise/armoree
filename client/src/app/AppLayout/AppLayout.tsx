@@ -22,6 +22,7 @@ import {
 import { IAppRoute, IAppRouteGroup, routes } from "@app/routes";
 import { BarsIcon, BellIcon, CogIcon } from "@patternfly/react-icons";
 import { AboutModalBasic } from "@app/AppLayout/About";
+import "@app/App.css"
 
 interface IAppLayout {
   children: React.ReactNode;

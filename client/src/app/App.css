@@ -10,6 +10,6 @@ body,
   --pf-v5-c-content--hr--BackgroundColor: var(--pf-v5-global--palette--gold-500); /* changes a <hr> color to --pf-v5-global--palette--gold-500 */
 }
 
-.pf-v5-c-sidebar {
+.sidebar {
   --pf-v6-c-sidebar-BackroundColor: green;
 }

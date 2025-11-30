@@ -10,9 +10,9 @@ import {
   ModalFooter,
   ModalVariant,
 } from "@patternfly/react-core";
-import { AddAmmunition } from "./AmmunitionData";
+import { AddAmmunition, Ammunition } from "./AmmunitionData";
 
-const AddAmmoForm: React.FunctionComponent = () => {
+const AddAmmoForm: React.FunctionComponent<Ammunition> = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [manufacturerValue, setManufacturerValue] = React.useState("");
   const [brandValue, setBrandValue] = React.useState("");
