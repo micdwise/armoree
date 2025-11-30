@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import * as React from "react";
 import {
   Button,
   Form,
@@ -34,20 +34,26 @@ const AddFirearmForm: React.FunctionComponent = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleNameInputChange = (_event: FormEvent, value: string) => {
+  const handleNameInputChange = (_event: React.FormEvent, value: string) => {
     setManufacturerValue(value);
   };
 
-  const handleModelInputChange = (_event: FormEvent, value: string) => {
+  const handleModelInputChange = (_event: React.FormEvent, value: string) => {
     setModelValue(value);
   };
-  const handleCaliberInputChange = (_event: FormEvent, value: string) => {
+  const handleCaliberInputChange = (_event: React.FormEvent, value: string) => {
     setCaliberValue(value);
   };
-  const handlePurchaseDateInputChange = (_event: FormEvent, value: string) => {
+  const handlePurchaseDateInputChange = (
+    _event: React.FormEvent,
+    value: string
+  ) => {
     setPurchaseDateValue(value);
   };
-  const handleSerialNumberInputChange = (_event: FormEvent, value: string) => {
+  const handleSerialNumberInputChange = (
+    _event: React.FormEvent,
+    value: string
+  ) => {
     setSerialNumberValue(value);
   };
 

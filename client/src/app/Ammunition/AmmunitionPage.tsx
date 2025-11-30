@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { AmmunitionTable } from "@app/Ammunition/AmmunitionTable";
 import { AddAmmoForm } from "./AddAmmoForm";
-import "@app/App.css"
+import "@app/App.css";
 
 const AmmunitionPage: React.FunctionComponent = () => (
   <PageSection hasBodyWrapper={false}>

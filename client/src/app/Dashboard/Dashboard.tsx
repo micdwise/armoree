@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-  PageSection,
-  Card,
-  CardTitle,
-  CardBody,
-  CardFooter,
-  Grid,
-  GridItem,
-  Button,
-} from "@patternfly/react-core";
+import { PageSection, Grid, GridItem } from "@patternfly/react-core";
 import { AmmoCaliberTypeCard } from "@app/Charts/AmmoCaliberTypes";
 import { CardUtilizationDemo3 } from "@app/Charts/utilizationCard";
 
