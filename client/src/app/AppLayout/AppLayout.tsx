@@ -111,8 +111,8 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
           (route, idx) =>
             route.label &&
             (!route.routes
-              ? renderNavItem(route, idx)
-              : renderNavGroup(route, idx))
+              ? renderNavItem(route as IAppRoute, idx)
+              : renderNavGroup(route as IAppRouteGroup, idx))
         )}
       </NavList>
     </Nav>
