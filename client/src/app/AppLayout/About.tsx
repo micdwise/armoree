@@ -31,7 +31,7 @@ const AboutModalBasic: React.FunctionComponent = () => {
         ) => toggleModal(e)}
         trademark="Trademark and copyright information here"
         brandImageSrc={"/ArmoreeLogo.png"}
-        brandImageAlt="Patternfly Logo"
+        brandImageAlt="/ArmoreeLogo.png"
         backgroundImageSrc="/ArmoreeLogo.png"
         productName="Armoree">
         <Content>
