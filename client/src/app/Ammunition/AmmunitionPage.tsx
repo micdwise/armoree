@@ -17,7 +17,7 @@ const AmmunitionPage: React.FunctionComponent = () => (
       <Flex>
         <FlexItem align={{ default: "alignRight" }}>
           <ActionGroup>
-            <AddAmmoForm />
+            <AddAmmoForm {...({} as any)} />
           </ActionGroup>
         </FlexItem>
       </Flex>
