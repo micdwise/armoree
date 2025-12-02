@@ -22,7 +22,7 @@ import {
 import { IAppRoute, IAppRouteGroup, routes } from "@app/routes";
 import { BarsIcon, BellIcon, CogIcon } from "@patternfly/react-icons";
 import { AboutModalBasic } from "@app/AppLayout/About";
-import "@app/App.css"
+import "@app/App.css";
 
 interface IAppLayout {
   children: React.ReactNode;
@@ -110,9 +110,9 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         {routes.map(
           (route, idx) =>
             route.label &&
-            (!route.routes
-              ? renderNavItem(route, idx)
-              : renderNavGroup(route, idx))
+            (route.routes
+              ? renderNavGroup(route as IAppRouteGroup, idx)
+              : renderNavItem(route as IAppRoute, idx))
         )}
       </NavList>
     </Nav>

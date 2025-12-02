@@ -1,4 +1,5 @@
-import React, { FormEvent } from "react";
+import * as React from "react";
+import { FormEvent } from "react";
 import {
   Button,
   Form,
@@ -23,12 +24,12 @@ const AddAmmoForm: React.FunctionComponent<Ammunition> = () => {
 
   const handleSubmitAmmo = (event: any) => {
     event.preventDefault();
-  
+
     const data = new FormData(event.target);
     const newAmmunition = Object.fromEntries(data.entries());
-  
+
     AddAmmunition(newAmmunition);
-    
+
     setIsModalOpen(!isModalOpen);
   };
 

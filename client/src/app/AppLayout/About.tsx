@@ -30,9 +30,9 @@ const AboutModalBasic: React.FunctionComponent = () => {
           e: React.MouseEvent<Element, MouseEvent> | KeyboardEvent | MouseEvent
         ) => toggleModal(e)}
         trademark="Trademark and copyright information here"
-        brandImageSrc={"../../../public/armoree.svg"}
-        brandImageAlt="Patternfly Logo"
-        backgroundImageSrc="/assets/images/pf-background.svg"
+        brandImageSrc={"/ArmoreeLogo.png"}
+        brandImageAlt="/ArmoreeLogo.png"
+        backgroundImageSrc="/ArmoreeLogo.png"
         productName="Armoree">
         <Content>
           <dl>

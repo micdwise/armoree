@@ -6,7 +6,7 @@ import { Dashboard } from "@app/Dashboard/Dashboard";
 import { useDocumentTitle } from "@app/utils/usedocumentTitle";
 import { NotFound } from "@app/NotFound/NotFound";
 
-let routeFocusTimer: number;
+let routeFocusTimer: ReturnType<typeof setTimeout>;
 
 export interface IAppRoute {
   label?: string;
@@ -14,7 +14,7 @@ export interface IAppRoute {
   exact: boolean;
   path: string;
   title: string;
-  routes?: undefined;
+  routes?: IAppRoute[];
 }
 
 export interface IAppRouteGroup {
@@ -65,43 +65,23 @@ const useA11yRouteChange = () => {
   }, [pathname]);
 };
 
-//const RouteWithTitleUpdates = ({
-//  Component: RouteComponent,
-//  title,
-//  ...rest
-//}: IAppRoute) => {
-//  useA11yRouteChange();
-//  useDocumentTitle(title);
-//
-//  function routeWithTitle() {
-//    return <RouteComponent {...rest} />;
-//  }
-//
-//  return <Route Component={routeWithTitle} {...rest} />;
-//};
-
 const PageNotFound = ({ title }: { title: string }) => {
   useDocumentTitle(title);
   return <Route Component={NotFound} />;
 };
 
-const flattenedRoutes: IAppRoute[] = routes.reduce(
-  (flattened, route) => [...flattened, ...(route.routes ?? [route])],
-  [] as IAppRoute[]
-);
+const flattenedRoutes: IAppRoute[] = routes.reduce((flattened, route) => {
+  if ("routes" in route && Array.isArray(route.routes)) {
+    return [...flattened, ...route.routes];
+  }
+  return [...flattened, route as IAppRoute];
+}, [] as IAppRoute[]);
 
 const AppRoutes = (): React.ReactElement => (
   <Routes>
     <Route path="/" Component={Dashboard} />
-    {flattenedRoutes.map(({ label, path, exact, Component, title }, idx) => (
-      <Route
-        label={label}
-        path={path}
-        exact={exact}
-        Component={Component}
-        key={idx}
-        title={title}
-      />
+    {flattenedRoutes.map(({ path, Component }) => (
+      <Route path={path} Component={Component} key={path} />
     ))}
     {/*<PageNotFound title="404 Page Not Found" /> */}
   </Routes>
