@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { api } from "@app/api/client";
 
 export interface Firearm {
   id: number;
@@ -10,20 +11,10 @@ export interface Firearm {
 }
 
 function AddFirearms(newFirearm: any) {
-  fetch(
-    `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/api/v1/firearms`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newFirearm),
-    }
-  )
-    .then((response) => {
-      if (response.ok) {
-        console.log("It works");
-      }
+  api
+    .post("/firearms", newFirearm)
+    .then(() => {
+      console.log("It works");
     })
     .catch((error) => {
       console.log(error);
@@ -34,17 +25,24 @@ function AddFirearms(newFirearm: any) {
 
 const GetFirearms = () => {
   const [data, setData] = useState<Firearm[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const fetchFirearmData = () => {
-    fetch(
-      `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/api/v1/firearms`
-    )
-      .then((res) => {
-        return res.json();
-      })
+    setIsLoading(true);
+    setIsError(false);
+    api
+      .get<Firearm[]>("/firearms")
       .then((data) => {
         console.log(data);
         setData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -52,7 +50,7 @@ const GetFirearms = () => {
     fetchFirearmData();
   }, []);
 
-  return { data };
+  return { data, isLoading, isError };
 };
 
 export { GetFirearms, AddFirearms };

@@ -1,10 +1,17 @@
 import * as React from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
 import { GetAmmunition, Ammunition } from "@app/Ammunition/AmmunitionData";
-import { PageBody, PageSection, Toolbar } from "@patternfly/react-core";
+import {
+  PageBody,
+  PageSection,
+  Toolbar,
+  Spinner,
+  Alert,
+  PageGroup,
+} from "@patternfly/react-core";
 
 const AmmunitionTable: React.FunctionComponent = () => {
-  const { data: repositories } = GetAmmunition(); // Fetch ammunition data
+  const { data: repositories, isLoading, isError } = GetAmmunition(); // Fetch ammunition data
 
   const columnNames = {
     manufacturer: "Manufacturer",
@@ -14,6 +21,26 @@ const AmmunitionTable: React.FunctionComponent = () => {
     lot_number: "Lot Number",
     qty: "Quantity",
   };
+
+  if (isLoading) {
+    return (
+      <PageSection>
+        <PageBody>
+          <Spinner aria-label="Loading Ammunition" />
+        </PageBody>
+      </PageSection>
+    );
+  }
+
+  if (isError) {
+    return (
+      <PageSection>
+        <PageBody>
+          <Alert variant="danger" title="Error loading ammunition" />
+        </PageBody>
+      </PageSection>
+    );
+  }
 
   return (
     <PageSection>

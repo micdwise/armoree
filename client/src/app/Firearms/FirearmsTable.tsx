@@ -1,10 +1,16 @@
 import * as React from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
 import { GetFirearms, Firearm } from "@app/Firearms/FirearmsData";
-import { PageBody, PageSection, Toolbar } from "@patternfly/react-core";
+import {
+  PageBody,
+  PageSection,
+  Spinner,
+  Toolbar,
+  Alert,
+} from "@patternfly/react-core";
 
 const FirearmsTable: React.FunctionComponent = () => {
-  const { data: repositories } = GetFirearms(); // Fetch ammunition data
+  const { data: repositories, isLoading, isError } = GetFirearms(); // Fetch ammunition data
 
   const columnNames = {
     manufacturer: "Manufacturer",
@@ -13,6 +19,26 @@ const FirearmsTable: React.FunctionComponent = () => {
     caliber: "Caliber",
     serial_number: "Serial Number",
   };
+
+  if (isLoading) {
+    return (
+      <PageSection>
+        <PageBody>
+          <Spinner aria-label="Loading Firearms" />
+        </PageBody>
+      </PageSection>
+    );
+  }
+
+  if (isError) {
+    return (
+      <PageSection>
+        <PageBody>
+          <Alert variant="danger" title="Error loading firearms" />
+        </PageBody>
+      </PageSection>
+    );
+  }
 
   return (
     <PageSection>
@@ -28,6 +54,7 @@ const FirearmsTable: React.FunctionComponent = () => {
               <Th>{columnNames.serial_number}</Th>
             </Tr>
           </Thead>
+          if (isError)
           <Tbody>
             {repositories.map((repo: Firearm) => (
               <Tr key={repo.id}>

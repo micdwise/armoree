@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { api } from "@app/api/client";
+import { error } from "console";
 
 export interface Ammunition {
   id: number;
@@ -11,20 +13,10 @@ export interface Ammunition {
 }
 
 function AddAmmunition(newAmmunition: any) {
-  fetch(
-    `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/api/v1/ammunition`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newAmmunition),
-    }
-  )
-    .then((response) => {
-      if (response.ok) {
-        console.log("It works");
-      }
+  api
+    .post("/ammunition", newAmmunition)
+    .then(() => {
+      console.log("It works");
     })
     .catch((error) => {
       console.log(error);
@@ -33,17 +25,24 @@ function AddAmmunition(newAmmunition: any) {
 
 const GetAmmunition = () => {
   const [data, setData] = useState<Ammunition[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const fetchAmmoData = () => {
-    fetch(
-      `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/api/v1/ammunition`
-    )
-      .then((res) => {
-        return res.json();
-      })
+    setIsLoading(true);
+    setIsError(false);
+    api
+      .get<Ammunition[]>("/ammunition")
       .then((data) => {
         console.log(data);
         setData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -51,7 +50,7 @@ const GetAmmunition = () => {
     fetchAmmoData();
   }, []);
 
-  return { data };
+  return { data, isLoading, isError };
 };
 
 export { GetAmmunition, AddAmmunition };
