@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { api } from "@app/api/client";
 
 export interface Firearm {
@@ -11,30 +11,19 @@ export interface Firearm {
 }
 
 function AddFirearms(newFirearm: any) {
-  api
-    .post("/firearms", newFirearm)
-    .then(() => {
-      console.log("It works");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-  console.log("Fired firearm POST");
+  return api.post("/firearms", newFirearm);
 }
 
 const GetFirearms = () => {
   const [data, setData] = useState<Firearm[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-
-  const fetchFirearmData = () => {
+  const fetchFirearmData = useCallback(() => {
     setIsLoading(true);
     setIsError(false);
     api
       .get<Firearm[]>("/firearms")
       .then((data) => {
-        console.log(data);
         setData(data);
       })
       .catch((error) => {
@@ -44,13 +33,13 @@ const GetFirearms = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  };
+  }, []);
 
   useEffect(() => {
     fetchFirearmData();
   }, []);
 
-  return { data, isLoading, isError };
+  return { data, isLoading, isError, refetch: fetchFirearmData };
 };
 
 export { GetFirearms, AddFirearms };

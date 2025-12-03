@@ -1,18 +1,25 @@
 import * as React from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
-import { GetAmmunition, Ammunition } from "@app/Ammunition/AmmunitionData";
+import { Ammunition } from "@app/Ammunition/AmmunitionData";
 import {
   PageBody,
   PageSection,
   Toolbar,
   Spinner,
   Alert,
-  PageGroup,
 } from "@patternfly/react-core";
 
-const AmmunitionTable: React.FunctionComponent = () => {
-  const { data: repositories, isLoading, isError } = GetAmmunition(); // Fetch ammunition data
+interface AmmunitionTableProps {
+  ammunition: Ammunition[];
+  isLoading: boolean;
+  isError: boolean;
+}
 
+const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
+  ammunition,
+  isLoading,
+  isError,
+}) => {
   const columnNames = {
     manufacturer: "Manufacturer",
     brand: "Brand",
@@ -58,7 +65,7 @@ const AmmunitionTable: React.FunctionComponent = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {repositories.map((repo: Ammunition) => (
+            {ammunition.map((repo: Ammunition) => (
               <Tr key={repo.id}>
                 <Td dataLabel={columnNames.manufacturer}>
                   {repo.manufacturer}

@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { api } from "@app/api/client";
-import { error } from "console";
 
 export interface Ammunition {
   id: number;
@@ -13,44 +12,34 @@ export interface Ammunition {
 }
 
 function AddAmmunition(newAmmunition: any) {
-  api
-    .post("/ammunition", newAmmunition)
-    .then(() => {
-      console.log("It works");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  return api.post("/ammunition", newAmmunition);
 }
 
 const GetAmmunition = () => {
   const [data, setData] = useState<Ammunition[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-
-  const fetchAmmoData = () => {
+  const fetchAmmoData = useCallback(() => {
     setIsLoading(true);
     setIsError(false);
     api
       .get<Ammunition[]>("/ammunition")
       .then((data) => {
-        console.log(data);
         setData(data);
       })
       .catch((error) => {
-        console.log(error);
         setIsError(true);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  };
+  }, []);
 
   useEffect(() => {
     fetchAmmoData();
   }, []);
 
-  return { data, isLoading, isError };
+  return { data, isLoading, isError, refetch: fetchAmmoData };
 };
 
 export { GetAmmunition, AddAmmunition };

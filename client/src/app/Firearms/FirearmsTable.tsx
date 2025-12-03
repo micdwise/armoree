@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
-import { GetFirearms, Firearm } from "@app/Firearms/FirearmsData";
+import { Firearm } from "@app/Firearms/FirearmsData";
 import {
   PageBody,
   PageSection,
@@ -9,9 +9,17 @@ import {
   Alert,
 } from "@patternfly/react-core";
 
-const FirearmsTable: React.FunctionComponent = () => {
-  const { data: repositories, isLoading, isError } = GetFirearms(); // Fetch ammunition data
+interface FirearmsTableProps {
+  firearms: Firearm[];
+  isLoading: boolean;
+  isError: boolean;
+}
 
+const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
+  firearms,
+  isLoading,
+  isError,
+}) => {
   const columnNames = {
     manufacturer: "Manufacturer",
     model: "Model",
@@ -54,9 +62,8 @@ const FirearmsTable: React.FunctionComponent = () => {
               <Th>{columnNames.serial_number}</Th>
             </Tr>
           </Thead>
-          if (isError)
           <Tbody>
-            {repositories.map((repo: Firearm) => (
+            {firearms.map((repo: Firearm) => (
               <Tr key={repo.id}>
                 <Td dataLabel={columnNames.manufacturer}>
                   {repo.manufacturer}

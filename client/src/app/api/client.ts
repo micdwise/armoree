@@ -2,7 +2,7 @@ const API_BASE_URL = `http://${import.meta.env.VITE_API_URL}:${import.meta.env.V
 
 async function apiClient<T>(
   endpoint: string,
-  options?: RequestInit,
+  options?: RequestInit
 ): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     headers: {
@@ -22,14 +22,15 @@ async function apiClient<T>(
     throw new Error(errorData.message || "API error");
   }
 
-  // Handle cases where the response might be empty (e.g., a 204 No Content)
-  if (
-    response.status === 204 ||
-    response.headers.get("content-length") === "0"
-  ) {
-    return null as T; // Or return undefined, depending on how you want to handle no content
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    return response.json();
   }
-  return response.json();
+
+  // For successful responses that are not JSON (e.g., 201 Created or 204 No Content with an empty body),
+  // we can resolve the promise with `null`. This prevents a JSON parsing error and allows
+  // the `.then()` block in the calling code to execute.
+  return null as T;
 }
 
 export const api = {
