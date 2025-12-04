@@ -63,6 +63,9 @@ const AppLoginPage: React.FunctionComponent = () => {
     <LoginPage
       loginTitle="Log in to your account"
       loginSubtitle="Welcom One and All!"
+      //backgroundImgSrc="/ArmoreeLogo.png"
+      brandImgSrc="/ArmoreeLogo.png"
+      brandImgAlt="Armoree"
     >
       {loginForm}
     </LoginPage>
