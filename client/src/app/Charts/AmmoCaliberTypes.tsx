@@ -9,11 +9,7 @@ import {
   EmptyState,
   EmptyStateBody,
 } from "@patternfly/react-core";
-import {
-  ChartDonut,
-  ChartPie,
-  ChartThemeColor,
-} from "@patternfly/react-charts/victory";
+import { ChartPie, ChartThemeColor } from "@patternfly/react-charts/victory";
 import { GetAmmunitionSummary } from "@app/Ammunition/AmmunitionData";
 import { CubesIcon } from "@patternfly/react-icons";
 
@@ -22,7 +18,7 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
 
   const chartData = data.map((item) => ({
     x: item.caliber,
-    y: parseInt(item.total_rounds, 10),
+    y: Number.parseInt(item.total_rounds, 10),
   }));
 
   const totalRounds = chartData.reduce((acc, datum) => acc + datum.y, 0);
