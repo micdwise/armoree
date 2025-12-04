@@ -6,17 +6,26 @@ import {
   PageSection,
   Title,
   PaginationVariant,
+  Modal,
+  Button,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "@patternfly/react-core";
 import { ISortBy, SortByDirection } from "@patternfly/react-table";
 import { FirearmsTable } from "@app/Firearms/FirearmsTable";
 import { AddFirearmForm } from "./AddFirearmForm";
-import { GetFirearms, Firearm } from "./FirearmsData";
+import { GetFirearms, Firearm, DeleteFirearm } from "./FirearmsData";
 
 const FirearmsPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetFirearms();
   const [sortBy, setSortBy] = React.useState<ISortBy>({});
   const [page, setPage] = React.useState(1);
   const [perPage, setPerPage] = React.useState(10);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+  const [firearmToDelete, setFirearmToDelete] = React.useState<Firearm | null>(
+    null
+  );
 
   const columnKeys: (keyof Omit<Firearm, "id">)[] = [
     "manufacturer",
@@ -61,6 +70,24 @@ const FirearmsPage: React.FunctionComponent = () => {
 
   const paginatedData = sortedData.slice((page - 1) * perPage, page * perPage);
 
+  const handleOpenDeleteModal = (firearm: Firearm) => {
+    setFirearmToDelete(firearm);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setFirearmToDelete(null);
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDeleteFirearm = () => {
+    if (firearmToDelete) {
+      DeleteFirearm(firearmToDelete.id)
+        .then(refetch)
+        .then(handleCloseDeleteModal);
+    }
+  };
+
   return (
     <PageSection hasBodyWrapper={false}>
       <Title headingLevel="h1" size="lg">
@@ -76,6 +103,7 @@ const FirearmsPage: React.FunctionComponent = () => {
           variant={PaginationVariant.bottom}
           onSetPage={onSetPage}
           onPerPageSelect={onPerPageSelect}
+          onDeleteFirearm={handleOpenDeleteModal}
         />
         <Flex>
           <FlexItem align={{ default: "alignRight" }}>
@@ -85,6 +113,35 @@ const FirearmsPage: React.FunctionComponent = () => {
           </FlexItem>
         </Flex>
       </Title>
+      {firearmToDelete && (
+        <Modal
+          variant="medium"
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}>
+          <ModalHeader titleIconVariant="warning" title="Confirm Deletion" />
+          <ModalBody>
+            Are you sure you want to delete the firearm:{" "}
+            <strong>
+              {firearmToDelete.manufacturer} {firearmToDelete.model}
+            </strong>{" "}
+            (S/N: {firearmToDelete.serial_number})?
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              variant="danger"
+              onClick={handleDeleteFirearm}
+              data-testid="confirm-delete-firearm-button">
+              Delete
+            </Button>
+            <Button
+              variant="link"
+              onClick={handleCloseDeleteModal}
+              data-testid="cancel-delete-firearm-button">
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+      )}
     </PageSection>
   );
 };

@@ -14,6 +14,10 @@ function AddFirearms(newFirearm: any) {
   return api.post("/firearms", newFirearm);
 }
 
+function DeleteFirearm(id: number) {
+  return api.delete(`/firearms/${id}`);
+}
+
 const GetFirearms = () => {
   const [data, setData] = useState<Firearm[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -42,4 +46,4 @@ const GetFirearms = () => {
   return { data, isLoading, isError, refetch: fetchFirearmData };
 };
 
-export { GetFirearms, AddFirearms };
+export { GetFirearms, AddFirearms, DeleteFirearm };

@@ -11,7 +11,7 @@ function getAmmunition(req: Request, res: Response) {
   });
 }
 
-function createAmmunition(req: Request, res: Response, next: any) {
+function createAmmunition(req: Request, res: Response) {
   console.log(req.body);
   pool.query(
     "INSERT INTO ammunition (manufacturer, brand, purchase_date, caliber, lot_number, qty) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
@@ -27,7 +27,7 @@ function createAmmunition(req: Request, res: Response, next: any) {
       if (error) {
         throw error;
       }
-      res.sendStatus(200);
+      res.status(201).send("Successfully added Ammunition!");
     }
   );
 }

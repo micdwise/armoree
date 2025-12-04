@@ -7,6 +7,7 @@ import {
   Tbody,
   ISortBy,
   Td,
+  ActionsColumn,
 } from "@patternfly/react-table";
 import { Firearm } from "@app/Firearms/FirearmsData";
 import {
@@ -30,6 +31,7 @@ interface FirearmsTableProps {
   perPage: number;
   onSetPage: (event: any, newPage: number) => void;
   onPerPageSelect: (event: any, newPerPage: number, newPage: number) => void;
+  onDeleteFirearm: (firearm: Firearm) => void;
   variant?: PaginationVariant;
 }
 
@@ -44,6 +46,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   perPage,
   onSetPage,
   onPerPageSelect,
+  onDeleteFirearm,
   variant = PaginationVariant.top,
 }) => {
   const columnNames = {
@@ -60,6 +63,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     { title: columnNames.purchase_date },
     { title: columnNames.caliber },
     { title: columnNames.serial_number },
+    "", // Actions column
   ];
   if (isLoading) {
     return (
@@ -108,6 +112,16 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                 <Td dataLabel={columnNames.caliber}>{repo.caliber}</Td>
                 <Td dataLabel={columnNames.serial_number}>
                   {repo.serial_number}
+                </Td>
+                <Td isActionCell>
+                  <ActionsColumn
+                    items={[
+                      {
+                        title: "Delete",
+                        onClick: () => onDeleteFirearm(repo),
+                      },
+                    ]}
+                  />
                 </Td>
               </Tr>
             ))}
