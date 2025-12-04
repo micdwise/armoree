@@ -4,11 +4,12 @@ import {
   createFirearms,
   deleteFirearm,
 } from "../handlers/firearms";
+import { verifyToken } from "../middleware/auth";
 
 const router = Router();
 
-router.get("/", getFirearms);
-router.post("/", createFirearms);
-router.delete("/:id", deleteFirearm);
+router.get("/", verifyToken, getFirearms);
+router.post("/", verifyToken, createFirearms);
+router.delete("/:id", verifyToken, deleteFirearm);
 
 export default router;

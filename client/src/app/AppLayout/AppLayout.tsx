@@ -37,8 +37,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         <ToolbarGroup
           variant="action-group-plain"
           align={{ default: "alignEnd" }}
-          gap={{ default: "gapNone", md: "gapMd" }}
-        >
+          gap={{ default: "gapNone", md: "gapMd" }}>
           <ToolbarItem>
             <Button
               aria-label="Notifications"
@@ -48,8 +47,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
           </ToolbarItem>
           <ToolbarGroup
             variant="action-group-plain"
-            visibility={{ default: "hidden", lg: "visible" }}
-          >
+            visibility={{ default: "hidden", lg: "visible" }}>
             <ToolbarItem>
               <Button
                 aria-label="Settings"
@@ -89,8 +87,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     <NavItem
       key={`${route.label}-${index}`}
       id={`${route.label}-${index}`}
-      isActive={route.path === location.pathname}
-    >
+      isActive={route.path === location.pathname}>
       <NavLink to={route.path}>
         {route.icon && (
           <span className="pf-v5-c-nav__link-icon">{<route.icon />}</span>
@@ -105,10 +102,9 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       key={`${group.label}-${groupIndex}`}
       id={`${group.label}-${groupIndex}`}
       title={group.label}
-      isActive={group.routes.some((route) => route.path === location.pathname)}
-    >
+      isActive={group.routes.some((route) => route.path === location.pathname)}>
       {group.routes.map(
-        (route, idx) => route.label && renderNavItem(route, idx),
+        (route, idx) => route.label && renderNavItem(route, idx)
       )}
     </NavExpandable>
   );
@@ -121,7 +117,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
             route.label &&
             (route.routes
               ? renderNavGroup(route as IAppRouteGroup, idx)
-              : renderNavItem(route as IAppRoute, idx)),
+              : renderNavItem(route as IAppRoute, idx))
         )}
       </NavList>
     </Nav>
@@ -136,11 +132,9 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const pageId = "primary-app-container";
   return (
     <Page
-      isManagedSidebar
       mainContainerId={pageId}
       masthead={Header}
-      sidebar={sidebarOpen && Sidebar}
-    >
+      sidebar={sidebarOpen && Sidebar}>
       {children}
     </Page>
   );

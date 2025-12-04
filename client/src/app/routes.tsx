@@ -88,11 +88,11 @@ const flattenedRoutes: IAppRoute[] = routes.reduce((flattened, route) => {
 
 const AppRoutes = (): React.ReactElement => (
   <Routes>
-    <Route path="/" Component={Dashboard} />
+    <Route path="/" element={<Dashboard />} />
     {flattenedRoutes.map(({ path, Component }) => (
-      <Route path={path} Component={Component} key={path} />
+      <Route path={path} element={<Component />} key={path} />
     ))}
-    {/*<PageNotFound title="404 Page Not Found" /> */}
+    <Route path="*" element={<NotFound />} />
   </Routes>
 );
 
