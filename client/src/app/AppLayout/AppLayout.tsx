@@ -129,7 +129,6 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
 
   const Sidebar = (
     <PageSidebar>
-    <PageSidebar isNavOpen={sidebarOpen}>
       <PageSidebarBody>{Navigation}</PageSidebarBody>
     </PageSidebar>
   );
@@ -141,7 +140,6 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       mainContainerId={pageId}
       masthead={Header}
       sidebar={sidebarOpen && Sidebar}
-      sidebar={Sidebar}
     >
       {children}
     </Page>
