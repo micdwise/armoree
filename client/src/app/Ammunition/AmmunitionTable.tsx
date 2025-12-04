@@ -20,8 +20,10 @@ import {
   ToolbarItem,
   SearchInput,
   Pagination,
+  EmptyState,
+  EmptyStateBody,
 } from "@patternfly/react-core";
-import { title } from "process";
+import { CubesIcon, SearchIcon } from "@patternfly/react-icons";
 
 interface AmmunitionTableProps {
   ammunition: Ammunition[];
@@ -38,7 +40,7 @@ interface AmmunitionTableProps {
   filterValue: string;
   onFilterChange: (
     event: React.FormEvent<HTMLInputElement>,
-    value: string,
+    value: string
   ) => void;
 }
 
@@ -122,38 +124,58 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                   key={column.title || "actions-column"}
                   sort={
                     column.title ? { sortBy, onSort, columnIndex } : undefined
-                  }
-                >
+                  }>
                   {column.title}
                 </Th>
               ))}
             </Tr>
           </Thead>
           <Tbody>
-            {ammunition.map((repo: Ammunition) => (
-              <Tr key={repo.id}>
-                <Td dataLabel={columnNames.manufacturer}>
-                  {repo.manufacturer}
-                </Td>
-                <Td dataLabel={columnNames.brand}>{repo.brand}</Td>
-                <Td dataLabel={columnNames.purchase_date}>
-                  {new Date(repo.purchase_date).toLocaleDateString("en-US")}
-                </Td>
-                <Td dataLabel={columnNames.caliber}>{repo.caliber}</Td>
-                <Td dataLabel={columnNames.lot_number}>{repo.lot_number}</Td>
-                <Td dataLabel={columnNames.qty}>{repo.qty}</Td>
-                <Td isActionCell>
-                  <ActionsColumn
-                    items={[
-                      {
-                        title: "Delete",
-                        onClick: () => onDeleteAmmunition(repo),
-                      },
-                    ]}
-                  />
+            {ammunition.length > 0 ? (
+              ammunition.map((repo: Ammunition) => (
+                <Tr key={repo.id}>
+                  <Td dataLabel={columnNames.manufacturer}>
+                    {repo.manufacturer}
+                  </Td>
+                  <Td dataLabel={columnNames.brand}>{repo.brand}</Td>
+                  <Td dataLabel={columnNames.purchase_date}>
+                    {new Date(repo.purchase_date).toLocaleDateString("en-US")}
+                  </Td>
+                  <Td dataLabel={columnNames.caliber}>{repo.caliber}</Td>
+                  <Td dataLabel={columnNames.lot_number}>{repo.lot_number}</Td>
+                  <Td dataLabel={columnNames.qty}>{repo.qty}</Td>
+                  <Td isActionCell>
+                    <ActionsColumn
+                      items={[
+                        {
+                          title: "Delete",
+                          onClick: () => onDeleteAmmunition(repo),
+                        },
+                      ]}
+                    />
+                  </Td>
+                </Tr>
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan={columns.length}>
+                  <EmptyState
+                    titleText={
+                      filterValue
+                        ? "No Results found"
+                        : "No Ammunition in Inventory"
+                    }
+                    variant="sm"
+                    icon={filterValue ? SearchIcon : CubesIcon}>
+                    <EmptyStateBody>
+                      {filterValue
+                        ? "No ammunition matches your current filter criteria."
+                        : "Get started by adding ammunition to your inventory."}
+                    </EmptyStateBody>
+                  </EmptyState>
                 </Td>
               </Tr>
-            ))}
+            )}
           </Tbody>
         </Table>
         <Pagination
