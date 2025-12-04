@@ -5,17 +5,16 @@ import {
   ActionGroup,
   PageSection,
   Title,
-  PaginationVariant,
-  Modal,
-  Button,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
 } from "@patternfly/react-core";
 import { ISortBy, SortByDirection } from "@patternfly/react-table";
 import { FirearmsTable } from "@app/Firearms/FirearmsTable";
-import { AddFirearmForm } from "./AddFirearmForm";
-import { GetFirearms, Firearm, DeleteFirearm } from "./FirearmsData";
+import { AddFirearmForm } from "@app/Firearms/AddFirearmForm";
+import {
+  GetFirearms,
+  Firearm,
+  DeleteFirearm,
+} from "@app/Firearms/FirearmsData";
+import { DeleteFirearmModal } from "@app/Firearms/DeleteFirearmModal";
 
 const FirearmsPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetFirearms();
@@ -136,35 +135,12 @@ const FirearmsPage: React.FunctionComponent = () => {
           </FlexItem>
         </Flex>
       </Title>
-      {firearmToDelete && (
-        <Modal
-          variant="medium"
-          isOpen={isDeleteModalOpen}
-          onClose={handleCloseDeleteModal}>
-          <ModalHeader titleIconVariant="warning" title="Confirm Deletion" />
-          <ModalBody>
-            Are you sure you want to delete the firearm:{" "}
-            <strong>
-              {firearmToDelete.manufacturer} {firearmToDelete.model}
-            </strong>{" "}
-            (S/N: {firearmToDelete.serial_number})?
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              variant="danger"
-              onClick={handleDeleteFirearm}
-              data-testid="confirm-delete-firearm-button">
-              Delete
-            </Button>
-            <Button
-              variant="link"
-              onClick={handleCloseDeleteModal}
-              data-testid="cancel-delete-firearm-button">
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
-      )}
+      <DeleteFirearmModal
+        firearm={firearmToDelete}
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteFirearm}
+      />
     </PageSection>
   );
 };

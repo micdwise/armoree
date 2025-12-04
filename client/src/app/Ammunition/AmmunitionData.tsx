@@ -15,6 +15,10 @@ function AddAmmunition(newAmmunition: any) {
   return api.post("/ammunition", newAmmunition);
 }
 
+function DeleteAmmunition(id: number) {
+  return api.delete("/ammunition/${id}");
+}
+
 const GetAmmunition = () => {
   const [data, setData] = useState<Ammunition[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -42,4 +46,4 @@ const GetAmmunition = () => {
   return { data, isLoading, isError, refetch: fetchAmmoData };
 };
 
-export { GetAmmunition, AddAmmunition };
+export { GetAmmunition, AddAmmunition, DeleteAmmunition };

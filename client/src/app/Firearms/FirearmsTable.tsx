@@ -37,7 +37,7 @@ interface FirearmsTableProps {
   filterValue: string;
   onFilterChange: (
     event: React.FormEvent<HTMLInputElement>,
-    value: string
+    value: string,
   ) => void;
 }
 
@@ -100,7 +100,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
       <PageBody>
         <Toolbar id="firearms-toolbar" clearAllFilters={onClearFilter}>
           <ToolbarContent>
-            <ToolbarItem variant="search-filter">
+            <ToolbarItem>
               <SearchInput
                 aria-label="Firearms filter"
                 value={filterValue}
@@ -119,7 +119,8 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                   key={column.title || "actions-column"}
                   sort={
                     column.title ? { sortBy, onSort, columnIndex } : undefined
-                  }>
+                  }
+                >
                   {column.title}
                 </Th>
               ))}
