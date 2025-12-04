@@ -28,8 +28,23 @@ function createAmmunition(req: Request, res: Response) {
         throw error;
       }
       res.status(201).send("Successfully added Ammunition!");
-    }
+    },
   );
 }
 
-export { getAmmunition, createAmmunition };
+function deleteAmmunition(req: Request, res: Response) {
+  const id = Number.parseInt(req.params.id, 10);
+
+  if (Number.isNaN(id)) {
+    return res.status(400).send("Invalid ID Supplied");
+  }
+
+  pool.query("DELETE FROM ammunition WHERE id = $1", [id], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(204).send();
+  });
+}
+
+export { getAmmunition, createAmmunition, deleteAmmunition };

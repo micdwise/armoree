@@ -16,7 +16,7 @@ function AddAmmunition(newAmmunition: any) {
 }
 
 function DeleteAmmunition(id: number) {
-  return api.delete("/ammunition/${id}");
+  return api.delete(`/ammunition/${id}`);
 }
 
 const GetAmmunition = () => {

@@ -27,7 +27,7 @@ const DeleteAmmunitionModal: React.FunctionComponent<DeleteAmmunitionProps> = ({
 
   return (
     <Modal variant="small" isOpen={isOpen} onClose={onClose}>
-      <ModalHeader titleIconVariant="warning" title="ConfirmDeletion" />
+      <ModalHeader titleIconVariant="warning" title="Confirm Deletion" />
       <ModalBody>Are you sure you wnat to delete the ammuniton</ModalBody>
       <ModalFooter>
         <Button
