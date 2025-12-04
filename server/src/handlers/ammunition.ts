@@ -28,7 +28,7 @@ function createAmmunition(req: Request, res: Response) {
         throw error;
       }
       res.status(201).send("Successfully added Ammunition!");
-    },
+    }
   );
 }
 
@@ -47,4 +47,21 @@ function deleteAmmunition(req: Request, res: Response) {
   });
 }
 
-export { getAmmunition, createAmmunition, deleteAmmunition };
+function getAmmunitionSummary(req: Request, res: Response) {
+  pool.query(
+    "SELECT caliber, SUM(qty) as total_rounds FROM ammunition GROUP BY caliber",
+    (error: any, results: any) => {
+      if (error) {
+        throw error;
+      }
+      res.status(200).json(results.rows);
+    }
+  );
+}
+
+export {
+  getAmmunition,
+  createAmmunition,
+  deleteAmmunition,
+  getAmmunitionSummary,
+};

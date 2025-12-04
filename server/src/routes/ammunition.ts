@@ -3,15 +3,13 @@ import {
   createAmmunition,
   getAmmunition,
   deleteAmmunition,
+  getAmmunitionSummary,
 } from "../handlers/ammunition";
 
 const router = Router();
 
-router.use((req, res, next) => {
-  next();
-});
-
 router.get("/", getAmmunition);
+router.get("/summary", getAmmunitionSummary);
 router.post("/", createAmmunition);
 router.delete("/:id", deleteAmmunition);
 
