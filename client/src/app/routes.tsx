@@ -5,6 +5,11 @@ import { FirearmsPage } from "@app/Firearms/FirearmsPage";
 import { Dashboard } from "@app/Dashboard/Dashboard";
 import { useDocumentTitle } from "@app/utils/usedocumentTitle";
 import { NotFound } from "@app/NotFound/NotFound";
+import {
+  TachometerAltIcon,
+  CubesIcon,
+  ArchiveIcon,
+} from "@patternfly/react-icons";
 
 let routeFocusTimer: ReturnType<typeof setTimeout>;
 
@@ -14,6 +19,7 @@ export interface IAppRoute {
   exact: boolean;
   path: string;
   title: string;
+  icon?: React.ComponentType<any>;
   routes?: IAppRoute[];
 }
 
@@ -31,6 +37,7 @@ const routes: AppRouteConfig[] = [
     label: "Dashboard",
     path: "/Dashboard",
     title: "Dashboard",
+    icon: TachometerAltIcon,
   },
 
   {
@@ -39,6 +46,7 @@ const routes: AppRouteConfig[] = [
     label: "Firearms",
     path: "/Firearms",
     title: "Firearms",
+    icon: CubesIcon,
   },
 
   {
@@ -47,6 +55,7 @@ const routes: AppRouteConfig[] = [
     label: "Ammunition Stuff",
     path: "/Ammunition",
     title: "Ammunition Stuff",
+    icon: ArchiveIcon,
   },
 ];
 

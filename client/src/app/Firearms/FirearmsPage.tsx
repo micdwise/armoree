@@ -5,17 +5,16 @@ import {
   ActionGroup,
   PageSection,
   Title,
-  PaginationVariant,
-  Modal,
-  Button,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
 } from "@patternfly/react-core";
 import { ISortBy, SortByDirection } from "@patternfly/react-table";
 import { FirearmsTable } from "@app/Firearms/FirearmsTable";
-import { AddFirearmForm } from "./AddFirearmForm";
-import { GetFirearms, Firearm, DeleteFirearm } from "./FirearmsData";
+import { AddFirearmForm } from "@app/Firearms/AddFirearmForm";
+import {
+  GetFirearms,
+  Firearm,
+  DeleteFirearm,
+} from "@app/Firearms/FirearmsData";
+import { DeleteFirearmModal } from "@app/Firearms/DeleteFirearmModal";
 
 const FirearmsPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetFirearms();
@@ -26,6 +25,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   const [firearmToDelete, setFirearmToDelete] = React.useState<Firearm | null>(
     null
   );
+  const [filterValue, setFilterValue] = React.useState("");
 
   const columnKeys: (keyof Omit<Firearm, "id">)[] = [
     "manufacturer",
@@ -43,14 +43,35 @@ const FirearmsPage: React.FunctionComponent = () => {
     setSortBy({ index, direction });
   };
 
+  const onFilterChange = (
+    _event: React.FormEvent<HTMLInputElement>,
+    value: string
+  ) => {
+    setFilterValue(value);
+    setPage(1); // Reset to first page when filter changes
+  };
+
+  const filteredData = React.useMemo(() => {
+    if (!data) return [];
+    if (!filterValue) return data;
+
+    return data.filter((firearm) =>
+      Object.values(firearm).some((val) =>
+        String(val).toLowerCase().includes(filterValue.toLowerCase())
+      )
+    );
+  }, [data, filterValue]);
+
   const sortedData = React.useMemo(() => {
-    if (sortBy.index === undefined || !data) {
-      return data;
+    if (sortBy.index === undefined || !filteredData) {
+      return filteredData;
     }
     const sortKey = columnKeys[sortBy.index];
-    const sorted = [...data].sort((a, b) => (a[sortKey] < b[sortKey] ? -1 : 1));
+    const sorted = [...filteredData].sort((a, b) =>
+      a[sortKey] < b[sortKey] ? -1 : 1
+    );
     return sortBy.direction === SortByDirection.asc ? sorted : sorted.reverse();
-  }, [data, sortBy]);
+  }, [filteredData, sortBy]);
 
   const onSetPage = (
     _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
@@ -100,9 +121,10 @@ const FirearmsPage: React.FunctionComponent = () => {
           itemCount={sortedData?.length || 0}
           page={page}
           perPage={perPage}
-          variant={PaginationVariant.bottom}
           onSetPage={onSetPage}
           onPerPageSelect={onPerPageSelect}
+          filterValue={filterValue}
+          onFilterChange={onFilterChange}
           onDeleteFirearm={handleOpenDeleteModal}
         />
         <Flex>
@@ -113,35 +135,12 @@ const FirearmsPage: React.FunctionComponent = () => {
           </FlexItem>
         </Flex>
       </Title>
-      {firearmToDelete && (
-        <Modal
-          variant="medium"
-          isOpen={isDeleteModalOpen}
-          onClose={handleCloseDeleteModal}>
-          <ModalHeader titleIconVariant="warning" title="Confirm Deletion" />
-          <ModalBody>
-            Are you sure you want to delete the firearm:{" "}
-            <strong>
-              {firearmToDelete.manufacturer} {firearmToDelete.model}
-            </strong>{" "}
-            (S/N: {firearmToDelete.serial_number})?
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              variant="danger"
-              onClick={handleDeleteFirearm}
-              data-testid="confirm-delete-firearm-button">
-              Delete
-            </Button>
-            <Button
-              variant="link"
-              onClick={handleCloseDeleteModal}
-              data-testid="cancel-delete-firearm-button">
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
-      )}
+      <DeleteFirearmModal
+        firearm={firearmToDelete}
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteFirearm}
+      />
     </PageSection>
   );
 };

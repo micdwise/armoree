@@ -11,8 +11,17 @@ export interface Ammunition {
   qty: string;
 }
 
+export interface AmmunitionSummary {
+  caliber: string;
+  total_rounds: string; // Comes as string from DB
+}
+
 function AddAmmunition(newAmmunition: any) {
   return api.post("/ammunition", newAmmunition);
+}
+
+function DeleteAmmunition(id: number) {
+  return api.delete(`/ammunition/${id}`);
 }
 
 const GetAmmunition = () => {
@@ -42,4 +51,29 @@ const GetAmmunition = () => {
   return { data, isLoading, isError, refetch: fetchAmmoData };
 };
 
-export { GetAmmunition, AddAmmunition };
+const GetAmmunitionSummary = () => {
+  const [data, setData] = useState<AmmunitionSummary[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const fetchSummaryData = useCallback(() => {
+    setIsLoading(true);
+    setIsError(false);
+    api
+      .get<AmmunitionSummary[]>("/ammunition/summary")
+      .then(setData)
+      .catch((error) => {
+        console.error("Failed to fetch ammunition summary:", error);
+        setIsError(true);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  useEffect(() => {
+    fetchSummaryData();
+  }, [fetchSummaryData]);
+
+  return { data, isLoading, isError, refetch: fetchSummaryData };
+};
+
+export { GetAmmunition, AddAmmunition, DeleteAmmunition, GetAmmunitionSummary };

@@ -32,4 +32,36 @@ function createAmmunition(req: Request, res: Response) {
   );
 }
 
-export { getAmmunition, createAmmunition };
+function deleteAmmunition(req: Request, res: Response) {
+  const id = Number.parseInt(req.params.id, 10);
+
+  if (Number.isNaN(id)) {
+    return res.status(400).send("Invalid ID Supplied");
+  }
+
+  pool.query("DELETE FROM ammunition WHERE id = $1", [id], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(204).send();
+  });
+}
+
+function getAmmunitionSummary(req: Request, res: Response) {
+  pool.query(
+    "SELECT caliber, SUM(qty) as total_rounds FROM ammunition GROUP BY caliber",
+    (error: any, results: any) => {
+      if (error) {
+        throw error;
+      }
+      res.status(200).json(results.rows);
+    }
+  );
+}
+
+export {
+  getAmmunition,
+  createAmmunition,
+  deleteAmmunition,
+  getAmmunitionSummary,
+};
