@@ -1,11 +1,25 @@
 import * as React from "react";
 import { Table, Thead, Tr, Th, Tbody, Td } from "@patternfly/react-table";
-import { GetAmmunition, Ammunition } from "@app/Ammunition/AmmunitionData";
-import { PageBody, PageSection, Toolbar } from "@patternfly/react-core";
+import { Ammunition } from "@app/Ammunition/AmmunitionData";
+import {
+  PageBody,
+  PageSection,
+  Toolbar,
+  Spinner,
+  Alert,
+} from "@patternfly/react-core";
 
-const AmmunitionTable: React.FunctionComponent = () => {
-  const { data: repositories } = GetAmmunition(); // Fetch ammunition data
+interface AmmunitionTableProps {
+  ammunition: Ammunition[];
+  isLoading: boolean;
+  isError: boolean;
+}
 
+const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
+  ammunition,
+  isLoading,
+  isError,
+}) => {
   const columnNames = {
     manufacturer: "Manufacturer",
     brand: "Brand",
@@ -14,6 +28,26 @@ const AmmunitionTable: React.FunctionComponent = () => {
     lot_number: "Lot Number",
     qty: "Quantity",
   };
+
+  if (isLoading) {
+    return (
+      <PageSection>
+        <PageBody>
+          <Spinner aria-label="Loading Ammunition" />
+        </PageBody>
+      </PageSection>
+    );
+  }
+
+  if (isError) {
+    return (
+      <PageSection>
+        <PageBody>
+          <Alert variant="danger" title="Error loading ammunition" />
+        </PageBody>
+      </PageSection>
+    );
+  }
 
   return (
     <PageSection>
@@ -31,7 +65,7 @@ const AmmunitionTable: React.FunctionComponent = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {repositories.map((repo: Ammunition) => (
+            {ammunition.map((repo: Ammunition) => (
               <Tr key={repo.id}>
                 <Td dataLabel={columnNames.manufacturer}>
                   {repo.manufacturer}
