@@ -5,6 +5,9 @@ import {
   FormGroup,
   FormSelect,
   FormSelectOption,
+  FormHelperText,
+  HelperText,
+  HelperTextItem,
   TextInput,
   Modal,
   ModalBody,
@@ -14,6 +17,7 @@ import {
   Label,
 } from "@patternfly/react-core";
 import { AddFirearms } from "@app/Firearms/FirearmsData";
+import { ExclamationCircleIcon } from "@patternfly/react-icons";
 
 interface FirearmFormState {
   manufacturer: string;
@@ -23,12 +27,28 @@ interface FirearmFormState {
   serial_number: string;
 }
 
+interface ValidationState {
+  manufacturer: "success" | "warning" | "error" | "default";
+  model: "success" | "warning" | "error" | "default";
+  caliber: "success" | "warning" | "error" | "default";
+  purchase_date: "success" | "warning" | "error" | "default";
+  serial_number: "success" | "warning" | "error" | "default";
+}
+
 const initialFormState: FirearmFormState = {
   manufacturer: "Select a manufacturer",
   model: "",
   caliber: "Select a caliber",
   purchase_date: "",
   serial_number: "",
+};
+
+const initialValidationState: ValidationState = {
+  manufacturer: "default",
+  model: "default",
+  caliber: "default",
+  purchase_date: "default",
+  serial_number: "default",
 };
 
 const manufactureOptions = [
@@ -57,26 +77,51 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [formState, setFormState] =
     React.useState<FirearmFormState>(initialFormState);
+  const [validationState, setValidationState] =
+    React.useState<ValidationState>(initialValidationState);
 
   // A specific handler for each field is more robust with PatternFly's onChange signatures
   const handleInputChange =
     (name: keyof FirearmFormState) =>
-    (
-      _event: React.FormEvent<HTMLInputElement | HTMLSelectElement>,
-      value: string,
-    ) => {
-      setFormState((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
+      (
+        _event: React.FormEvent<HTMLInputElement | HTMLSelectElement>,
+        value: string,
+      ) => {
+        setFormState((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+        setValidationState((prevState) => ({
+          ...prevState,
+          [name]: "default",
+        }));
+      };
+
+  const validate = (): boolean => {
+    const updatedState: ValidationState = {
+      manufacturer:
+        formState.manufacturer === "Select a manufacturer"
+          ? "error"
+          : "default",
+      model: !formState.model.trim() ? "error" : "default",
+      caliber:
+        formState.caliber === "Select a caliber" ? "error" : "default",
+      purchase_date: !formState.purchase_date ? "error" : "default",
+      serial_number: !formState.serial_number.trim() ? "error" : "default",
     };
 
+    setValidationState(updatedState);
+    return Object.values(updatedState).every((status) => status !== "error");
+  };
+
   const handleSubmitFirearm = () => {
+    if (!validate()) return;
     AddFirearms(formState)
       .then(() => {
         onAddSuccess(); // This triggers the refetch in the parent
         setFormState(initialFormState); // Reset form
         setIsModalOpen(false);
+        setValidationState(initialValidationState);
       })
       .catch(console.error);
   };
@@ -84,7 +129,10 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
   const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
     setIsModalOpen(!isModalOpen);
     // Reset form state if the modal is closed without submitting
-    if (isModalOpen) setFormState(initialFormState);
+    if (isModalOpen) {
+      setFormState(initialFormState);
+      setValidationState(initialValidationState);
+    }
   };
 
   return (
@@ -114,6 +162,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                 name="manufacturer"
                 value={formState.manufacturer}
                 onChange={handleInputChange("manufacturer")}
+                validated={validationState.manufacturer}
               >
                 {manufactureOptions.map((option) => (
                   <FormSelectOption
@@ -124,6 +173,15 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                   />
                 ))}
               </FormSelect>
+              {validationState.manufacturer === "error" && (
+                <FormHelperText>
+                  <HelperText>
+                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
+                      Please select a manufacturer
+                    </HelperTextItem>
+                  </HelperText>
+                </FormHelperText>
+              )}
             </FormGroup>
 
             <FormGroup
@@ -138,7 +196,17 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                 name="model"
                 value={formState.model}
                 onChange={handleInputChange("model")}
+                validated={validationState.model}
               />
+              {validationState.model === "error" && (
+                <FormHelperText>
+                  <HelperText>
+                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
+                      Please enter a model
+                    </HelperTextItem>
+                  </HelperText>
+                </FormHelperText>
+              )}
             </FormGroup>
 
             <FormGroup
@@ -152,6 +220,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                 name="caliber"
                 value={formState.caliber}
                 onChange={handleInputChange("caliber")}
+                validated={validationState.caliber}
               >
                 {caliberOptions.map((option) => (
                   <FormSelectOption
@@ -162,6 +231,15 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                   />
                 ))}
               </FormSelect>
+              {validationState.caliber === "error" && (
+                <FormHelperText>
+                  <HelperText>
+                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
+                      Please select a caliber
+                    </HelperTextItem>
+                  </HelperText>
+                </FormHelperText>
+              )}
             </FormGroup>
 
             <FormGroup
@@ -176,7 +254,17 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                 name="purchase_date"
                 value={formState.purchase_date}
                 onChange={handleInputChange("purchase_date")}
+                validated={validationState.purchase_date}
               />
+              {validationState.purchase_date === "error" && (
+                <FormHelperText>
+                  <HelperText>
+                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
+                      Please enter a purchase date
+                    </HelperTextItem>
+                  </HelperText>
+                </FormHelperText>
+              )}
             </FormGroup>
 
             <FormGroup
@@ -191,7 +279,17 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                 name="serial_number"
                 value={formState.serial_number}
                 onChange={handleInputChange("serial_number")}
+                validated={validationState.serial_number}
               />
+              {validationState.serial_number === "error" && (
+                <FormHelperText>
+                  <HelperText>
+                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
+                      Please enter a serial number
+                    </HelperTextItem>
+                  </HelperText>
+                </FormHelperText>
+              )}
             </FormGroup>
           </Form>
         </ModalBody>

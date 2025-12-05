@@ -4,7 +4,11 @@ import {
   Flex,
   FlexItem,
   PageSection,
+  Toolbar,
+  ToolbarContent,
+  ToolbarItem,
   Title,
+  PageSectionVariants,
 } from "@patternfly/react-core";
 import { ISortBy, SortByDirection } from "@patternfly/react-table";
 import { AmmunitionTable } from "@app/Ammunition/AmmunitionTable";
@@ -111,8 +115,17 @@ const AmmunitionPage: React.FunctionComponent = () => {
   };
 
   return (
-    <PageSection hasBodyWrapper={false}>
-      <Title headingLevel="h1" size="lg">
+    <React.Fragment>
+      <PageSection variant={PageSectionVariants.default}>
+        <Toolbar>
+          <ToolbarContent>
+            <ToolbarItem>
+              <Title headingLevel="h1">Ammunition</Title>
+            </ToolbarItem>
+          </ToolbarContent>
+        </Toolbar>
+      </PageSection>
+      <PageSection variant={PageSectionVariants.default}>
         <AmmunitionTable
           ammunition={paginatedData}
           isLoading={isLoading}
@@ -128,6 +141,8 @@ const AmmunitionPage: React.FunctionComponent = () => {
           onFilterChange={onFilterChange}
           onDeleteAmmunition={handleOpenDeleteModal}
         />
+      </PageSection>
+      <PageSection variant={PageSectionVariants.default}>
         <Flex>
           <FlexItem align={{ default: "alignRight" }}>
             <ActionGroup>
@@ -135,14 +150,14 @@ const AmmunitionPage: React.FunctionComponent = () => {
             </ActionGroup>
           </FlexItem>
         </Flex>
-      </Title>
+      </PageSection>
       <DeleteAmmunitionModal
         ammunition={ammunitionToDelete}
         isOpen={isDeleteModalOpen}
         onClose={handleClosedDeleteModal}
         onConfirm={handleDeleteAmmunition}
       />
-    </PageSection>
+    </React.Fragment >
   );
 };
 

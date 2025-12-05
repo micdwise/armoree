@@ -4,7 +4,11 @@ import {
   FlexItem,
   ActionGroup,
   PageSection,
+  PageSectionVariants,
   Title,
+  Toolbar,
+  ToolbarContent,
+  ToolbarItem,
 } from "@patternfly/react-core";
 import { ISortBy, SortByDirection } from "@patternfly/react-table";
 import { FirearmsTable } from "@app/Firearms/FirearmsTable";
@@ -23,7 +27,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   const [perPage, setPerPage] = React.useState(10);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [firearmToDelete, setFirearmToDelete] = React.useState<Firearm | null>(
-    null
+    null,
   );
   const [filterValue, setFilterValue] = React.useState("");
 
@@ -38,14 +42,14 @@ const FirearmsPage: React.FunctionComponent = () => {
   const onSort = (
     _event: React.MouseEvent,
     index: number,
-    direction: SortByDirection
+    direction: SortByDirection,
   ) => {
     setSortBy({ index, direction });
   };
 
   const onFilterChange = (
     _event: React.FormEvent<HTMLInputElement>,
-    value: string
+    value: string,
   ) => {
     setFilterValue(value);
     setPage(1); // Reset to first page when filter changes
@@ -57,8 +61,8 @@ const FirearmsPage: React.FunctionComponent = () => {
 
     return data.filter((firearm) =>
       Object.values(firearm).some((val) =>
-        String(val).toLowerCase().includes(filterValue.toLowerCase())
-      )
+        String(val).toLowerCase().includes(filterValue.toLowerCase()),
+      ),
     );
   }, [data, filterValue]);
 
@@ -68,14 +72,14 @@ const FirearmsPage: React.FunctionComponent = () => {
     }
     const sortKey = columnKeys[sortBy.index];
     const sorted = [...filteredData].sort((a, b) =>
-      a[sortKey] < b[sortKey] ? -1 : 1
+      a[sortKey] < b[sortKey] ? -1 : 1,
     );
     return sortBy.direction === SortByDirection.asc ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
 
   const onSetPage = (
     _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
-    newPage: number
+    newPage: number,
   ) => {
     setPage(newPage);
   };
@@ -83,7 +87,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   const onPerPageSelect = (
     _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
     newPerPage: number,
-    newPage: number
+    newPage: number,
   ) => {
     setPerPage(newPerPage);
     setPage(newPage);
@@ -110,8 +114,17 @@ const FirearmsPage: React.FunctionComponent = () => {
   };
 
   return (
-    <PageSection hasBodyWrapper={false}>
-      <Title headingLevel="h1" size="lg">
+    <React.Fragment>
+      <PageSection variant={PageSectionVariants.default}>
+        <Toolbar>
+          <ToolbarContent>
+            <ToolbarItem>
+              <Title headingLevel="h1">Firearms</Title>
+            </ToolbarItem>
+          </ToolbarContent>
+        </Toolbar>
+      </PageSection>
+      <PageSection variant={PageSectionVariants.default}>
         <FirearmsTable
           firearms={paginatedData}
           isLoading={isLoading}
@@ -127,21 +140,23 @@ const FirearmsPage: React.FunctionComponent = () => {
           onFilterChange={onFilterChange}
           onDeleteFirearm={handleOpenDeleteModal}
         />
-        <Flex>
-          <FlexItem align={{ default: "alignRight" }}>
-            <ActionGroup>
+      </PageSection>
+      <PageSection>
+        <Toolbar>
+          <ToolbarContent>
+            <ToolbarItem>
               <AddFirearmForm onAddSuccess={refetch} />
-            </ActionGroup>
-          </FlexItem>
-        </Flex>
-      </Title>
-      <DeleteFirearmModal
-        firearm={firearmToDelete}
-        isOpen={isDeleteModalOpen}
-        onClose={handleCloseDeleteModal}
-        onConfirm={handleDeleteFirearm}
-      />
-    </PageSection>
+            </ToolbarItem>
+          </ToolbarContent>
+        </Toolbar>
+        <DeleteFirearmModal
+          firearm={firearmToDelete}
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleDeleteFirearm}
+        />
+      </PageSection>
+    </React.Fragment>
   );
 };
 

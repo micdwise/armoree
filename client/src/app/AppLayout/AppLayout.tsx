@@ -4,6 +4,8 @@ import {
   Button,
   ButtonVariant,
   Masthead,
+  MastheadBrand,
+  MastheadLogo,
   MastheadContent,
   MastheadMain,
   MastheadToggle,
@@ -18,6 +20,7 @@ import {
   ToolbarContent,
   ToolbarGroup,
   ToolbarItem,
+  Brand,
 } from "@patternfly/react-core";
 import { IAppRoute, IAppRouteGroup, routes } from "@app/routes";
 import { BarsIcon, BellIcon, CogIcon } from "@patternfly/react-icons";
@@ -77,7 +80,11 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
             aria-label="Global navigation"
           />
         </MastheadToggle>
-        Armoree
+        <MastheadBrand>
+          <MastheadLogo>
+            <Brand src="https://placehold.co/100x100" alt="Logo" />
+          </MastheadLogo>
+        </MastheadBrand>
       </MastheadMain>
       <MastheadContent>{headerToolbar}</MastheadContent>
     </Masthead>
