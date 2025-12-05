@@ -124,21 +124,23 @@ const FirearmsPage: React.FunctionComponent = () => {
           </ToolbarContent>
         </Toolbar>
       </PageSection>
-      <FirearmsTable
-        firearms={paginatedData}
-        isLoading={isLoading}
-        isError={isError}
-        sortBy={sortBy}
-        onSort={onSort}
-        itemCount={sortedData?.length || 0}
-        page={page}
-        perPage={perPage}
-        onSetPage={onSetPage}
-        onPerPageSelect={onPerPageSelect}
-        filterValue={filterValue}
-        onFilterChange={onFilterChange}
-        onDeleteFirearm={handleOpenDeleteModal}
-      />
+      <PageSection variant={PageSectionVariants.default}>
+        <FirearmsTable
+          firearms={paginatedData}
+          isLoading={isLoading}
+          isError={isError}
+          sortBy={sortBy}
+          onSort={onSort}
+          itemCount={sortedData?.length || 0}
+          page={page}
+          perPage={perPage}
+          onSetPage={onSetPage}
+          onPerPageSelect={onPerPageSelect}
+          filterValue={filterValue}
+          onFilterChange={onFilterChange}
+          onDeleteFirearm={handleOpenDeleteModal}
+        />
+      </PageSection>
       <PageSection>
         <Toolbar>
           <ToolbarContent>
