@@ -6,7 +6,9 @@ import { Select } from "../../components/Select";
 import { Modal } from "../../components/Modal";
 import { Field } from "../../components/Field";
 import { AddFirearms } from "@app/Firearms/FirearmsData";
-import AllFirearmsManufacturer from "@data/firearms-manufacturers.json";
+import allFirearmsManufacturer from "@data/firearms-manufacturers.json";
+import allCalibers from "@data/calibers.json";
+import firearmModels from "@data/firearms-models.json";
 
 interface FirearmFormState {
   manufacturer: string;
@@ -42,10 +44,12 @@ const initialValidationState: ValidationState = {
 
 interface AddFirearmFormProps {
   onAddSuccess: () => void;
+  isDisabled?: boolean;
 }
 
 const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
   onAddSuccess,
+  isDisabled,
 }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [formState, setFormState] =
@@ -54,14 +58,24 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     initialValidationState,
   );
 
-  const handleInputChange = (field: keyof FirearmFormState) => {
+  const manufacturerOptions = allFirearmsManufacturer.map((m) => ({
+    label: m.name,
+    value: m.name,
+  }));
+
+  const caliberOptions = allCalibers.map((c) => ({
+    label: c.name,
+    value: c.name,
+  }));
+
+  const handleInputChange = (field: keyof FirearmFormState, value: string) => {
     setFormState((prevState) => {
       const newState = {
         ...prevState,
-        [name]: event.target.value,
+        [field]: value,
       };
 
-      if (name === "manufacturer") {
+      if (field === "manufacturer") {
         newState.model = "";
       }
 
@@ -79,7 +93,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
         formState.manufacturer === "Select a manufacturer"
           ? "Please select a manufacturer"
           : false,
-      model: !formState.model.trim() ? "Please enter a model" : false,
+      model: !formState.model || formState.model === "Select a model" ? "Please select a model" : false,
       caliber:
         formState.caliber === "Select a caliber"
           ? "Please select a caliber"
@@ -128,9 +142,13 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     </>
   );
 
+  const filteredModelOptions = firearmModels
+    .filter((model) => model.manufacturer === formState.manufacturer)
+    .map((model) => ({ label: model.name, value: model.name }));
+
   return (
     <React.Fragment>
-      <NewButton variant="primary" onClick={handleModalToggle}>
+      <NewButton variant="primary" onClick={handleModalToggle} disabled={isDisabled}>
         Add Firearm
       </NewButton>
       <Modal
@@ -155,7 +173,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                   : formState.manufacturer
               }
               onChange={(val) => handleInputChange("manufacturer", val)}
-              options={manufactureOptions}
+              options={manufacturerOptions}
               placeholder="Select a manufacturer"
               error={!!validationState.manufacturer}
             />
@@ -167,14 +185,17 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             error={validationState.model}
             id="model"
           >
-            <Input
-              type="text"
-              id="model"
-              name="model"
-              value={formState.model}
-              onChange={(e) => handleInputChange("model", e.target.value)}
+            <Select
+              value={
+                !formState.model || formState.model === "Select a model"
+                  ? undefined
+                  : formState.model
+              }
+              onChange={(val) => handleInputChange("model", val)}
+              options={filteredModelOptions}
+              placeholder="Select a model"
               error={!!validationState.model}
-              required
+              disabled={formState.manufacturer === "Select a manufacturer"}
             />
           </Field>
 

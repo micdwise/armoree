@@ -39,15 +39,22 @@ export function Select<T extends string = string>({
                 )}
             >
                 <BaseSelect.Value>
-                    {(val) => (val ? val.label : <span className="text-gray-400">{placeholder}</span>)}
+                    {(val) => {
+                        const selectedOption = options.find((opt) => opt.value === val);
+                        return selectedOption ? (
+                            selectedOption.label
+                        ) : (
+                            <span className="text-gray-400">{placeholder}</span>
+                        );
+                    }}
                 </BaseSelect.Value>
                 <BaseSelect.Icon>
                     <ChevronDown className="h-4 w-4 opacity-50" />
                 </BaseSelect.Icon>
             </BaseSelect.Trigger>
             <BaseSelect.Portal>
-                <BaseSelect.Positioner sideOffset={5}>
-                    <BaseSelect.Popup className="relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-white shadow-md animate-in fade-in-80">
+                <BaseSelect.Positioner sideOffset={5} className="z-[9999]">
+                    <BaseSelect.Popup className="min-w-[8rem] rounded-md border border-gray-200 bg-white shadow-xl p-1 max-h-60 overflow-auto">
                         {options.map((option) => (
                             <BaseSelect.Item
                                 key={option.value}

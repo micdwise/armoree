@@ -135,7 +135,7 @@ const FirearmsPage: React.FunctionComponent = () => {
 
       <PageSection>
         <div className="flex justify-end">
-          <AddFirearmForm onAddSuccess={refetch} />
+          <AddFirearmForm onAddSuccess={refetch} isDisabled={isError} />
         </div>
         <DeleteFirearmModal
           firearm={firearmToDelete}
