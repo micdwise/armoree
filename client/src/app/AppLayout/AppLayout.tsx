@@ -3,13 +3,14 @@ import { Sidebar } from "../../components/Sidebar";
 import { routes } from "@app/routes";
 import { Menu, LogOut, Settings, Bell } from "lucide-react";
 import { Button } from "../../components/Button";
+import { cn } from "../../lib/utils";
 
 interface IAppLayout {
   children: React.ReactNode;
 }
 
 const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [sidebarOpen, setSidebarOpen] = React.useState(true);
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">
@@ -26,6 +27,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         routes={routes}
+        className={cn("lg:block", sidebarOpen ? "block" : "hidden lg:block")}
       />
 
       {/* Main Content */}
@@ -34,8 +36,8 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         <header className="flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm lg:px-6">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setSidebarOpen(true)}
-              className="text-gray-500 focus:outline-none lg:hidden"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="text-gray-500 focus:outline-none hover:text-gray-700"
             >
               <Menu className="h-6 w-6" />
             </button>

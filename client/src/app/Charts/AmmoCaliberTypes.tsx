@@ -1,17 +1,15 @@
 import * as React from "react";
 import {
   Card,
+  CardHeader,
   CardTitle,
-  CardBody,
+  CardContent,
   CardFooter,
-  Title,
-  Spinner,
-  EmptyState,
-  EmptyStateBody,
-} from "@patternfly/react-core";
-import { ChartPie, ChartThemeColor } from "@patternfly/react-charts/victory";
+} from "../../components/Card";
+import { Spinner } from "../../components/Spinner";
 import { GetAmmunitionSummary } from "@app/Ammunition/AmmunitionData";
-import { CubesIcon } from "@patternfly/react-icons";
+import { VictoryPie, VictoryTheme, VictoryTooltip, VictoryLabel } from "victory";
+import { Box } from "lucide-react";
 
 const AmmoCaliberTypeCard: React.FunctionComponent = () => {
   const { data, isLoading } = GetAmmunitionSummary();
@@ -19,62 +17,58 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
   const chartData = data.map((item) => ({
     x: item.caliber,
     y: Number.parseInt(item.total_rounds, 10),
+    label: `${item.caliber}: ${item.total_rounds}`,
   }));
 
   const totalRounds = chartData.reduce((acc, datum) => acc + datum.y, 0);
 
-  const legendData = chartData.map((item) => ({
-    name: `${item.x}: ${item.y}`,
-  }));
-
   const cardBody = () => {
     if (isLoading) {
-      return <Spinner />;
+      return <div className="flex justify-center p-8"><Spinner size="lg" /></div>;
     }
 
     if (chartData.length === 0) {
       return (
-        <EmptyState variant="sm" icon={CubesIcon}>
-          <Title headingLevel="h5" size="md">
-            No Ammunition Data
-          </Title>
-          <EmptyStateBody>
-            Add ammunition to see a summary by caliber.
-          </EmptyStateBody>
-        </EmptyState>
+        <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+          <Box className="h-10 w-10 mb-2 opacity-50" />
+          <h4 className="text-lg font-medium">No Ammunition Data</h4>
+          <p className="text-sm">Add ammunition to see a summary by caliber.</p>
+        </div>
       );
     }
 
     return (
-      <ChartPie
-        ariaDesc="Ammo Caliber quantities"
-        ariaTitle="Ammunition by caliber"
-        constrainToVisibleArea
-        data={chartData}
-        labels={({ datum }) => `${datum.x}: ${datum.y}`}
-        legendData={legendData}
-        legendOrientation="vertical"
-        legendPosition="right"
-        name="ammunition-summary-chart"
-        padding={{ bottom: 20, left: 20, right: 140, top: 20 }}
-        subTitle="Rounds"
-        title={totalRounds.toString()}
-        themeColor={ChartThemeColor.multiOrdered}
-        width={350}
-      />
+      <div style={{ height: 350 }}>
+        <svg viewBox="0 0 400 400">
+          <VictoryPie
+            standalone={false}
+            width={400} height={400}
+            data={chartData}
+            innerRadius={50}
+            labelRadius={100}
+            style={{ labels: { fontSize: 20, fill: "white" } }}
+            theme={VictoryTheme.material}
+            colorScale="qualitative"
+          />
+          <VictoryLabel
+            textAnchor="middle"
+            style={{ fontSize: 20 }}
+            x={200} y={200}
+            text={`${totalRounds} Rounds`}
+          />
+        </svg>
+      </div>
     );
   };
 
   return (
-    <Card id="ammo-caliber-type-card" component="div">
-      <CardTitle>
-        <Title headingLevel="h4" size="lg">
-          Ammunition Calibers
-        </Title>
-      </CardTitle>
-      <CardBody>{cardBody()}</CardBody>
+    <Card>
+      <CardHeader>
+        <CardTitle>Ammunition Calibers</CardTitle>
+      </CardHeader>
+      <CardContent>{cardBody()}</CardContent>
       <CardFooter>
-        <a href="/Ammunition">See details</a>
+        <a href="/Ammunition" className="text-sm text-blue-600 hover:underline">See details</a>
       </CardFooter>
     </Card>
   );
