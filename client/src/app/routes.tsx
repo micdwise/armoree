@@ -1,18 +1,37 @@
 import * as React from "react";
-import { Route, useLocation, Routes } from "react-router-dom";
-import { AmmunitionPage } from "@app/Ammunition/AmmunitionPage";
-import { FirearmsPage } from "@app/Firearms/FirearmsPage";
-import { Dashboard } from "@app/Dashboard/Dashboard";
-import { useDocumentTitle } from "@app/utils/usedocumentTitle";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  Navigate,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
+import { AppLayout } from "@app/AppLayout/AppLayout";
 import { NotFound } from "@app/NotFound/NotFound";
 import { LayoutDashboard, Package, Archive } from "lucide-react";
+
+// Lazy Loaded Pages
+const Dashboard = React.lazy(() =>
+  import("@app/Dashboard/Dashboard").then((module) => ({
+    default: module.Dashboard,
+  }))
+);
+const FirearmsPage = React.lazy(() =>
+  import("@app/Firearms/FirearmsPage").then((module) => ({
+    default: module.FirearmsPage,
+  }))
+);
+const AmmunitionPage = React.lazy(() =>
+  import("@app/Ammunition/AmmunitionPage").then((module) => ({
+    default: module.AmmunitionPage,
+  }))
+);
 
 let routeFocusTimer: ReturnType<typeof setTimeout>;
 
 export interface IAppRoute {
   label?: string;
-  Component: React.ComponentType<any>;
-  exact: boolean;
   path: string;
   title: string;
   icon?: React.ComponentType<any>;
@@ -26,28 +45,20 @@ export interface IAppRouteGroup {
 
 export type AppRouteConfig = IAppRoute | IAppRouteGroup;
 
-const routes: AppRouteConfig[] = [
+const navigationRoutes: AppRouteConfig[] = [
   {
-    Component: Dashboard,
-    exact: true,
     label: "Dashboard",
-    path: "/Dashboard",
+    path: "/",
     title: "Dashboard",
     icon: LayoutDashboard,
   },
-
   {
-    Component: FirearmsPage,
-    exact: true,
     label: "Firearms",
     path: "/Firearms",
     title: "Firearms",
     icon: Package,
   },
-
   {
-    Component: AmmunitionPage,
-    exact: true,
     label: "Ammunition",
     path: "/Ammunition",
     title: "Ammunition",
@@ -55,7 +66,7 @@ const routes: AppRouteConfig[] = [
   },
 ];
 
-const useA11yRouteChange = () => {
+const RouteFocusHandler = () => {
   const { pathname } = useLocation();
   React.useEffect(() => {
     routeFocusTimer = globalThis.setTimeout(() => {
@@ -68,28 +79,36 @@ const useA11yRouteChange = () => {
       globalThis.clearTimeout(routeFocusTimer);
     };
   }, [pathname]);
+  return null;
 };
 
-const PageNotFound = ({ title }: { title: string }) => {
-  useDocumentTitle(title);
-  return <Route Component={NotFound} />;
+const AppRoot = () => {
+  return (
+    <AppLayout>
+      <RouteFocusHandler />
+      <React.Suspense
+        fallback={
+          <div className="flex h-full items-center justify-center p-4">
+            Loading...
+          </div>
+        }
+      >
+        <Outlet />
+      </React.Suspense>
+    </AppLayout>
+  );
 };
 
-const flattenedRoutes: IAppRoute[] = routes.reduce((flattened, route) => {
-  if ("routes" in route && Array.isArray(route.routes)) {
-    return [...flattened, ...route.routes];
-  }
-  return [...flattened, route as IAppRoute];
-}, [] as IAppRoute[]);
-
-const AppRoutes = (): React.ReactElement => (
-  <Routes>
-    <Route path="/" Component={Dashboard} />
-    {flattenedRoutes.map(({ path, Component }) => (
-      <Route path={path} Component={Component} key={path} />
-    ))}
-    {/*<PageNotFound title="404 Page Not Found" /> */}
-  </Routes>
+export const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<AppRoot />}>
+      <Route index element={<Dashboard />} />
+      <Route path="Dashboard" element={<Navigate to="/" replace />} />
+      <Route path="Firearms/*" element={<FirearmsPage />} />
+      <Route path="Ammunition/*" element={<AmmunitionPage />} />
+      <Route path="*" element={<NotFound />} />
+    </Route>
+  )
 );
 
-export { AppRoutes, routes };
+export { navigationRoutes as routes };

@@ -1,14 +1,9 @@
 import * as React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { AppLayout } from "@app/AppLayout/AppLayout";
-import { AppRoutes } from "@app/routes";
+import { RouterProvider } from "react-router-dom";
+import { router } from "@app/routes";
 
 const App: React.FunctionComponent = () => (
-  <Router>
-    <AppLayout>
-      <AppRoutes />
-    </AppLayout>
-  </Router>
+  <RouterProvider router={router} />
 );
 
 export default App;
