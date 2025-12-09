@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { AppLayout } from "@app/AppLayout/AppLayout";
 import { NotFound } from "@app/NotFound/NotFound";
-import { LayoutDashboard, Package, Archive } from "lucide-react";
+import { LayoutDashboard, Package, Archive, Backpack } from "lucide-react";
 
 // Lazy Loaded Pages
 const Dashboard = React.lazy(() =>
@@ -62,7 +62,7 @@ const navigationRoutes: AppRouteConfig[] = [
     label: "Ammunition",
     path: "/Ammunition",
     title: "Ammunition",
-    icon: Archive,
+    icon: Backpack,
   },
 ];
 
