@@ -1,11 +1,14 @@
 [
   {
-    "name": "P320"
+    "name": "P320",
+    "manufacturer": "Sig Sauer"
   },
   {
-    "name": "P365"
+    "name": "P365",
+    "manufacturer": "Sig Sauer"
   },
   {
-    "name": "Blackhawk"
+    "name": "Super Blackhawk",
+    "manufacturer": "Remington"
   }
 ]

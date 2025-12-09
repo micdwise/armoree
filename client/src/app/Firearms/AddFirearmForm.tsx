@@ -6,6 +6,7 @@ import { Select } from "../../components/Select";
 import { Modal } from "../../components/Modal";
 import { Field } from "../../components/Field";
 import { AddFirearms } from "@app/Firearms/FirearmsData";
+import AllFirearmsManufacturer from "@data/firearms-manufacturers.json";
 
 interface FirearmFormState {
   manufacturer: string;
@@ -39,16 +40,6 @@ const initialValidationState: ValidationState = {
   serial_number: false,
 };
 
-const manufactureOptions = [
-  { value: "Smith & Wesson", label: "Smith & Wesson" },
-  { value: "Colt", label: "Colt" },
-];
-
-const caliberOptions = [
-  { value: "9MM", label: "9MM" },
-  { value: "5.56", label: "5.56" },
-];
-
 interface AddFirearmFormProps {
   onAddSuccess: () => void;
 }
@@ -63,11 +54,19 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     initialValidationState,
   );
 
-  const handleInputChange = (field: keyof FirearmFormState, value: string) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      [field]: value,
-    }));
+  const handleInputChange = (field: keyof FirearmFormState) => {
+    setFormState((prevState) => {
+      const newState = {
+        ...prevState,
+        [name]: event.target.value,
+      };
+
+      if (name === "manufacturer") {
+        newState.model = "";
+      }
+
+      return newState;
+    });
     setValidationState((prevState) => ({
       ...prevState,
       [field]: false, // Clear error on change

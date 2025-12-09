@@ -4,15 +4,8 @@
     "rootDir": ".",
     "target": "ES2022",
     "outDir": "./dist",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "types": [
-      "vite/client",
-      "node"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["vite/client", "node"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -27,14 +20,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@app/*": [
-        "src/app/*"
-      ]
-    },
+      "@data/*": ["src/data/*"],
+      "@app/*": ["src/app/*"]
+    }
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "references": [
     {
       "path": "./tsconfig.node.json"
