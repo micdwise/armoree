@@ -9,13 +9,18 @@ import {
   SortableHead,
 } from "../../components/Table";
 import { Firearm } from "@app/Firearms/FirearmsData";
-import { PageSection, Toolbar, ToolbarContent, ToolbarItem } from "../../components/Layout";
+import {
+  PageSection,
+  Toolbar,
+  ToolbarContent,
+  ToolbarItem,
+} from "../../components/Layout";
 import { Spinner } from "../../components/Spinner";
-import { Alert } from "../../components/Alert";
+
 import { Pagination } from "../../components/Pagination";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { Search, Box, Trash2 } from "lucide-react";
+import { Search, Box, Trash2, AlertTriangle } from "lucide-react";
 
 export interface SortBy {
   index?: number;
@@ -27,7 +32,11 @@ interface FirearmsTableProps {
   isLoading: boolean;
   isError: boolean;
   sortBy: SortBy;
-  onSort: (event: React.MouseEvent, index: number, direction: "asc" | "desc") => void;
+  onSort: (
+    event: React.MouseEvent,
+    index: number,
+    direction: "asc" | "desc",
+  ) => void;
   itemCount: number;
   page: number;
   perPage: number;
@@ -37,7 +46,7 @@ interface FirearmsTableProps {
   filterValue: string;
   onFilterChange: (
     event: React.FormEvent<HTMLInputElement>,
-    value: string
+    value: string,
   ) => void;
 }
 
@@ -81,13 +90,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     );
   }
 
-  if (isError) {
-    return (
-      <PageSection>
-        <Alert variant="danger" title="Error loading firearms" />
-      </PageSection>
-    );
-  }
+
 
   return (
     <PageSection>
@@ -109,18 +112,21 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
           <Table>
             <TableHeader>
               <TableRow>
-                {columns.map((column, columnIndex) => (
+                {columns.map((column, columnIndex) =>
                   column.title ? (
                     <SortableHead
                       key={column.title}
-                      sortDirection={sortBy.index === columnIndex ? sortBy.direction : null}
+                      sortDirection={
+                        sortBy.index === columnIndex ? sortBy.direction : null
+                      }
                       onSort={() =>
                         onSort(
                           null as any,
                           columnIndex,
-                          sortBy.index === columnIndex && sortBy.direction === "asc"
+                          sortBy.index === columnIndex &&
+                            sortBy.direction === "asc"
                             ? "desc"
-                            : "asc"
+                            : "asc",
                         )
                       }
                     >
@@ -128,12 +134,28 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                     </SortableHead>
                   ) : (
                     <TableHead key={columnIndex} />
-                  )
-                ))}
+                  ),
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {firearms.length > 0 ? (
+              {isError ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-48 text-center"
+                  >
+                    <div className="flex flex-col items-center justify-center gap-2 text-red-600">
+                      <AlertTriangle className="h-8 w-8" />
+                      <p>Error loading firearms</p>
+                      <p className="text-sm text-gray-500">
+                        There was a problem loading your inventory. Please try
+                        again later.
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : firearms.length > 0 ? (
                 firearms.map((repo: Firearm) => (
                   <TableRow key={repo.id}>
                     <TableCell>{repo.manufacturer}</TableCell>
@@ -158,19 +180,27 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-48 text-center">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-48 text-center"
+                  >
                     <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
                       {filterValue ? (
                         <>
                           <Search className="h-8 w-8 opacity-50" />
                           <p>No results found</p>
-                          <p className="text-sm">No firearms match your current filter criteria.</p>
+                          <p className="text-sm">
+                            No firearms match your current filter criteria.
+                          </p>
                         </>
                       ) : (
                         <>
                           <Box className="h-8 w-8 opacity-50" />
                           <p>No Firearms in Inventory</p>
-                          <p className="text-sm">Get started by adding a new firearm to your inventory.</p>
+                          <p className="text-sm">
+                            Get started by adding a new firearm to your
+                            inventory.
+                          </p>
                         </>
                       )}
                     </div>

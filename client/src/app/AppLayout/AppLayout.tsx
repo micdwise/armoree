@@ -41,7 +41,9 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-xl font-semibold text-gray-800 lg:hidden">Armoree</h1>
+            <h1 className="text-xl font-semibold text-gray-800 lg:hidden">
+              Armoree
+            </h1>
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
@@ -56,10 +58,8 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-4 lg:p-6">
-          <div className="mx-auto max-w-7xl">
-            {children}
-          </div>
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white p-4 lg:p-6">
+          <div className="mx-auto max-w-7xl">{children}</div>
         </main>
       </div>
     </div>

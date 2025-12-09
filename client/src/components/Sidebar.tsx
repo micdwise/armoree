@@ -29,18 +29,24 @@ export function Sidebar({
       )}
       {...props}
     >
-      <div className={cn(
-        "flex h-16 items-center border-b border-gray-200 transition-all duration-300",
-        isOpen ? "justify-between px-4" : "justify-center lg:px-0"
-      )}>
-        <span className={cn(
-          "text-xl font-bold text-gray-900 transition-opacity duration-200 whitespace-nowrap",
-          isOpen ? "opacity-100" : "opacity-0 lg:hidden"
-        )}>
+      <div
+        className={cn(
+          "flex h-16 items-center border-b border-gray-200 transition-all duration-300",
+          isOpen ? "justify-between px-4" : "justify-center lg:px-0",
+        )}
+      >
+        <span
+          className={cn(
+            "text-xl font-bold text-gray-900 transition-opacity duration-200 whitespace-nowrap",
+            isOpen ? "opacity-100" : "opacity-0 lg:hidden",
+          )}
+        >
           Armoree
         </span>
         {/* Show a mini logo or icon when collapsed if needed, for now just hiding text to prevent overflow */}
-        {!isOpen && <span className="hidden lg:block font-bold text-xl">A</span>}
+        {!isOpen && (
+          <span className="hidden lg:block font-bold text-xl">A</span>
+        )}
 
         <button
           onClick={onClose}
@@ -81,7 +87,11 @@ function SidebarItem({
 
   // Auto expand if child is active and sidebar is open
   React.useEffect(() => {
-    if (isSidebarOpen && hasChildren && route.routes.some((r: any) => r.path === currentPath)) {
+    if (
+      isSidebarOpen &&
+      hasChildren &&
+      route.routes.some((r: any) => r.path === currentPath)
+    ) {
       setIsExpanded(true);
     }
   }, [currentPath, hasChildren, route.routes, isSidebarOpen]);
@@ -111,17 +121,25 @@ function SidebarItem({
             isSidebarOpen ? "px-3 justify-between" : "justify-center px-0",
             isExpanded
               ? "bg-gray-100 text-gray-900"
-              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
           )}
           title={!isSidebarOpen ? route.label : undefined}
         >
-          <div className={cn("flex items-center", isSidebarOpen ? "gap-3" : "justify-center")}>
+          <div
+            className={cn(
+              "flex items-center",
+              isSidebarOpen ? "gap-3" : "justify-center",
+            )}
+          >
             {route.icon && <route.icon className="h-5 w-5" />}
             {isSidebarOpen && <span>{route.label}</span>}
           </div>
-          {isSidebarOpen && (
-            isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />
-          )}
+          {isSidebarOpen &&
+            (isExpanded ? (
+              <ChevronDown className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            ))}
         </button>
         {isSidebarOpen && isExpanded && (
           <ul className="mt-1 space-y-1 pl-4">

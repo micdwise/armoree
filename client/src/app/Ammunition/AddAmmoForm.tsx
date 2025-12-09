@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button } from "../../components/Button";
+import { NewButton } from "../../components/NewButton";
 import { Input } from "../../components/Input";
 import { Modal } from "../../components/Modal";
 import { Field } from "../../components/Field";
@@ -34,14 +34,12 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   const [formState, setFormState] =
     React.useState<AmmoFormState>(initialFormState);
 
-  const handleInputChange =
-    (name: keyof AmmoFormState) =>
-      (value: string) => {
-        setFormState((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      };
+  const handleInputChange = (name: keyof AmmoFormState) => (value: string) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   const handleSubmitAmmo = () => {
     AddAmmunition(formState)
@@ -60,20 +58,20 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
 
   const footer = (
     <>
-      <Button variant="link" onClick={handleModalToggle}>
+      <NewButton variant="link" onClick={handleModalToggle}>
         Cancel
-      </Button>
-      <Button variant="primary" onClick={handleSubmitAmmo}>
+      </NewButton>
+      <NewButton variant="primary" onClick={handleSubmitAmmo}>
         Add
-      </Button>
+      </NewButton>
     </>
   );
 
   return (
     <React.Fragment>
-      <Button variant="primary" onClick={handleModalToggle}>
+      <NewButton variant="primary" onClick={handleModalToggle}>
         Add Ammunition
-      </Button>
+      </NewButton>
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalToggle}
@@ -90,7 +88,9 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
               id="manufacturer"
               name="manufacturer"
               value={formState.manufacturer}
-              onChange={(e) => handleInputChange("manufacturer")(e.target.value)}
+              onChange={(e) =>
+                handleInputChange("manufacturer")(e.target.value)
+              }
             />
           </Field>
 
@@ -123,7 +123,9 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
               id="purchase_date"
               name="purchase_date"
               value={formState.purchase_date}
-              onChange={(e) => handleInputChange("purchase_date")(e.target.value)}
+              onChange={(e) =>
+                handleInputChange("purchase_date")(e.target.value)
+              }
             />
           </Field>
 

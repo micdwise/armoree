@@ -1,5 +1,11 @@
 import * as React from "react";
-import { PageSection, Toolbar, ToolbarContent, ToolbarItem, Title } from "../../components/Layout";
+import {
+  PageSection,
+  Toolbar,
+  ToolbarContent,
+  ToolbarItem,
+  Title,
+} from "../../components/Layout";
 import { AmmunitionTable, SortBy } from "@app/Ammunition/AmmunitionTable";
 import { AddAmmoForm } from "@app/Ammunition/AddAmmoForm";
 import {
@@ -66,10 +72,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
     return sortBy.direction === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
 
-  const onSetPage = (
-    _event: any,
-    newPage: number,
-  ) => {
+  const onSetPage = (_event: any, newPage: number) => {
     setPage(newPage);
   };
 
@@ -134,15 +137,14 @@ const AmmunitionPage: React.FunctionComponent = () => {
         <div className="flex justify-end">
           <AddAmmoForm onAddSuccess={refetch} />
         </div>
+        <DeleteAmmunitionModal
+          ammunition={ammunitionToDelete}
+          isOpen={isDeleteModalOpen}
+          onClose={handleClosedDeleteModal}
+          onConfirm={handleDeleteAmmunition}
+        />
       </PageSection>
-
-      <DeleteAmmunitionModal
-        ammunition={ammunitionToDelete}
-        isOpen={isDeleteModalOpen}
-        onClose={handleClosedDeleteModal}
-        onConfirm={handleDeleteAmmunition}
-      />
-    </React.Fragment >
+    </React.Fragment>
   );
 };
 

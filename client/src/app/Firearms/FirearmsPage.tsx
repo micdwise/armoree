@@ -1,5 +1,11 @@
 import * as React from "react";
-import { PageSection, Toolbar, ToolbarContent, ToolbarItem, Title } from "../../components/Layout";
+import {
+  PageSection,
+  Toolbar,
+  ToolbarContent,
+  ToolbarItem,
+  Title,
+} from "../../components/Layout";
 import { FirearmsTable, SortBy } from "@app/Firearms/FirearmsTable";
 import { AddFirearmForm } from "@app/Firearms/AddFirearmForm";
 import {
@@ -66,10 +72,7 @@ const FirearmsPage: React.FunctionComponent = () => {
     return sortBy.direction === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
 
-  const onSetPage = (
-    _event: any,
-    newPage: number,
-  ) => {
+  const onSetPage = (_event: any, newPage: number) => {
     setPage(newPage);
   };
 
@@ -131,13 +134,9 @@ const FirearmsPage: React.FunctionComponent = () => {
       />
 
       <PageSection>
-        <Toolbar>
-          <ToolbarContent>
-            <ToolbarItem>
-              <AddFirearmForm onAddSuccess={refetch} />
-            </ToolbarItem>
-          </ToolbarContent>
-        </Toolbar>
+        <div className="flex justify-end">
+          <AddFirearmForm onAddSuccess={refetch} />
+        </div>
         <DeleteFirearmModal
           firearm={firearmToDelete}
           isOpen={isDeleteModalOpen}

@@ -11,11 +11,11 @@ import {
 import { Ammunition } from "@app/Ammunition/AmmunitionData";
 import { PageSection, Toolbar, ToolbarContent, ToolbarItem } from "../../components/Layout";
 import { Spinner } from "../../components/Spinner";
-import { Alert } from "../../components/Alert";
+
 import { Pagination } from "../../components/Pagination";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { Search, Box, Trash2 } from "lucide-react";
+import { Search, Box, Trash2, AlertTriangle } from "lucide-react";
 
 export interface SortBy {
   index?: number;
@@ -83,13 +83,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
     );
   }
 
-  if (isError) {
-    return (
-      <PageSection>
-        <Alert variant="danger" title="Error loading ammunition" />
-      </PageSection>
-    );
-  }
+
 
   return (
     <PageSection>
@@ -135,7 +129,23 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {ammunition.length > 0 ? (
+              {isError ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-48 text-center"
+                  >
+                    <div className="flex flex-col items-center justify-center gap-2 text-red-600">
+                      <AlertTriangle className="h-8 w-8" />
+                      <p>Error loading ammunition</p>
+                      <p className="text-sm text-gray-500">
+                        There was a problem loading your inventory. Please try
+                        again later.
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : ammunition.length > 0 ? (
                 ammunition.map((repo: Ammunition) => (
                   <TableRow key={repo.id}>
                     <TableCell>{repo.manufacturer}</TableCell>

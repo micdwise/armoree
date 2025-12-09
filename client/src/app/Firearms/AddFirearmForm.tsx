@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Button } from "../../components/Button";
+import { NewButton } from "../../components/NewButton";
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
 import { Modal } from "../../components/Modal";
@@ -58,8 +59,9 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [formState, setFormState] =
     React.useState<FirearmFormState>(initialFormState);
-  const [validationState, setValidationState] =
-    React.useState<ValidationState>(initialValidationState);
+  const [validationState, setValidationState] = React.useState<ValidationState>(
+    initialValidationState,
+  );
 
   const handleInputChange = (field: keyof FirearmFormState, value: string) => {
     setFormState((prevState) => ({
@@ -80,8 +82,12 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
           : false,
       model: !formState.model.trim() ? "Please enter a model" : false,
       caliber:
-        formState.caliber === "Select a caliber" ? "Please select a caliber" : false,
-      purchase_date: !formState.purchase_date ? "Please enter a purchase date" : false,
+        formState.caliber === "Select a caliber"
+          ? "Please select a caliber"
+          : false,
+      purchase_date: !formState.purchase_date
+        ? "Please enter a purchase date"
+        : false,
       serial_number: !formState.serial_number.trim()
         ? "Please enter a serial number"
         : false,
@@ -125,9 +131,9 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
 
   return (
     <React.Fragment>
-      <Button variant="primary" onClick={handleModalToggle}>
+      <NewButton variant="primary" onClick={handleModalToggle}>
         Add Firearm
-      </Button>
+      </NewButton>
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalToggle}
@@ -144,7 +150,11 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             id="manufacturer"
           >
             <Select
-              value={formState.manufacturer === "Select a manufacturer" ? undefined : formState.manufacturer}
+              value={
+                formState.manufacturer === "Select a manufacturer"
+                  ? undefined
+                  : formState.manufacturer
+              }
               onChange={(val) => handleInputChange("manufacturer", val)}
               options={manufactureOptions}
               placeholder="Select a manufacturer"
@@ -176,7 +186,11 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             id="caliber"
           >
             <Select
-              value={formState.caliber === "Select a caliber" ? undefined : formState.caliber}
+              value={
+                formState.caliber === "Select a caliber"
+                  ? undefined
+                  : formState.caliber
+              }
               onChange={(val) => handleInputChange("caliber", val)}
               options={caliberOptions}
               placeholder="Select a caliber"
@@ -195,7 +209,9 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
               id="purchase_date"
               name="purchase_date"
               value={formState.purchase_date}
-              onChange={(e) => handleInputChange("purchase_date", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("purchase_date", e.target.value)
+              }
               error={!!validationState.purchase_date}
               required
             />
@@ -212,7 +228,9 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
               id="serial_number"
               name="serial_number"
               value={formState.serial_number}
-              onChange={(e) => handleInputChange("serial_number", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("serial_number", e.target.value)
+              }
               error={!!validationState.serial_number}
               required
             />
