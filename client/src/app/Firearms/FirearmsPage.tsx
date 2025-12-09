@@ -1,17 +1,6 @@
 import * as React from "react";
-import {
-  Flex,
-  FlexItem,
-  ActionGroup,
-  PageSection,
-  PageSectionVariants,
-  Title,
-  Toolbar,
-  ToolbarContent,
-  ToolbarItem,
-} from "@patternfly/react-core";
-import { ISortBy, SortByDirection } from "@patternfly/react-table";
-import { FirearmsTable } from "@app/Firearms/FirearmsTable";
+import { PageSection, Toolbar, ToolbarContent, ToolbarItem, Title } from "../../components/Layout";
+import { FirearmsTable, SortBy } from "@app/Firearms/FirearmsTable";
 import { AddFirearmForm } from "@app/Firearms/AddFirearmForm";
 import {
   GetFirearms,
@@ -22,7 +11,7 @@ import { DeleteFirearmModal } from "@app/Firearms/DeleteFirearmModal";
 
 const FirearmsPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetFirearms();
-  const [sortBy, setSortBy] = React.useState<ISortBy>({});
+  const [sortBy, setSortBy] = React.useState<SortBy>({});
   const [page, setPage] = React.useState(1);
   const [perPage, setPerPage] = React.useState(10);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
@@ -42,7 +31,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   const onSort = (
     _event: React.MouseEvent,
     index: number,
-    direction: SortByDirection,
+    direction: "asc" | "desc",
   ) => {
     setSortBy({ index, direction });
   };
@@ -74,18 +63,18 @@ const FirearmsPage: React.FunctionComponent = () => {
     const sorted = [...filteredData].sort((a, b) =>
       a[sortKey] < b[sortKey] ? -1 : 1,
     );
-    return sortBy.direction === SortByDirection.asc ? sorted : sorted.reverse();
+    return sortBy.direction === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
 
   const onSetPage = (
-    _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
+    _event: any,
     newPage: number,
   ) => {
     setPage(newPage);
   };
 
   const onPerPageSelect = (
-    _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
+    _event: any,
     newPerPage: number,
     newPage: number,
   ) => {
@@ -115,32 +104,32 @@ const FirearmsPage: React.FunctionComponent = () => {
 
   return (
     <React.Fragment>
-      <PageSection variant={PageSectionVariants.default}>
+      <PageSection>
         <Toolbar>
           <ToolbarContent>
             <ToolbarItem>
-              <Title headingLevel="h1">Firearms</Title>
+              <Title>Firearms</Title>
             </ToolbarItem>
           </ToolbarContent>
         </Toolbar>
       </PageSection>
-      <PageSection variant={PageSectionVariants.default}>
-        <FirearmsTable
-          firearms={paginatedData}
-          isLoading={isLoading}
-          isError={isError}
-          sortBy={sortBy}
-          onSort={onSort}
-          itemCount={sortedData?.length || 0}
-          page={page}
-          perPage={perPage}
-          onSetPage={onSetPage}
-          onPerPageSelect={onPerPageSelect}
-          filterValue={filterValue}
-          onFilterChange={onFilterChange}
-          onDeleteFirearm={handleOpenDeleteModal}
-        />
-      </PageSection>
+
+      <FirearmsTable
+        firearms={paginatedData}
+        isLoading={isLoading}
+        isError={isError}
+        sortBy={sortBy}
+        onSort={onSort}
+        itemCount={sortedData?.length || 0}
+        page={page}
+        perPage={perPage}
+        onSetPage={onSetPage}
+        onPerPageSelect={onPerPageSelect}
+        filterValue={filterValue}
+        onFilterChange={onFilterChange}
+        onDeleteFirearm={handleOpenDeleteModal}
+      />
+
       <PageSection>
         <Toolbar>
           <ToolbarContent>

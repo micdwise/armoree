@@ -1,15 +1,8 @@
 import * as React from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  TextInput,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalVariant,
-} from "@patternfly/react-core";
+import { Button } from "../../components/Button";
+import { Input } from "../../components/Input";
+import { Modal } from "../../components/Modal";
+import { Field } from "../../components/Field";
 import { AddAmmunition } from "@app/Ammunition/AmmunitionData";
 
 interface AmmoFormState {
@@ -43,27 +36,38 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
 
   const handleInputChange =
     (name: keyof AmmoFormState) =>
-    (_event: React.FormEvent<HTMLInputElement>, value: string) => {
-      setFormState((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    };
+      (value: string) => {
+        setFormState((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      };
 
   const handleSubmitAmmo = () => {
     AddAmmunition(formState)
       .then(() => {
-        onAddSuccess(); // This will trigger the refetch
-        setFormState(initialFormState); // Reset form
+        onAddSuccess();
+        setFormState(initialFormState);
         setIsModalOpen(false);
       })
       .catch(console.error);
   };
 
-  const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
+  const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
-    if (isModalOpen) setFormState(initialFormState);
+    if (!isModalOpen) setFormState(initialFormState);
   };
+
+  const footer = (
+    <>
+      <Button variant="link" onClick={handleModalToggle}>
+        Cancel
+      </Button>
+      <Button variant="primary" onClick={handleSubmitAmmo}>
+        Add
+      </Button>
+    </>
+  );
 
   return (
     <React.Fragment>
@@ -71,115 +75,80 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         Add Ammunition
       </Button>
       <Modal
-        variant={ModalVariant.small}
         isOpen={isModalOpen}
         onClose={handleModalToggle}
+        title="Add Ammunition"
+        description="Enter information below."
+        footer={footer}
+        size="md"
       >
-        <ModalHeader
-          title="Add Ammunition"
-          description="Enter information below."
-        />
-        <ModalBody>
-          <Form id="modal-with-form-form-ammo">
-            <FormGroup
-              label="Manufacturer"
-              isRequired
-              fieldId="modal-with-form-form-manufacturer"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-manufacturer"
-                name="manufacturer"
-                value={formState.manufacturer}
-                onChange={handleInputChange("manufacturer")}
-              />
-            </FormGroup>
+        <form id="modal-with-form-form-ammo" className="flex flex-col gap-4">
+          <Field label="Manufacturer" required id="manufacturer">
+            <Input
+              required
+              type="text"
+              id="manufacturer"
+              name="manufacturer"
+              value={formState.manufacturer}
+              onChange={(e) => handleInputChange("manufacturer")(e.target.value)}
+            />
+          </Field>
 
-            <FormGroup
-              label="Brand"
-              isRequired
-              fieldId="modal-with-form-form-brand"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-brand"
-                name="brand"
-                value={formState.brand}
-                onChange={handleInputChange("brand")}
-              />
-            </FormGroup>
+          <Field label="Brand" required id="brand">
+            <Input
+              required
+              type="text"
+              id="brand"
+              name="brand"
+              value={formState.brand}
+              onChange={(e) => handleInputChange("brand")(e.target.value)}
+            />
+          </Field>
 
-            <FormGroup
-              label="Caliber"
-              isRequired
-              fieldId="modal-with-form-form-caliber"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-caliber"
-                name="caliber"
-                value={formState.caliber}
-                onChange={handleInputChange("caliber")}
-              />
-            </FormGroup>
+          <Field label="Caliber" required id="caliber">
+            <Input
+              required
+              type="text"
+              id="caliber"
+              name="caliber"
+              value={formState.caliber}
+              onChange={(e) => handleInputChange("caliber")(e.target.value)}
+            />
+          </Field>
 
-            <FormGroup
-              label="Purchase Date"
-              isRequired
-              fieldId="modal-with-form-form-purchase-date"
-            >
-              <TextInput
-                isRequired
-                type="date"
-                id="modal-with-form-form-purchase-date"
-                name="purchase_date"
-                value={formState.purchase_date}
-                onChange={handleInputChange("purchase_date")}
-              />
-            </FormGroup>
+          <Field label="Purchase Date" required id="purchase_date">
+            <Input
+              required
+              type="date"
+              id="purchase_date"
+              name="purchase_date"
+              value={formState.purchase_date}
+              onChange={(e) => handleInputChange("purchase_date")(e.target.value)}
+            />
+          </Field>
 
-            <FormGroup
-              label="Lot Number"
-              isRequired
-              fieldId="modal-with-form-form-lot-number"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-lot-number"
-                name="lot_number"
-                value={formState.lot_number}
-                onChange={handleInputChange("lot_number")}
-              />
-            </FormGroup>
+          <Field label="Lot Number" required id="lot_number">
+            <Input
+              required
+              type="text"
+              id="lot_number"
+              name="lot_number"
+              value={formState.lot_number}
+              onChange={(e) => handleInputChange("lot_number")(e.target.value)}
+            />
+          </Field>
 
-            <FormGroup
-              label="Quantity"
-              isRequired
-              fieldId="modal-with-form-form-qty"
-            >
-              <TextInput
-                isRequired
-                type="number"
-                id="modal-with-form-form-lot-qty"
-                name="qty"
-                value={formState.qty}
-                onChange={handleInputChange("qty")}
-              />
-            </FormGroup>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button key="create" variant="primary" onClick={handleSubmitAmmo}>
-            Add
-          </Button>
-          <Button key="cancel" variant="link" onClick={handleModalToggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
+          <Field label="Quantity" required id="qty">
+            <Input
+              required
+              type="number"
+              id="qty"
+              name="qty"
+              value={formState.qty}
+              onChange={(e) => handleInputChange("qty")(e.target.value)}
+            />
+          </Field>
+        </form>
       </Modal>
     </React.Fragment>
   );

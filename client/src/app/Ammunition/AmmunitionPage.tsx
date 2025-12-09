@@ -1,29 +1,17 @@
 import * as React from "react";
-import {
-  ActionGroup,
-  Flex,
-  FlexItem,
-  PageSection,
-  Toolbar,
-  ToolbarContent,
-  ToolbarItem,
-  Title,
-  PageSectionVariants,
-} from "@patternfly/react-core";
-import { ISortBy, SortByDirection } from "@patternfly/react-table";
-import { AmmunitionTable } from "@app/Ammunition/AmmunitionTable";
+import { PageSection, Toolbar, ToolbarContent, ToolbarItem, Title } from "../../components/Layout";
+import { AmmunitionTable, SortBy } from "@app/Ammunition/AmmunitionTable";
 import { AddAmmoForm } from "@app/Ammunition/AddAmmoForm";
 import {
   Ammunition,
   GetAmmunition,
   DeleteAmmunition,
 } from "@app/Ammunition/AmmunitionData";
-import "@app/App.css";
 import { DeleteAmmunitionModal } from "./DeleteAmmunitionModal";
 
 const AmmunitionPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetAmmunition();
-  const [sortBy, setSortBy] = React.useState<ISortBy>({});
+  const [sortBy, setSortBy] = React.useState<SortBy>({});
   const [page, setPage] = React.useState(1);
   const [perPage, setPerPage] = React.useState(10);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
@@ -43,7 +31,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
   const onSort = (
     _event: React.MouseEvent,
     index: number,
-    direction: SortByDirection,
+    direction: "asc" | "desc",
   ) => {
     setSortBy({ index, direction });
   };
@@ -75,18 +63,18 @@ const AmmunitionPage: React.FunctionComponent = () => {
     const sorted = [...filteredData].sort((a, b) =>
       a[sortKey] < b[sortKey] ? -1 : 1,
     );
-    return sortBy.direction === SortByDirection.asc ? sorted : sorted.reverse();
+    return sortBy.direction === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
 
   const onSetPage = (
-    _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
+    _event: any,
     newPage: number,
   ) => {
     setPage(newPage);
   };
 
   const onPerPageSelect = (
-    _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
+    _event: any,
     newPerPage: number,
     newPage: number,
   ) => {
@@ -116,41 +104,38 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
   return (
     <React.Fragment>
-      <PageSection variant={PageSectionVariants.default}>
+      <PageSection>
         <Toolbar>
           <ToolbarContent>
             <ToolbarItem>
-              <Title headingLevel="h1">Ammunition</Title>
+              <Title>Ammunition</Title>
             </ToolbarItem>
           </ToolbarContent>
         </Toolbar>
       </PageSection>
-      <PageSection variant={PageSectionVariants.default}>
-        <AmmunitionTable
-          ammunition={paginatedData}
-          isLoading={isLoading}
-          isError={isError}
-          sortBy={sortBy}
-          onSort={onSort}
-          itemCount={sortedData?.length || 0}
-          page={page}
-          perPage={perPage}
-          onSetPage={onSetPage}
-          onPerPageSelect={onPerPageSelect}
-          filterValue={filterValue}
-          onFilterChange={onFilterChange}
-          onDeleteAmmunition={handleOpenDeleteModal}
-        />
+
+      <AmmunitionTable
+        ammunition={paginatedData}
+        isLoading={isLoading}
+        isError={isError}
+        sortBy={sortBy}
+        onSort={onSort}
+        itemCount={sortedData?.length || 0}
+        page={page}
+        perPage={perPage}
+        onSetPage={onSetPage}
+        onPerPageSelect={onPerPageSelect}
+        filterValue={filterValue}
+        onFilterChange={onFilterChange}
+        onDeleteAmmunition={handleOpenDeleteModal}
+      />
+
+      <PageSection>
+        <div className="flex justify-end">
+          <AddAmmoForm onAddSuccess={refetch} />
+        </div>
       </PageSection>
-      <PageSection variant={PageSectionVariants.default}>
-        <Flex>
-          <FlexItem align={{ default: "alignRight" }}>
-            <ActionGroup>
-              <AddAmmoForm onAddSuccess={refetch} />
-            </ActionGroup>
-          </FlexItem>
-        </Flex>
-      </PageSection>
+
       <DeleteAmmunitionModal
         ammunition={ammunitionToDelete}
         isOpen={isDeleteModalOpen}

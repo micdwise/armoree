@@ -5,11 +5,7 @@ import { FirearmsPage } from "@app/Firearms/FirearmsPage";
 import { Dashboard } from "@app/Dashboard/Dashboard";
 import { useDocumentTitle } from "@app/utils/usedocumentTitle";
 import { NotFound } from "@app/NotFound/NotFound";
-import {
-  TachometerAltIcon,
-  CubesIcon,
-  ArchiveIcon,
-} from "@patternfly/react-icons";
+import { LayoutDashboard, Package, Archive } from "lucide-react";
 
 let routeFocusTimer: ReturnType<typeof setTimeout>;
 
@@ -37,7 +33,7 @@ const routes: AppRouteConfig[] = [
     label: "Dashboard",
     path: "/Dashboard",
     title: "Dashboard",
-    icon: TachometerAltIcon,
+    icon: LayoutDashboard,
   },
 
   {
@@ -46,7 +42,7 @@ const routes: AppRouteConfig[] = [
     label: "Firearms",
     path: "/Firearms",
     title: "Firearms",
-    icon: CubesIcon,
+    icon: Package,
   },
 
   {
@@ -55,7 +51,7 @@ const routes: AppRouteConfig[] = [
     label: "Ammunition",
     path: "/Ammunition",
     title: "Ammunition",
-    icon: ArchiveIcon,
+    icon: Archive,
   },
 ];
 

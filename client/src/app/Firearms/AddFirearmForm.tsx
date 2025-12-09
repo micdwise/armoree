@@ -1,23 +1,10 @@
 import * as React from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  FormSelect,
-  FormSelectOption,
-  FormHelperText,
-  HelperText,
-  HelperTextItem,
-  TextInput,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  ModalVariant,
-  Label,
-} from "@patternfly/react-core";
+import { Button } from "../../components/Button";
+import { Input } from "../../components/Input";
+import { Select } from "../../components/Select";
+import { Modal } from "../../components/Modal";
+import { Field } from "../../components/Field";
 import { AddFirearms } from "@app/Firearms/FirearmsData";
-import { ExclamationCircleIcon } from "@patternfly/react-icons";
 
 interface FirearmFormState {
   manufacturer: string;
@@ -28,11 +15,11 @@ interface FirearmFormState {
 }
 
 interface ValidationState {
-  manufacturer: "success" | "warning" | "error" | "default";
-  model: "success" | "warning" | "error" | "default";
-  caliber: "success" | "warning" | "error" | "default";
-  purchase_date: "success" | "warning" | "error" | "default";
-  serial_number: "success" | "warning" | "error" | "default";
+  manufacturer: string | boolean;
+  model: string | boolean;
+  caliber: string | boolean;
+  purchase_date: string | boolean;
+  serial_number: string | boolean;
 }
 
 const initialFormState: FirearmFormState = {
@@ -44,27 +31,21 @@ const initialFormState: FirearmFormState = {
 };
 
 const initialValidationState: ValidationState = {
-  manufacturer: "default",
-  model: "default",
-  caliber: "default",
-  purchase_date: "default",
-  serial_number: "default",
+  manufacturer: false,
+  model: false,
+  caliber: false,
+  purchase_date: false,
+  serial_number: false,
 };
 
 const manufactureOptions = [
-  {
-    value: "Select a manufacturer",
-    label: "Select a manufacturer",
-    disabled: true,
-  },
-  { value: "Smith & Wesson", label: "Smith & Wesson", disabled: false },
-  { value: "Colt", label: "Colt", disabled: false },
+  { value: "Smith & Wesson", label: "Smith & Wesson" },
+  { value: "Colt", label: "Colt" },
 ];
 
 const caliberOptions = [
-  { value: "Select a caliber", label: "Select a caliber", disabled: true },
-  { value: "9MM", label: "9MM", disabled: false },
-  { value: "5.56", label: "5.56", disabled: false },
+  { value: "9MM", label: "9MM" },
+  { value: "5.56", label: "5.56" },
 ];
 
 interface AddFirearmFormProps {
@@ -80,60 +61,67 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
   const [validationState, setValidationState] =
     React.useState<ValidationState>(initialValidationState);
 
-  // A specific handler for each field is more robust with PatternFly's onChange signatures
-  const handleInputChange =
-    (name: keyof FirearmFormState) =>
-      (
-        _event: React.FormEvent<HTMLInputElement | HTMLSelectElement>,
-        value: string,
-      ) => {
-        setFormState((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-        setValidationState((prevState) => ({
-          ...prevState,
-          [name]: "default",
-        }));
-      };
+  const handleInputChange = (field: keyof FirearmFormState, value: string) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+    setValidationState((prevState) => ({
+      ...prevState,
+      [field]: false, // Clear error on change
+    }));
+  };
 
   const validate = (): boolean => {
     const updatedState: ValidationState = {
       manufacturer:
         formState.manufacturer === "Select a manufacturer"
-          ? "error"
-          : "default",
-      model: !formState.model.trim() ? "error" : "default",
+          ? "Please select a manufacturer"
+          : false,
+      model: !formState.model.trim() ? "Please enter a model" : false,
       caliber:
-        formState.caliber === "Select a caliber" ? "error" : "default",
-      purchase_date: !formState.purchase_date ? "error" : "default",
-      serial_number: !formState.serial_number.trim() ? "error" : "default",
+        formState.caliber === "Select a caliber" ? "Please select a caliber" : false,
+      purchase_date: !formState.purchase_date ? "Please enter a purchase date" : false,
+      serial_number: !formState.serial_number.trim()
+        ? "Please enter a serial number"
+        : false,
     };
 
     setValidationState(updatedState);
-    return Object.values(updatedState).every((status) => status !== "error");
+    return Object.values(updatedState).every((status) => status === false);
   };
 
   const handleSubmitFirearm = () => {
     if (!validate()) return;
     AddFirearms(formState)
       .then(() => {
-        onAddSuccess(); // This triggers the refetch in the parent
-        setFormState(initialFormState); // Reset form
+        onAddSuccess();
+        setFormState(initialFormState);
         setIsModalOpen(false);
         setValidationState(initialValidationState);
       })
       .catch(console.error);
   };
 
-  const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
+  const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
-    // Reset form state if the modal is closed without submitting
-    if (isModalOpen) {
+    if (!isModalOpen) {
+      // Opening
       setFormState(initialFormState);
       setValidationState(initialValidationState);
     }
   };
+
+  const footer = (
+    <>
+      <Button variant="link" onClick={handleModalToggle}>
+        Cancel
+      </Button>
+      <Button variant="primary" onClick={handleSubmitFirearm}>
+        Confirm
+      </Button>
+    </>
+  );
 
   return (
     <React.Fragment>
@@ -141,166 +129,95 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
         Add Firearm
       </Button>
       <Modal
-        variant={ModalVariant.small}
         isOpen={isModalOpen}
         onClose={handleModalToggle}
+        title="Add Firearm"
+        description="Enter information below."
+        footer={footer}
+        size="md"
       >
-        <ModalHeader
-          title="Add Firearm"
-          description="Enter information below."
-        />
-        <ModalBody>
-          <Form id="modal-with-form-form">
-            <FormGroup
-              label="Manufacturer"
-              isRequired
-              fieldId="modal-with-form-form-manufacturer"
-            >
-              <FormSelect
-                isRequired
-                id="modal-with-form-form-manufacturer"
-                name="manufacturer"
-                value={formState.manufacturer}
-                onChange={handleInputChange("manufacturer")}
-                validated={validationState.manufacturer}
-              >
-                {manufactureOptions.map((option) => (
-                  <FormSelectOption
-                    isDisabled={option.disabled}
-                    key={option.value}
-                    value={option.value}
-                    label={option.label}
-                  />
-                ))}
-              </FormSelect>
-              {validationState.manufacturer === "error" && (
-                <FormHelperText>
-                  <HelperText>
-                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
-                      Please select a manufacturer
-                    </HelperTextItem>
-                  </HelperText>
-                </FormHelperText>
-              )}
-            </FormGroup>
+        <form id="modal-with-form-form" className="flex flex-col gap-4">
+          <Field
+            label="Manufacturer"
+            required
+            error={validationState.manufacturer}
+            id="manufacturer"
+          >
+            <Select
+              value={formState.manufacturer === "Select a manufacturer" ? undefined : formState.manufacturer}
+              onChange={(val) => handleInputChange("manufacturer", val)}
+              options={manufactureOptions}
+              placeholder="Select a manufacturer"
+              error={!!validationState.manufacturer}
+            />
+          </Field>
 
-            <FormGroup
-              label="Model"
-              isRequired
-              fieldId="modal-with-form-form-model"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-model"
-                name="model"
-                value={formState.model}
-                onChange={handleInputChange("model")}
-                validated={validationState.model}
-              />
-              {validationState.model === "error" && (
-                <FormHelperText>
-                  <HelperText>
-                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
-                      Please enter a model
-                    </HelperTextItem>
-                  </HelperText>
-                </FormHelperText>
-              )}
-            </FormGroup>
+          <Field
+            label="Model"
+            required
+            error={validationState.model}
+            id="model"
+          >
+            <Input
+              type="text"
+              id="model"
+              name="model"
+              value={formState.model}
+              onChange={(e) => handleInputChange("model", e.target.value)}
+              error={!!validationState.model}
+              required
+            />
+          </Field>
 
-            <FormGroup
-              label="Caliber"
-              isRequired
-              fieldId="modal-with-form-form-caliber"
-            >
-              <FormSelect
-                isRequired
-                id="modal-with-form-form-caliber"
-                name="caliber"
-                value={formState.caliber}
-                onChange={handleInputChange("caliber")}
-                validated={validationState.caliber}
-              >
-                {caliberOptions.map((option) => (
-                  <FormSelectOption
-                    isDisabled={option.disabled}
-                    key={option.value}
-                    value={option.value}
-                    label={option.label}
-                  />
-                ))}
-              </FormSelect>
-              {validationState.caliber === "error" && (
-                <FormHelperText>
-                  <HelperText>
-                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
-                      Please select a caliber
-                    </HelperTextItem>
-                  </HelperText>
-                </FormHelperText>
-              )}
-            </FormGroup>
+          <Field
+            label="Caliber"
+            required
+            error={validationState.caliber}
+            id="caliber"
+          >
+            <Select
+              value={formState.caliber === "Select a caliber" ? undefined : formState.caliber}
+              onChange={(val) => handleInputChange("caliber", val)}
+              options={caliberOptions}
+              placeholder="Select a caliber"
+              error={!!validationState.caliber}
+            />
+          </Field>
 
-            <FormGroup
-              label="Purchase Date"
-              isRequired
-              fieldId="modal-with-form-form-purchase-date"
-            >
-              <TextInput
-                isRequired
-                type="date"
-                id="modal-with-form-form-purchase-date"
-                name="purchase_date"
-                value={formState.purchase_date}
-                onChange={handleInputChange("purchase_date")}
-                validated={validationState.purchase_date}
-              />
-              {validationState.purchase_date === "error" && (
-                <FormHelperText>
-                  <HelperText>
-                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
-                      Please enter a purchase date
-                    </HelperTextItem>
-                  </HelperText>
-                </FormHelperText>
-              )}
-            </FormGroup>
+          <Field
+            label="Purchase Date"
+            required
+            error={validationState.purchase_date}
+            id="purchase_date"
+          >
+            <Input
+              type="date"
+              id="purchase_date"
+              name="purchase_date"
+              value={formState.purchase_date}
+              onChange={(e) => handleInputChange("purchase_date", e.target.value)}
+              error={!!validationState.purchase_date}
+              required
+            />
+          </Field>
 
-            <FormGroup
-              label="Serial Number"
-              isRequired
-              fieldId="modal-with-form-form-serial-number"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-serial-number"
-                name="serial_number"
-                value={formState.serial_number}
-                onChange={handleInputChange("serial_number")}
-                validated={validationState.serial_number}
-              />
-              {validationState.serial_number === "error" && (
-                <FormHelperText>
-                  <HelperText>
-                    <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
-                      Please enter a serial number
-                    </HelperTextItem>
-                  </HelperText>
-                </FormHelperText>
-              )}
-            </FormGroup>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button key="create" variant="primary" onClick={handleSubmitFirearm}>
-            Confirm
-          </Button>
-          <Button key="cancel" variant="link" onClick={handleModalToggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
+          <Field
+            label="Serial Number"
+            required
+            error={validationState.serial_number}
+            id="serial_number"
+          >
+            <Input
+              type="text"
+              id="serial_number"
+              name="serial_number"
+              value={formState.serial_number}
+              onChange={(e) => handleInputChange("serial_number", e.target.value)}
+              error={!!validationState.serial_number}
+              required
+            />
+          </Field>
+        </form>
       </Modal>
     </React.Fragment>
   );

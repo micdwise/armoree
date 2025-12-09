@@ -1,36 +1,33 @@
 import * as React from "react";
 import {
   Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  ISortBy,
-  Td,
-  ActionsColumn,
-} from "@patternfly/react-table";
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  SortableHead,
+} from "../../components/Table";
 import { Firearm } from "@app/Firearms/FirearmsData";
-import {
-  PageBody,
-  PageSection,
-  Spinner,
-  Toolbar,
-  Alert,
-  Pagination,
-  ToolbarContent,
-  ToolbarItem,
-  SearchInput,
-  EmptyState,
-  EmptyStateBody,
-} from "@patternfly/react-core";
-import { CubesIcon, SearchIcon } from "@patternfly/react-icons";
+import { PageSection, Toolbar, ToolbarContent, ToolbarItem } from "../../components/Layout";
+import { Spinner } from "../../components/Spinner";
+import { Alert } from "../../components/Alert";
+import { Pagination } from "../../components/Pagination";
+import { Input } from "../../components/Input";
+import { Button } from "../../components/Button";
+import { Search, Box, Trash2 } from "lucide-react";
+
+export interface SortBy {
+  index?: number;
+  direction?: "asc" | "desc";
+}
 
 interface FirearmsTableProps {
   firearms: Firearm[];
   isLoading: boolean;
   isError: boolean;
-  sortBy: ISortBy;
-  onSort: (event: React.MouseEvent, index: number, direction: any) => void;
+  sortBy: SortBy;
+  onSort: (event: React.MouseEvent, index: number, direction: "asc" | "desc") => void;
   itemCount: number;
   page: number;
   perPage: number;
@@ -73,17 +70,13 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     { title: columnNames.purchase_date },
     { title: columnNames.caliber },
     { title: columnNames.serial_number },
-    "", // Actions column
+    { title: "" }, // Actions column
   ];
-
-  const onClearFilter = () => onFilterChange(null as any, "");
 
   if (isLoading) {
     return (
-      <PageSection>
-        <PageBody>
-          <Spinner aria-label="Loading Firearms" />
-        </PageBody>
+      <PageSection className="flex justify-center p-8">
+        <Spinner size="lg" />
       </PageSection>
     );
   }
@@ -91,101 +84,111 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   if (isError) {
     return (
       <PageSection>
-        <PageBody>
-          <Alert variant="danger" title="Error loading firearms" />
-        </PageBody>
+        <Alert variant="danger" title="Error loading firearms" />
       </PageSection>
     );
   }
 
   return (
     <PageSection>
-      <PageBody>
-        <Toolbar id="firearms-toolbar" clearAllFilters={onClearFilter}>
+      <div className="flex flex-col gap-4">
+        <Toolbar>
           <ToolbarContent>
-            <ToolbarItem>
-              <SearchInput
-                aria-label="Filter firearms"
-                value={filterValue}
-                onChange={onFilterChange}
-                onClear={onClearFilter}
+            <ToolbarItem className="w-full sm:w-72">
+              <Input
                 placeholder="Filter by keyword"
+                value={filterValue}
+                onChange={(e) => onFilterChange(e, e.target.value)}
+                startContent={<Search className="h-4 w-4" />}
               />
             </ToolbarItem>
           </ToolbarContent>
         </Toolbar>
-        <Table aria-label="Selectable table">
-          <Thead>
-            <Tr>
-              {columns.map((column, columnIndex) => (
-                <Th
-                  key={column.title || "actions-column"}
-                  sort={
-                    column.title ? { sortBy, onSort, columnIndex } : undefined
-                  }>
-                  {column.title}
-                </Th>
-              ))}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {firearms.length > 0 ? (
-              firearms.map((repo: Firearm) => (
-                <Tr key={repo.id}>
-                  <Td dataLabel={columnNames.manufacturer}>
-                    {repo.manufacturer}
-                  </Td>
-                  <Td dataLabel={columnNames.model}>{repo.model}</Td>
-                  <Td dataLabel={columnNames.purchase_date}>
-                    {new Date(repo.purchase_date).toLocaleDateString("en-US")}
-                  </Td>
-                  <Td dataLabel={columnNames.caliber}>{repo.caliber}</Td>
-                  <Td dataLabel={columnNames.serial_number}>
-                    {repo.serial_number}
-                  </Td>
-                  <Td isActionCell>
-                    <ActionsColumn
-                      items={[
-                        {
-                          title: "Delete",
-                          onClick: () => onDeleteFirearm(repo),
-                        },
-                      ]}
-                    />
-                  </Td>
-                </Tr>
-              ))
-            ) : (
-              <Tr>
-                <Td colSpan={columns.length}>
-                  <EmptyState
-                    titleText={
-                      filterValue
-                        ? "No results found"
-                        : "No Firearms in Inventory"
-                    }
-                    variant="sm"
-                    icon={filterValue ? SearchIcon : CubesIcon}>
-                    <EmptyStateBody>
-                      {filterValue
-                        ? "No firearms match your current filter criteria."
-                        : "Get started by adding a new firearm to your inventory."}
-                    </EmptyStateBody>
-                  </EmptyState>
-                </Td>
-              </Tr>
-            )}
-          </Tbody>
-        </Table>
+
+        <div className="rounded-md border bg-white">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {columns.map((column, columnIndex) => (
+                  column.title ? (
+                    <SortableHead
+                      key={column.title}
+                      sortDirection={sortBy.index === columnIndex ? sortBy.direction : null}
+                      onSort={() =>
+                        onSort(
+                          null as any,
+                          columnIndex,
+                          sortBy.index === columnIndex && sortBy.direction === "asc"
+                            ? "desc"
+                            : "asc"
+                        )
+                      }
+                    >
+                      {column.title}
+                    </SortableHead>
+                  ) : (
+                    <TableHead key={columnIndex} />
+                  )
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {firearms.length > 0 ? (
+                firearms.map((repo: Firearm) => (
+                  <TableRow key={repo.id}>
+                    <TableCell>{repo.manufacturer}</TableCell>
+                    <TableCell>{repo.model}</TableCell>
+                    <TableCell>
+                      {new Date(repo.purchase_date).toLocaleDateString("en-US")}
+                    </TableCell>
+                    <TableCell>{repo.caliber}</TableCell>
+                    <TableCell>{repo.serial_number}</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="link"
+                        size="sm"
+                        onClick={() => onDeleteFirearm(repo)}
+                        aria-label="Delete"
+                        className="text-gray-500 hover:text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-48 text-center">
+                    <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
+                      {filterValue ? (
+                        <>
+                          <Search className="h-8 w-8 opacity-50" />
+                          <p>No results found</p>
+                          <p className="text-sm">No firearms match your current filter criteria.</p>
+                        </>
+                      ) : (
+                        <>
+                          <Box className="h-8 w-8 opacity-50" />
+                          <p>No Firearms in Inventory</p>
+                          <p className="text-sm">Get started by adding a new firearm to your inventory.</p>
+                        </>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+
         <Pagination
           itemCount={itemCount}
           perPage={perPage}
           page={page}
-          onSetPage={onSetPage}
-          onPerPageSelect={onPerPageSelect}
-          isCompact
+          onSetPage={(p) => onSetPage(null, p)}
+          onPerPageSelect={(pp) => onPerPageSelect(null, pp, 1)}
         />
-      </PageBody>
+      </div>
     </PageSection>
   );
 };
