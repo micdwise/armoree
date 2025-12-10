@@ -49,7 +49,7 @@ export const CardUtilizationDemo3: React.FunctionComponent = () => {
             <span className="text-sm font-semibold text-gray-700">System</span>
             <div className="flex items-center gap-2 mt-1 text-red-600">
               <AlertCircle className="h-4 w-4" />
-              <a href="#" className="hover:underline text-sm font-medium">25 incidents detected</a>
+              <span className="hover:underline text-sm font-medium">25 incidents detected</span>
             </div>
           </div>
 
@@ -85,7 +85,7 @@ export const CardUtilizationDemo3: React.FunctionComponent = () => {
         </div>
       </CardContent>
       <CardFooter>
-        <a href="#" className="text-sm text-blue-600 hover:underline">See details</a>
+        <span className="text-sm text-blue-600 hover:underline">See details</span>
       </CardFooter>
     </Card>
   );

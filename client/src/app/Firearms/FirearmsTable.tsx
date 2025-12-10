@@ -91,7 +91,75 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     );
   }
 
+  const renderTableRows = () => {
+    if (isError) {
+      return (
+        <TableRow>
+          <TableCell colSpan={columns.length} className="h-48 text-center">
+            <div className="flex flex-col items-center justify-center gap-2 text-red-600">
+              <AlertTriangle className="h-8 w-8" />
+              <p>Error loading firearms</p>
+              <p className="text-sm text-subtext-color">
+                There was a problem loading your inventory. Please try again
+                later.
+              </p>
+            </div>
+          </TableCell>
+        </TableRow>
+      );
+    }
 
+    if (firearms.length === 0) {
+      return (
+        <TableRow>
+          <TableCell colSpan={columns.length} className="h-48 text-center">
+            <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
+              {filterValue ? (
+                <>
+                  <Search className="h-8 w-8 opacity-50" />
+                  <p>No Results found</p>
+                  <p className="text-sm">
+                    No firearms match your current filter criteria.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <Box className="h-8 w-8 opacity-0" />
+                  <p> No firearms in inventory</p>
+                  <p className="text-sm">
+                    Get started by adding a firearm to your inventory.
+                  </p>
+                </>
+              )}
+            </div>
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    return firearms.map((repo: Firearm) => (
+      <TableRow key={repo.id}>
+        <TableCell>{repo.manufacturer}</TableCell>
+        <TableCell>{repo.model}</TableCell>
+        <TableCell>
+          {new Date(repo.purchase_date).toLocaleDateString("en-US")}
+        </TableCell>
+        <TableCell>{repo.caliber}</TableCell>
+        <TableCell>{repo.serial_number}</TableCell>
+        <TableCell className="text-right">
+          <Button
+            variant="link"
+            size="sm"
+            onClick={() => onDeleteFirearm(repo)}
+            aria-label="Delete"
+            className="text-gray-500 hover:text-red-600"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </TableCell>
+      </TableRow>
+    ));
+  };
 
   return (
     <PageSection>
@@ -120,7 +188,9 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                         <SortableHead
                           key={column.title}
                           sortDirection={
-                            sortBy.index === columnIndex ? sortBy.direction : null
+                            sortBy.index === columnIndex
+                              ? sortBy.direction
+                              : null
                           }
                           onSort={() =>
                             onSort(
@@ -142,74 +212,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {isError ? (
-                    <TableRow>
-                      <TableCell
-                        colSpan={columns.length}
-                        className="h-48 text-center"
-                      >
-                        <div className="flex flex-col items-center justify-center gap-2 text-red-600">
-                          <AlertTriangle className="h-8 w-8" />
-                          <p>Error loading firearms</p>
-                          <p className="text-sm text-subtext-color">
-                            There was a problem loading your inventory. Please try
-                            again later.
-                          </p>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ) : firearms.length > 0 ? (
-                    firearms.map((repo: Firearm) => (
-                      <TableRow key={repo.id}>
-                        <TableCell>{repo.manufacturer}</TableCell>
-                        <TableCell>{repo.model}</TableCell>
-                        <TableCell>
-                          {new Date(repo.purchase_date).toLocaleDateString("en-US")}
-                        </TableCell>
-                        <TableCell>{repo.caliber}</TableCell>
-                        <TableCell>{repo.serial_number}</TableCell>
-                        <TableCell className="text-right">
-                          <Button
-                            variant="link"
-                            size="sm"
-                            onClick={() => onDeleteFirearm(repo)}
-                            aria-label="Delete"
-                            className="text-gray-500 hover:text-red-600"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={columns.length}
-                        className="h-48 text-center"
-                      >
-                        <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
-                          {filterValue ? (
-                            <>
-                              <Search className="h-8 w-8 opacity-50" />
-                              <p>No results found</p>
-                              <p className="text-sm">
-                                No firearms match your current filter criteria.
-                              </p>
-                            </>
-                          ) : (
-                            <>
-                              <Box className="h-8 w-8 opacity-50" />
-                              <p>No Firearms in Inventory</p>
-                              <p className="text-sm">
-                                Get started by adding a new firearm to your
-                                inventory.
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  )}
+                  {renderTableRows()}
                 </TableBody>
               </Table>
             </div>

@@ -135,7 +135,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
       <PageSection>
         <div className="flex justify-end">
-          <AddAmmoForm onAddSuccess={refetch} />
+          <AddAmmoForm onAddSuccess={refetch} isDisabled={isError} />
         </div>
         <DeleteAmmunitionModal
           ammunition={ammunitionToDelete}

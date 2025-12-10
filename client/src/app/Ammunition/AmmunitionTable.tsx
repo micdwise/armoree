@@ -10,7 +10,12 @@ import {
 } from "../../components/Table";
 import { Card, CardContent } from "../../components/Card";
 import { Ammunition } from "@app/Ammunition/AmmunitionData";
-import { PageSection, Toolbar, ToolbarContent, ToolbarItem } from "../../components/Layout";
+import {
+  PageSection,
+  Toolbar,
+  ToolbarContent,
+  ToolbarItem,
+} from "../../components/Layout";
 import { Spinner } from "../../components/Spinner";
 
 import { Pagination } from "../../components/Pagination";
@@ -28,7 +33,11 @@ interface AmmunitionTableProps {
   isLoading: boolean;
   isError: boolean;
   sortBy: SortBy;
-  onSort: (event: React.MouseEvent, index: number, direction: "asc" | "desc") => void;
+  onSort: (
+    event: React.MouseEvent,
+    index: number,
+    direction: "asc" | "desc",
+  ) => void;
   itemCount: number;
   page: number;
   perPage: number;
@@ -38,7 +47,7 @@ interface AmmunitionTableProps {
   filterValue: string;
   onFilterChange: (
     event: React.FormEvent<HTMLInputElement>,
-    value: string
+    value: string,
   ) => void;
 }
 
@@ -84,22 +93,17 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
     );
   }
 
-
-
   const renderTableRows = () => {
     if (isError) {
       return (
         <TableRow>
-          <TableCell
-            colSpan={columns.length}
-            className="h-48 text-center"
-          >
+          <TableCell colSpan={columns.length} className="h-48 text-center">
             <div className="flex flex-col items-center justify-center gap-2 text-red-600">
               <AlertTriangle className="h-8 w-8" />
               <p>Error loading ammunition</p>
               <p className="text-sm text-subtext-color">
-                There was a problem loading your inventory. Please try
-                again later.
+                There was a problem loading your inventory. Please try again
+                later.
               </p>
             </div>
           </TableCell>
@@ -116,13 +120,17 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                 <>
                   <Search className="h-8 w-8 opacity-50" />
                   <p>No results found</p>
-                  <p className="text-sm">No ammunition matches your current filter criteria.</p>
+                  <p className="text-sm">
+                    No ammunition matches your current filter criteria.
+                  </p>
                 </>
               ) : (
                 <>
                   <Box className="h-8 w-8 opacity-50" />
                   <p>No Ammunition in Inventory</p>
-                  <p className="text-sm">Get started by adding ammunition to your inventory.</p>
+                  <p className="text-sm">
+                    Get started by adding ammunition to your inventory.
+                  </p>
                 </>
               )}
             </div>
@@ -156,7 +164,6 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
     ));
   };
 
-
   return (
     <PageSection>
       <Card>
@@ -179,18 +186,23 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    {columns.map((column, columnIndex) => (
+                    {columns.map((column, columnIndex) =>
                       column.title ? (
                         <SortableHead
                           key={column.title}
-                          sortDirection={sortBy.index === columnIndex ? sortBy.direction : null}
+                          sortDirection={
+                            sortBy.index === columnIndex
+                              ? sortBy.direction
+                              : null
+                          }
                           onSort={() =>
                             onSort(
                               null as any,
                               columnIndex,
-                              sortBy.index === columnIndex && sortBy.direction === "asc"
+                              sortBy.index === columnIndex &&
+                                sortBy.direction === "asc"
                                 ? "desc"
-                                : "asc"
+                                : "asc",
                             )
                           }
                         >
@@ -198,13 +210,11 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                         </SortableHead>
                       ) : (
                         <TableHead key={columnIndex} />
-                      )
-                    ))}
+                      ),
+                    )}
                   </TableRow>
                 </TableHeader>
-                <TableBody>
-                  {renderTableRows()}
-                </TableBody>
+                <TableBody>{renderTableRows()}</TableBody>
               </Table>
             </div>
 
