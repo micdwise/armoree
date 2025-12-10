@@ -69,17 +69,23 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   const columnNames = {
     manufacturer: "Manufacturer",
     model: "Model",
+    type: "Type",
     purchase_date: "Purchase Date",
     caliber: "Caliber",
     serial_number: "Serial Number",
+    asset_tag: "Asset Tag",
+    current_status: "Status",
   };
 
   const columns = [
     { title: columnNames.manufacturer, key: "manufacturer" },
     { title: columnNames.model, key: "model" },
+    { title: columnNames.type, key: "type" },
     { title: columnNames.purchase_date, key: "purchase_date" },
     { title: columnNames.caliber, key: "caliber" },
     { title: columnNames.serial_number, key: "serial_number" },
+    { title: columnNames.asset_tag, key: "asset_tag" },
+    { title: columnNames.current_status, key: "current_status" },
     { title: "", key: "actions" }, // Actions column
   ];
 
@@ -138,14 +144,17 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     }
 
     return firearms.map((repo: Firearm) => (
-      <TableRow key={repo.id}>
+      <TableRow key={repo.firearm_id}>
         <TableCell>{repo.manufacturer}</TableCell>
         <TableCell>{repo.model}</TableCell>
+        <TableCell>{repo.type}</TableCell>
         <TableCell>
           {new Date(repo.purchase_date).toLocaleDateString("en-US")}
         </TableCell>
         <TableCell>{repo.caliber}</TableCell>
         <TableCell>{repo.serial_number}</TableCell>
+        <TableCell>{repo.asset_tag}</TableCell>
+        <TableCell>{repo.current_status}</TableCell>
         <TableCell className="text-right">
           <Button
             variant="link"

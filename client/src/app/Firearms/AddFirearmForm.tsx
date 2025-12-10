@@ -12,33 +12,45 @@ import firearmModels from "@data/firearms-models.json";
 interface FirearmFormState {
   manufacturer: string;
   model: string;
-  caliber: string;
-  purchase_date: string;
+  type: string;
+  caliber_gauge: string;
+  acquisition_date: string;
   serial_number: string;
+  asset_tag: string;
+  current_status: string;
 }
 
 interface ValidationState {
   manufacturer: string | boolean;
   model: string | boolean;
-  caliber: string | boolean;
-  purchase_date: string | boolean;
+  type: string | boolean;
+  caliber_gauge: string | boolean;
+  acquisition_date: string | boolean;
   serial_number: string | boolean;
+  asset_tag: string | boolean;
+  current_status: string | boolean;
 }
 
 const initialFormState: FirearmFormState = {
   manufacturer: "Select a manufacturer",
   model: "",
-  caliber: "Select a caliber",
-  purchase_date: "",
+  type: "Select a type",
+  caliber_gauge: "Select a caliber",
+  acquisition_date: "",
   serial_number: "",
+  asset_tag: "",
+  current_status: "Select a status",
 };
 
 const initialValidationState: ValidationState = {
   manufacturer: false,
   model: false,
-  caliber: false,
-  purchase_date: false,
+  type: false,
+  caliber_gauge: false,
+  acquisition_date: false,
   serial_number: false,
+  asset_tag: false,
+  current_status: false,
 };
 
 interface AddFirearmFormProps {
@@ -66,6 +78,20 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     label: c.name,
     value: c.name,
   }));
+
+  const typeOptions = [
+    { label: "Rifle", value: "Rifle" },
+    { label: "Pistol", value: "Pistol" },
+    { label: "Shotgun", value: "Shotgun" },
+    { label: "Other", value: "Other" },
+  ];
+
+  const statusOptions = [
+    { label: "Active", value: "Active" },
+    { label: "Maintenance", value: "Maintenance" },
+    { label: "Retired", value: "Retired" },
+    { label: "Lost/Stolen", value: "Lost/Stolen" },
+  ];
 
   const handleInputChange = (field: keyof FirearmFormState, value: string) => {
     setFormState((prevState) => {
@@ -96,16 +122,25 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
         !formState.model || formState.model === "Select a model"
           ? "Please select a model"
           : false,
-      caliber:
-        formState.caliber === "Select a caliber"
+      type:
+        formState.type === "Select a type" ? "Please select a type" : false,
+      caliber_gauge:
+        formState.caliber_gauge === "Select a caliber"
           ? "Please select a caliber"
           : false,
-      purchase_date: formState.purchase_date
+      acquisition_date: formState.acquisition_date
         ? false
         : "Please enter a purchase date",
       serial_number: formState.serial_number.trim()
         ? false
         : "Please enter a serial number",
+      asset_tag: formState.asset_tag.trim()
+        ? false
+        : "Please enter an asset tag",
+      current_status:
+        formState.current_status === "Select a status"
+          ? "Please select a status"
+          : false,
     };
 
     setValidationState(updatedState);
@@ -206,39 +241,58 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
           </Field>
 
           <Field
+            label="Type"
+            required
+            error={validationState.type}
+            id="type"
+          >
+            <Select
+              value={
+                formState.type === "Select a type"
+                  ? undefined
+                  : formState.type
+              }
+              onChange={(val) => handleInputChange("type", val)}
+              options={typeOptions}
+              placeholder="Select a type"
+              error={!!validationState.type}
+            />
+          </Field>
+
+          <Field
             label="Caliber"
             required
-            error={validationState.caliber}
+            error={validationState.caliber_gauge}
             id="caliber"
           >
             <Select
               value={
-                formState.caliber === "Select a caliber"
+                formState.caliber_gauge === "Select a caliber"
                   ? undefined
-                  : formState.caliber
+                  : formState.caliber_gauge
               }
-              onChange={(val) => handleInputChange("caliber", val)}
+              onChange={(val) => handleInputChange("caliber_gauge", val)}
               options={caliberOptions}
               placeholder="Select a caliber"
-              error={!!validationState.caliber}
+              error={!!validationState.caliber_gauge}
             />
           </Field>
 
           <Field
             label="Purchase Date"
             required
-            error={validationState.purchase_date}
-            id="purchase_date"
+            error={validationState.acquisition_date}
+            id="acquisition_date"
           >
             <Input
               type="date"
-              id="purchase_date"
-              name="purchase_date"
-              value={formState.purchase_date}
+              id="acquisition_date"
+              name="acquisition_date"
+              value={formState.acquisition_date}
               onChange={(e) =>
-                handleInputChange("purchase_date", e.target.value)
+                handleInputChange("acquisition_date", e.target.value)
               }
-              error={!!validationState.purchase_date}
+              error={!!validationState.acquisition_date}
               required
             />
           </Field>
@@ -259,6 +313,44 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
               }
               error={!!validationState.serial_number}
               required
+            />
+          </Field>
+
+          <Field
+            label="Asset Tag"
+            required
+            error={validationState.asset_tag}
+            id="asset_tag"
+          >
+            <Input
+              type="text"
+              id="asset_tag"
+              name="asset_tag"
+              value={formState.asset_tag}
+              onChange={(e) =>
+                handleInputChange("asset_tag", e.target.value)
+              }
+              error={!!validationState.asset_tag}
+              required
+            />
+          </Field>
+
+          <Field
+            label="Status"
+            required
+            error={validationState.current_status}
+            id="current_status"
+          >
+            <Select
+              value={
+                formState.current_status === "Select a status"
+                  ? undefined
+                  : formState.current_status
+              }
+              onChange={(val) => handleInputChange("current_status", val)}
+              options={statusOptions}
+              placeholder="Select a status"
+              error={!!validationState.current_status}
             />
           </Field>
         </form>

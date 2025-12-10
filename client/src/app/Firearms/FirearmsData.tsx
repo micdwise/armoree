@@ -2,22 +2,31 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../../lib/supabase";
 
 export interface Firearm {
-  id: number;
+  firearm_id: number;
   manufacturer: string;
   model: string;
+  type: string;
   purchase_date: string;
   caliber: string;
   serial_number: string;
+  asset_tag: string;
+  current_status: string;
 }
 
 async function AddFirearms(newFirearm: Partial<Firearm>) {
-  const { data, error } = await supabase.from("firearms").insert([newFirearm]).select();
+  const { data, error } = await supabase
+    .from("firearm")
+    .insert([newFirearm])
+    .select();
   if (error) throw error;
   return data;
 }
 
 async function DeleteFirearm(id: number) {
-  const { error } = await supabase.from("firearms").delete().eq("id", id);
+  const { error } = await supabase
+    .from("firearm")
+    .delete()
+    .eq("firearm_id", id);
   if (error) throw error;
 }
 
@@ -30,9 +39,7 @@ const GetFirearms = () => {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase
-        .from("firearms")
-        .select("*");
+      const { data, error } = await supabase.from("firearm").select("*");
 
       if (error) throw error;
 
