@@ -104,13 +104,13 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         formState.caliber === "Select a caliber"
           ? "Please select a caliber"
           : false,
-      purchase_date: !formState.purchase_date
-        ? "Please enter a purchase date"
-        : false,
-      lot_number: !formState.lot_number.trim()
-        ? "Please enter a serial number"
-        : false,
-      qty: !formState.qty ? "Please enter a quantity" : false,
+      purchase_date: formState.purchase_date
+        ? false
+        : "Please enter a purchase date",
+      lot_number: formState.lot_number.trim()
+        ? false
+        : "Please enter a lot number",
+      qty: formState.qty ? "Please enter a quantity" : false,
     };
 
     setValidationState(updatedState);
@@ -118,6 +118,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   };
 
   const handleSubmitAmmo = () => {
+    if (!validate()) return;
     AddAmmunition(formState)
       .then(() => {
         onAddSuccess();

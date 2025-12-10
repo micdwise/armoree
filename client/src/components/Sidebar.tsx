@@ -15,7 +15,7 @@ export function Sidebar({
   routes,
   className,
   ...props
-}: SidebarProps) {
+}: Readonly<SidebarProps>) {
   const location = useLocation();
 
   return (
@@ -58,9 +58,9 @@ export function Sidebar({
 
       <nav className="flex-1 overflow-y-auto py-4 color-brand-100">
         <ul className="space-y-1 px-2">
-          {routes.map((route, idx) => (
+          {routes.map((route) => (
             <SidebarItem
-              key={idx}
+              key={route.path || route.label}
               route={route}
               currentPath={location.pathname}
               isSidebarOpen={isOpen}
@@ -76,13 +76,13 @@ function SidebarItem({
   route,
   currentPath,
   isSidebarOpen,
-}: {
+}: Readonly<{
   route: any;
   currentPath: string;
   isSidebarOpen: boolean;
-}) {
+}>) {
   const [isExpanded, setIsExpanded] = React.useState(false);
-  const isActive = route.path === currentPath;
+
   const hasChildren = route.routes && route.routes.length > 0;
 
   // Auto expand if child is active and sidebar is open
@@ -123,7 +123,7 @@ function SidebarItem({
               ? "bg-screen-background text-default-font"
               : "text-subtext-color hover:bg-screen-background hover:text-default-font",
           )}
-          title={!isSidebarOpen ? route.label : undefined}
+          title={isSidebarOpen ? undefined : route.label}
         >
           <div
             className={cn(
@@ -143,9 +143,9 @@ function SidebarItem({
         </button>
         {isSidebarOpen && isExpanded && (
           <ul className="mt-1 space-y-1 pl-4">
-            {route.routes.map((childRoute: any, idx: number) => (
+            {route.routes.map((childRoute: any) => (
               <SidebarItem
-                key={idx}
+                key={childRoute.path || childRoute.label}
                 route={childRoute}
                 currentPath={currentPath}
                 isSidebarOpen={isSidebarOpen}
@@ -170,7 +170,7 @@ function SidebarItem({
               : "text-subtext-color hover:bg-screen-background hover:text-default-font",
           )
         }
-        title={!isSidebarOpen ? route.label : undefined}
+        title={isSidebarOpen ? undefined : route.label}
       >
         {route.icon && <route.icon className="h-5 w-5" />}
         {isSidebarOpen && route.label}

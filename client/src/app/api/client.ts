@@ -16,14 +16,14 @@ async function apiClient<T>(
     let errorData: any = {};
     try {
       errorData = await response.json();
-    } catch (e) {
+    } catch {
       errorData.message = response.statusText;
     }
     throw new Error(errorData.message || "API error");
   }
 
   const contentType = response.headers.get("content-type");
-  if (contentType && contentType.includes("application/json")) {
+  if (contentType?.includes("application/json")) {
     return response.json();
   }
 

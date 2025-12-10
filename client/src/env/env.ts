@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    DATABASE_URL: z.string().url(),
+    DATABASE_URL: z.url(),
     OPEN_AI_API_KEY: z.string().min(1),
   },
 
@@ -14,7 +14,7 @@ export const env = createEnv({
   clientPrefix: "VITE_",
 
   client: {
-    VITE_API_URL: z.string().url(),
+    VITE_API_URL: z.url(),
     VITE_API_PORT: z.string().min(1),
   },
 

@@ -75,12 +75,12 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   };
 
   const columns = [
-    { title: columnNames.manufacturer },
-    { title: columnNames.model },
-    { title: columnNames.purchase_date },
-    { title: columnNames.caliber },
-    { title: columnNames.serial_number },
-    { title: "" }, // Actions column
+    { title: columnNames.manufacturer, key: "manufacturer" },
+    { title: columnNames.model, key: "model" },
+    { title: columnNames.purchase_date, key: "purchase_date" },
+    { title: columnNames.caliber, key: "caliber" },
+    { title: columnNames.serial_number, key: "serial_number" },
+    { title: "", key: "actions" }, // Actions column
   ];
 
   if (isLoading) {
@@ -206,14 +206,12 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                           {column.title}
                         </SortableHead>
                       ) : (
-                        <TableHead key={columnIndex} />
+                        <TableHead key={column.key} />
                       ),
                     )}
                   </TableRow>
                 </TableHeader>
-                <TableBody>
-                  {renderTableRows()}
-                </TableBody>
+                <TableBody>{renderTableRows()}</TableBody>
               </Table>
             </div>
 

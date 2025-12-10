@@ -4,14 +4,21 @@ import { ChevronUp, ChevronDown } from 'lucide-react';
 
 // Simple table components matching HTML structure but styled
 
-export const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
-    ({ className, ...props }, ref) => (
+interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+    caption?: React.ReactNode;
+}
+
+export const Table = React.forwardRef<HTMLTableElement, TableProps>(
+    ({ className, caption, children, ...props }, ref) => (
         <div className="relative w-full overflow-auto">
             <table
                 ref={ref}
                 className={cn('w-full caption-bottom text-sm text-left text-default-font', className)}
                 {...props}
-            />
+            >
+                {caption && <caption className="mt-4 text-sm text-subtext-color">{caption}</caption>}
+                {children}
+            </table>
         </div>
     )
 );

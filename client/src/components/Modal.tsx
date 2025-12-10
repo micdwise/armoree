@@ -21,7 +21,7 @@ export function Modal({
   children,
   footer,
   size = "md",
-}: ModalProps) {
+}: Readonly<ModalProps>) {
   const sizes = {
     sm: "max-w-sm",
     md: "max-w-md",

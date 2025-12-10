@@ -23,7 +23,7 @@ export function Select<T extends string = string>({
     disabled,
     className,
     error,
-}: SelectProps<T>) {
+}: Readonly<SelectProps<T>>) {
     return (
         <BaseSelect.Root
             value={value ?? null}

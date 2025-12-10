@@ -76,13 +76,13 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
   };
 
   const columns = [
-    { title: columnNames.manufacturer },
-    { title: columnNames.brand },
-    { title: columnNames.purchase_date },
-    { title: columnNames.caliber },
-    { title: columnNames.lot_number },
-    { title: columnNames.qty },
-    { title: "" }, // Actions column
+    { title: columnNames.manufacturer, key: "manufacturer" },
+    { title: columnNames.brand, key: "brand" },
+    { title: columnNames.purchase_date, key: "purchase_date" },
+    { title: columnNames.caliber, key: "caliber" },
+    { title: columnNames.lot_number, key: "lot_number" },
+    { title: columnNames.qty, key: "qty" },
+    { title: "", key: "actions" }, // Actions column
   ];
 
   if (isLoading) {
@@ -189,7 +189,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                     {columns.map((column, columnIndex) =>
                       column.title ? (
                         <SortableHead
-                          key={column.title}
+                          key={column.key}
                           sortDirection={
                             sortBy.index === columnIndex
                               ? sortBy.direction
@@ -209,7 +209,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                           {column.title}
                         </SortableHead>
                       ) : (
-                        <TableHead key={columnIndex} />
+                        <TableHead key={column.key} />
                       ),
                     )}
                   </TableRow>

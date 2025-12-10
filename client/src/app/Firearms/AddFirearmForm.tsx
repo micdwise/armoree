@@ -100,12 +100,12 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
         formState.caliber === "Select a caliber"
           ? "Please select a caliber"
           : false,
-      purchase_date: !formState.purchase_date
-        ? "Please enter a purchase date"
-        : false,
-      serial_number: !formState.serial_number.trim()
-        ? "Please enter a serial number"
-        : false,
+      purchase_date: formState.purchase_date
+        ? false
+        : "Please enter a purchase date",
+      serial_number: formState.serial_number.trim()
+        ? false
+        : "Please enter a serial number",
     };
 
     setValidationState(updatedState);
