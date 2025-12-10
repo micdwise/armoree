@@ -12,7 +12,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-100">
+    <div className="flex h-screen overflow-hidden bg-screen-background">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
@@ -35,7 +35,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white p-4 lg:p-6">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-default-background p-4 lg:p-6">
           <div className="mx-auto max-w-7xl">{children}</div>
         </main>
       </div>

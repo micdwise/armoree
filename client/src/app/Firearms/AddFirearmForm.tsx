@@ -1,6 +1,6 @@
 import * as React from "react";
+
 import { Button } from "../../components/Button";
-import { NewButton } from "../../components/NewButton";
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
 import { Modal } from "../../components/Modal";
@@ -148,9 +148,9 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
 
   return (
     <React.Fragment>
-      <NewButton variant="primary" onClick={handleModalToggle} disabled={isDisabled}>
+      <Button variant="primary" onClick={handleModalToggle} disabled={isDisabled}>
         Add Firearm
-      </NewButton>
+      </Button>
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalToggle}

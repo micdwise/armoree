@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NewButton } from "../../components/NewButton";
+import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Modal } from "../../components/Modal";
 import { Field } from "../../components/Field";
@@ -58,20 +58,20 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
 
   const footer = (
     <>
-      <NewButton variant="link" onClick={handleModalToggle}>
+      <Button variant="link" onClick={handleModalToggle}>
         Cancel
-      </NewButton>
-      <NewButton variant="primary" onClick={handleSubmitAmmo}>
+      </Button>
+      <Button variant="primary" onClick={handleSubmitAmmo}>
         Add
-      </NewButton>
+      </Button>
     </>
   );
 
   return (
     <React.Fragment>
-      <NewButton variant="primary" onClick={handleModalToggle}>
+      <Button variant="primary" onClick={handleModalToggle}>
         Add Ammunition
-      </NewButton>
+      </Button>
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalToggle}

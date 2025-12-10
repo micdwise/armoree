@@ -33,7 +33,7 @@ export function Select<T extends string = string>({
         >
             <BaseSelect.Trigger
                 className={cn(
-                    'flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200',
+                    'flex h-10 w-full items-center justify-between rounded-md border border-neutral-border bg-default-background px-3 py-2 text-sm text-default-font placeholder:text-subtext-color focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200',
                     error && 'border-red-500 focus:ring-red-500',
                     className
                 )}
@@ -44,7 +44,7 @@ export function Select<T extends string = string>({
                         return selectedOption ? (
                             selectedOption.label
                         ) : (
-                            <span className="text-gray-400">{placeholder}</span>
+                            <span className="text-subtext-color">{placeholder}</span>
                         );
                     }}
                 </BaseSelect.Value>
@@ -54,14 +54,14 @@ export function Select<T extends string = string>({
             </BaseSelect.Trigger>
             <BaseSelect.Portal>
                 <BaseSelect.Positioner sideOffset={5} className="z-[9999]">
-                    <BaseSelect.Popup className="min-w-[8rem] rounded-md border border-gray-200 bg-white shadow-xl p-1 max-h-60 overflow-auto">
+                    <BaseSelect.Popup className="min-w-[8rem] rounded-md border border-neutral-border bg-default-background shadow-xl p-1 max-h-60 overflow-auto">
                         {options.map((option) => (
                             <BaseSelect.Item
                                 key={option.value}
                                 value={option.value}
                                 disabled={option.disabled}
                                 className={cn(
-                                    'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-gray-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+                                    'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-screen-background data-[disabled]:pointer-events-none data-[disabled]:opacity-50 text-default-font'
                                 )}
                             >
                                 <BaseSelect.ItemIndicator className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">

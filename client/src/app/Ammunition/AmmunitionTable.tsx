@@ -104,7 +104,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
               </ToolbarContent>
             </Toolbar>
 
-            <div className="rounded-md bg-white">
+            <div className="rounded-md bg-default-background">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -141,7 +141,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                         <div className="flex flex-col items-center justify-center gap-2 text-red-600">
                           <AlertTriangle className="h-8 w-8" />
                           <p>Error loading ammunition</p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-subtext-color">
                             There was a problem loading your inventory. Please try
                             again later.
                           </p>

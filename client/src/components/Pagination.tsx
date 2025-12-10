@@ -25,7 +25,7 @@ export const Pagination = ({ page, perPage, itemCount, onSetPage, onPerPageSelec
 
     return (
         <div className="flex items-center justify-between px-2 py-4">
-            <div className="flex items-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-4 text-sm text-default-font">
                 <Select
                     value={String(perPage)}
                     onChange={(val) => onPerPageSelect(Number(val))}

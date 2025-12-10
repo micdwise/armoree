@@ -21,7 +21,7 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "fixed inset-y-0 left-0 z-40 flex flex-col border-r border-gray-200 bg-white text-gray-900 transition-all duration-300 ease-in-out lg:static overflow-hidden",
+        "fixed inset-y-0 left-0 z-40 flex flex-col border-r border-neutral-border bg-default-background text-default-font transition-all duration-300 ease-in-out lg:static overflow-hidden",
         isOpen
           ? "w-64 translate-x-0"
           : "w-64 -translate-x-full lg:w-16 lg:translate-x-0",
@@ -31,13 +31,13 @@ export function Sidebar({
     >
       <div
         className={cn(
-          "flex h-16 items-center border-b border-gray-200 transition-all duration-300",
+          "flex h-16 items-center border-b border-neutral-border transition-all duration-300",
           isOpen ? "justify-between px-4" : "justify-center lg:px-0",
         )}
       >
         <span
           className={cn(
-            "text-xl font-bold text-gray-900 transition-opacity duration-200 whitespace-nowrap",
+            "text-xl font-bold text-default-font transition-opacity duration-200 whitespace-nowrap",
             isOpen ? "opacity-100" : "opacity-0 lg:hidden",
           )}
         >
@@ -50,13 +50,13 @@ export function Sidebar({
 
         <button
           onClick={onClose}
-          className="lg:hidden text-gray-500 hover:text-gray-900"
+          className="lg:hidden text-subtext-color hover:text-default-font"
         >
           <Menu className="h-6 w-6" />
         </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto py-4">
+      <nav className="flex-1 overflow-y-auto py-4 color-brand-100">
         <ul className="space-y-1 px-2">
           {routes.map((route, idx) => (
             <SidebarItem
@@ -120,8 +120,8 @@ function SidebarItem({
             "flex w-full items-center rounded-md py-2 text-sm font-medium transition-colors",
             isSidebarOpen ? "px-3 justify-between" : "justify-center px-0",
             isExpanded
-              ? "bg-gray-100 text-gray-900"
-              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+              ? "bg-screen-background text-default-font"
+              : "text-subtext-color hover:bg-screen-background hover:text-default-font",
           )}
           title={!isSidebarOpen ? route.label : undefined}
         >
@@ -166,8 +166,8 @@ function SidebarItem({
             "flex items-center rounded-md py-2 text-sm font-medium transition-colors",
             isSidebarOpen ? "px-3 gap-3" : "justify-center px-0",
             isActive
-              ? "bg-blue-50 text-blue-700"
-              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+              ? "bg-brand-highlight-bg text-brand-highlight-text"
+              : "text-subtext-color hover:bg-screen-background hover:text-default-font",
           )
         }
         title={!isSidebarOpen ? route.label : undefined}

@@ -9,7 +9,7 @@ export const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTM
         <div className="relative w-full overflow-auto">
             <table
                 ref={ref}
-                className={cn('w-full caption-bottom text-sm text-left', className)}
+                className={cn('w-full caption-bottom text-sm text-left text-default-font', className)}
                 {...props}
             />
         </div>
@@ -19,7 +19,7 @@ Table.displayName = 'Table';
 
 export const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
     ({ className, ...props }, ref) => (
-        <thead ref={ref} className={cn('[&_tr]:border-b', className)} {...props} />
+        <thead ref={ref} className={cn('[&_tr]:border-b border-neutral-border', className)} {...props} />
     )
 );
 TableHeader.displayName = 'TableHeader';
@@ -35,7 +35,7 @@ export const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttribut
     ({ className, ...props }, ref) => (
         <tr
             ref={ref}
-            className={cn('border-b transition-colors hover:bg-gray-50/50 data-[state=selected]:bg-gray-50', className)}
+            className={cn('border-b border-neutral-border transition-colors hover:bg-screen-background data-[state=selected]:bg-screen-background', className)}
             {...props}
         />
     )
@@ -46,7 +46,7 @@ export const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttr
     ({ className, ...props }, ref) => (
         <th
             ref={ref}
-            className={cn('h-10 px-2 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0', className)}
+            className={cn('h-10 px-2 text-left align-middle font-medium text-subtext-color [&:has([role=checkbox])]:pr-0', className)}
             {...props}
         />
     )
@@ -75,7 +75,7 @@ export const SortableHead = ({ children, sortDirection, onSort, className, ...pr
     return (
         <TableHead
             onClick={onSort}
-            className={cn('cursor-pointer select-none hover:text-gray-700 group', className)}
+            className={cn('cursor-pointer select-none hover:text-default-font group', className)}
             {...props}
         >
             <div className="flex items-center gap-1">

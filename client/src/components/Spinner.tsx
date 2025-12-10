@@ -9,5 +9,5 @@ export const Spinner = ({ className, size = 'md' }: { className?: string; size?:
         lg: 'h-12 w-12',
     };
 
-    return <Loader2 className={cn('animate-spin text-blue-600', sizes[size], className)} />;
+    return <Loader2 className={cn('animate-spin text-brand-primary', sizes[size], className)} />;
 };

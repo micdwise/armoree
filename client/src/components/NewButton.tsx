@@ -13,8 +13,8 @@ export const NewButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary:
         "rounded-xl bg-mint-600 text-white hover:bg-mint-700 active:bg-mint-800 shadow-sm border border-transparent",
       secondary:
-        "rounded-xl bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 active:bg-gray-100 shadow-sm",
-      link: "rounded-xl text-blue-600 hover:underline bg-transparent border-transparent hover:text-blue-700 p-0 h-auto",
+        "rounded-xl bg-default-background text-default-font border border-neutral-border hover:bg-screen-background active:bg-neutral-200 shadow-sm",
+      link: "rounded-xl text-brand-primary hover:underline bg-transparent border-transparent hover:text-brand-700 p-0 h-auto",
       danger:
         "bg-red-600 text-white hover:bg-red-700 active:bg-red-800 shadow-sm border border-transparent",
     };
