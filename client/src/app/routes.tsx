@@ -9,23 +9,23 @@ import {
 } from "react-router-dom";
 import { AppLayout } from "@app/AppLayout/AppLayout";
 import { NotFound } from "@app/NotFound/NotFound";
-import { LayoutDashboard, Package, Archive, Backpack } from "lucide-react";
+import { LayoutDashboard, Package, Backpack } from "lucide-react";
 
 // Lazy Loaded Pages
 const Dashboard = React.lazy(() =>
   import("@app/Dashboard/Dashboard").then((module) => ({
     default: module.Dashboard,
-  }))
+  })),
 );
 const FirearmsPage = React.lazy(() =>
   import("@app/Firearms/FirearmsPage").then((module) => ({
     default: module.FirearmsPage,
-  }))
+  })),
 );
 const AmmunitionPage = React.lazy(() =>
   import("@app/Ammunition/AmmunitionPage").then((module) => ({
     default: module.AmmunitionPage,
-  }))
+  })),
 );
 
 let routeFocusTimer: ReturnType<typeof setTimeout>;
@@ -107,8 +107,8 @@ export const router = createBrowserRouter(
       <Route path="Firearms/*" element={<FirearmsPage />} />
       <Route path="Ammunition/*" element={<AmmunitionPage />} />
       <Route path="*" element={<NotFound />} />
-    </Route>
-  )
+    </Route>,
+  ),
 );
 
 export { navigationRoutes as routes };

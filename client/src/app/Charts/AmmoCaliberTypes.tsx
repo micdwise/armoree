@@ -21,12 +21,15 @@ import { useTheme } from "../../components/ThemeContext";
 const AmmoCaliberTypeCard: React.FunctionComponent = () => {
   const { data, isLoading } = GetAmmunitionSummary();
   const { theme } = useTheme();
-  const [resolvedTheme, setResolvedTheme] = React.useState<"light" | "dark">("light");
+  const [resolvedTheme, setResolvedTheme] = React.useState<"light" | "dark">(
+    "light",
+  );
 
   React.useEffect(() => {
     if (theme === "system") {
-      const media = window.matchMedia("(prefers-color-scheme: dark)");
-      const updateTheme = () => setResolvedTheme(media.matches ? "dark" : "light");
+      const media = globalThis.matchMedia("(prefers-color-scheme: dark)");
+      const updateTheme = () =>
+        setResolvedTheme(media.matches ? "dark" : "light");
       updateTheme();
       media.addEventListener("change", updateTheme);
       return () => media.removeEventListener("change", updateTheme);
@@ -100,16 +103,21 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
             gutter={20}
             style={{
               title: { fontSize: 16, fill: TEXT_COLOR },
-              labels: { fill: TEXT_COLOR }
+              labels: { fill: TEXT_COLOR },
             }}
             data={chartData.map((d) => ({ name: d.x }))}
             colorScale={COLORS}
           />
           <VictoryAxis
             style={{
-              tickLabels: { fontSize: 12, angle: -45, textAnchor: 'end', fill: TEXT_COLOR },
+              tickLabels: {
+                fontSize: 12,
+                angle: -45,
+                textAnchor: "end",
+                fill: TEXT_COLOR,
+              },
               axis: { stroke: TEXT_COLOR },
-              ticks: { stroke: TEXT_COLOR }
+              ticks: { stroke: TEXT_COLOR },
             }}
           />
           <VictoryAxis
@@ -118,15 +126,19 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
               tickLabels: { fontSize: 12, fill: TEXT_COLOR },
               axis: { stroke: TEXT_COLOR },
               ticks: { stroke: TEXT_COLOR },
-              grid: { stroke: resolvedTheme === 'dark' ? '#404040' : '#e5e5e5' }
+              grid: {
+                stroke: resolvedTheme === "dark" ? "#404040" : "#e5e5e5",
+              },
             }}
           />
           <VictoryBar
             data={chartData}
             labels={({ datum }) => datum.y}
             style={{
-              data: { fill: ({ index }) => COLORS[(index || 0) % COLORS.length] },
-              labels: { fontSize: 12, fill: TEXT_COLOR }
+              data: {
+                fill: ({ index }) => COLORS[(index || 0) % COLORS.length],
+              },
+              labels: { fontSize: 12, fill: TEXT_COLOR },
             }}
             barWidth={40}
           />
@@ -142,7 +154,10 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
       </CardHeader>
       <CardContent>{cardBody()}</CardContent>
       <CardFooter>
-        <a href="/Ammunition" className="text-sm text-brand-primary hover:underline">
+        <a
+          href="/Ammunition"
+          className="text-sm text-brand-primary hover:underline"
+        >
           See details
         </a>
       </CardFooter>

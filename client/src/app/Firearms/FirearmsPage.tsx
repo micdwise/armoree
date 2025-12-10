@@ -107,7 +107,7 @@ const FirearmsPage: React.FunctionComponent = () => {
 
   return (
     <React.Fragment>
-      <PageSection>
+      <PageSection className="bg-default-background border-b border-neutral-border shadow-sm mb-6">
         <Toolbar>
           <ToolbarContent>
             <ToolbarItem>
