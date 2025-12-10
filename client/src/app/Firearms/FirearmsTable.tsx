@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableHeader,
@@ -66,6 +67,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   filterValue,
   onFilterChange,
 }) => {
+  const navigate = useNavigate();
   const columnNames = {
     manufacturer: "Manufacturer",
     model: "Model",
@@ -144,7 +146,11 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     }
 
     return firearms.map((repo: Firearm) => (
-      <TableRow key={repo.firearm_id}>
+      <TableRow
+        key={repo.firearm_id}
+        onClick={() => navigate(`/Firearms/${repo.firearm_id}`)}
+        className="cursor-pointer hover:bg-gray-50"
+      >
         <TableCell>{repo.manufacturer}</TableCell>
         <TableCell>{repo.model}</TableCell>
         <TableCell>{repo.type}</TableCell>
@@ -159,7 +165,10 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
           <Button
             variant="link"
             size="sm"
-            onClick={() => onDeleteFirearm(repo)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDeleteFirearm(repo);
+            }}
             aria-label="Delete"
             className="text-gray-500 hover:text-red-600"
           >

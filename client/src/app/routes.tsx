@@ -27,6 +27,11 @@ const AmmunitionPage = React.lazy(() =>
     default: module.AmmunitionPage,
   })),
 );
+const FirearmInformation = React.lazy(() =>
+  import("@app/Firearms/FirearmInformation").then((module) => ({
+    default: module.FirearmInformation,
+  })),
+);
 
 let routeFocusTimer: ReturnType<typeof setTimeout>;
 
@@ -113,7 +118,8 @@ export const router = createBrowserRouter(
         <Route path="/" element={<AppRoot />}>
           <Route index element={<Dashboard />} />
           <Route path="Dashboard" element={<Navigate to="/" replace />} />
-          <Route path="Firearms/*" element={<FirearmsPage />} />
+          <Route path="Firearms" element={<FirearmsPage />} />
+          <Route path="Firearms/:id" element={<FirearmInformation />} />
           <Route path="Ammunition/*" element={<AmmunitionPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>

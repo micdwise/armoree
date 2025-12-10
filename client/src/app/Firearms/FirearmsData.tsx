@@ -62,4 +62,36 @@ const GetFirearms = () => {
   return { data, isLoading, isError, refetch: fetchFirearmData };
 };
 
-export { GetFirearms, AddFirearms, DeleteFirearm };
+const GetFirearm = (id: string | undefined) => {
+  const [data, setData] = useState<Firearm | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchFirearm = async () => {
+      if (!id) return;
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("firearm")
+          .select("*")
+          .eq("firearm_id", id)
+          .single();
+
+        if (error) throw error;
+        setData(data as unknown as Firearm);
+      } catch (error) {
+        console.error(error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFirearm();
+  }, [id]);
+
+  return { data, isLoading, isError };
+};
+
+export { GetFirearms, GetFirearm, AddFirearms, DeleteFirearm };
