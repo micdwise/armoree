@@ -99,16 +99,28 @@ const AppRoot = () => {
   );
 };
 
+
+import { ProtectedRoute } from "@app/Auth/ProtectedRoute";
+import { LoginPage } from "@app/Auth/LoginPage";
+
+// ... previous imports ...
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<AppRoot />}>
-      <Route index element={<Dashboard />} />
-      <Route path="Dashboard" element={<Navigate to="/" replace />} />
-      <Route path="Firearms/*" element={<FirearmsPage />} />
-      <Route path="Ammunition/*" element={<AmmunitionPage />} />
-      <Route path="*" element={<NotFound />} />
-    </Route>,
+    <>
+      <Route path="/login" element={<LoginPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<AppRoot />}>
+          <Route index element={<Dashboard />} />
+          <Route path="Dashboard" element={<Navigate to="/" replace />} />
+          <Route path="Firearms/*" element={<FirearmsPage />} />
+          <Route path="Ammunition/*" element={<AmmunitionPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Route>
+    </>
   ),
 );
+
 
 export { navigationRoutes as routes };

@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { api } from "@app/api/client";
+import { supabase } from "../../lib/supabase";
 
 export interface Firearm {
   id: number;
@@ -10,38 +10,47 @@ export interface Firearm {
   serial_number: string;
 }
 
-function AddFirearms(newFirearm: any) {
-  return api.post("/firearms", newFirearm);
+async function AddFirearms(newFirearm: Partial<Firearm>) {
+  const { data, error } = await supabase.from("firearms").insert([newFirearm]).select();
+  if (error) throw error;
+  return data;
 }
 
-function DeleteFirearm(id: number) {
-  return api.delete(`/firearms/${id}`);
+async function DeleteFirearm(id: number) {
+  const { error } = await supabase.from("firearms").delete().eq("id", id);
+  if (error) throw error;
 }
 
 const GetFirearms = () => {
   const [data, setData] = useState<Firearm[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-  const fetchFirearmData = useCallback(() => {
+
+  const fetchFirearmData = useCallback(async () => {
     setIsLoading(true);
     setIsError(false);
-    api
-      .get<Firearm[]>("/firearms")
-      .then((data) => {
-        setData(data);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    try {
+      const { data, error } = await supabase
+        .from("firearms")
+        .select("*");
+
+      if (error) throw error;
+
+      if (data) {
+        // Ensure data matches Firearm interface, may need casting or runtime validation if strictly typed
+        setData(data as unknown as Firearm[]);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
     fetchFirearmData();
-  }, []);
+  }, [fetchFirearmData]);
 
   return { data, isLoading, isError, refetch: fetchFirearmData };
 };
