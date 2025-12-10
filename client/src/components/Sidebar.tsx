@@ -1,7 +1,8 @@
 import * as React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "../lib/utils";
-import { ChevronDown, ChevronRight, Menu } from "lucide-react";
+import { ChevronDown, ChevronRight, Menu, LogOut } from "lucide-react";
+import { supabase } from "../lib/supabase";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -68,6 +69,19 @@ export function Sidebar({
           ))}
         </ul>
       </nav>
+      <div className="border-t border-neutral-border p-4">
+        <button
+          onClick={() => supabase.auth.signOut()}
+          className={cn(
+            "flex w-full items-center rounded-md py-2 text-sm font-medium text-subtext-color transition-colors hover:bg-screen-background hover:text-red-600",
+            isOpen ? "px-3 gap-3" : "justify-center px-0",
+          )}
+          title={isOpen ? undefined : "Logout"}
+        >
+          <LogOut className="h-5 w-5" />
+          {isOpen && "Logout"}
+        </button>
+      </div>
     </aside>
   );
 }

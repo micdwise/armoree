@@ -26,7 +26,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   );
   const [filterValue, setFilterValue] = React.useState("");
 
-  const columnKeys: (keyof Omit<Firearm, "id">)[] = [
+  const columnKeys: (keyof Omit<Firearm, "firearm_id">)[] = [
     "manufacturer",
     "model",
     "purchase_date",
@@ -99,7 +99,7 @@ const FirearmsPage: React.FunctionComponent = () => {
 
   const handleDeleteFirearm = () => {
     if (firearmToDelete) {
-      DeleteFirearm(firearmToDelete.id)
+      DeleteFirearm(firearmToDelete.firearm_id)
         .then(refetch)
         .then(handleCloseDeleteModal);
     }

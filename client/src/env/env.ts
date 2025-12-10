@@ -14,8 +14,10 @@ export const env = createEnv({
   clientPrefix: "VITE_",
 
   client: {
-    VITE_API_URL: z.url(),
+    VITE_API_URL: z.string(),
     VITE_API_PORT: z.string().min(1),
+    VITE_SUPABASE_URL: z.string().url(),
+    VITE_SUPABASE_ANON_KEY: z.string().min(1),
   },
 
   /**
@@ -38,5 +40,5 @@ export const env = createEnv({
    * explicitly specify this option as true.
    */
   emptyStringAsUndefined: true,
-  skipValidation: process.env.SKIP_ENV_VALIDATIONS === "true",
+  skipValidation: import.meta.env.SKIP_ENV_VALIDATIONS === "true",
 });
