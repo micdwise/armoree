@@ -4,12 +4,8 @@
     "rootDir": ".",
     "target": "ES2022",
     "outDir": "./dist",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "types": [ "vite/client" ],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["vite/client", "node"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -24,10 +20,15 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@app/*": ["src/app/*"],
-      "@assets/*": ["node_modules/@patternfly/react-core/dist/styles/assets/*"]
-    },
+      "@components/*": ["src/components/*"],
+      "@data/*": ["src/data/*"],
+      "@app/*": ["src/app/*"]
+    }
   },
-  "include": [ "src" ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

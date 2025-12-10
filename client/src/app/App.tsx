@@ -1,16 +1,12 @@
 import * as React from "react";
-import "@patternfly/react-core/dist/styles/base.css";
-import { BrowserRouter as Router } from "react-router-dom";
-import { AppLayout } from "@app/AppLayout/AppLayout";
-import { AppRoutes } from "@app/routes";
-import "@app/App.css";
+import { RouterProvider } from "react-router-dom";
+import { ThemeProvider } from "../components/ThemeContext";
+import { router } from "@app/routes";
 
 const App: React.FunctionComponent = () => (
-  <Router>
-    <AppLayout>
-      <AppRoutes />
-    </AppLayout>
-  </Router>
+  <ThemeProvider defaultTheme="system" storageKey="armoree-ui-theme">
+    <RouterProvider router={router} />
+  </ThemeProvider>
 );
 
 export default App;

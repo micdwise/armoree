@@ -1,11 +1,6 @@
 import * as React from "react";
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-} from "@patternfly/react-core";
+import { Button } from "../../components/Button";
+import { Modal } from "../../components/Modal";
 import { Firearm } from "@app/Firearms/FirearmsData";
 
 interface DeleteFirearmModalProps {
@@ -25,32 +20,32 @@ const DeleteFirearmModal: React.FunctionComponent<DeleteFirearmModalProps> = ({
     return null;
   }
 
+  const footer = (
+    <>
+      <Button variant="link" onClick={onClose}>
+        Cancel
+      </Button>
+      <Button variant="danger" onClick={onConfirm}>
+        Delete
+      </Button>
+    </>
+  );
+
   return (
-    <Modal variant="small" isOpen={isOpen} onClose={onClose}>
-      <ModalHeader titleIconVariant="warning" title="Confirm Deletion" />
-      <ModalBody>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Confirm Deletion"
+      size="sm"
+      footer={footer}
+    >
+      <p>
         Are you sure you want to delete the firearm:{" "}
         <strong>
           {firearm.manufacturer} {firearm.model}
         </strong>{" "}
         (S/N: {firearm.serial_number})?
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          variant="danger"
-          onClick={onConfirm}
-          data-testid="confirm-delete-firearm-button"
-        >
-          Delete
-        </Button>
-        <Button
-          variant="link"
-          onClick={onClose}
-          data-testid="cancel-delete-firearm-button"
-        >
-          Cancel
-        </Button>
-      </ModalFooter>
+      </p>
     </Modal>
   );
 };

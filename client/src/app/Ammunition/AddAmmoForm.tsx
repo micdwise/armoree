@@ -1,16 +1,13 @@
 import * as React from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  TextInput,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalVariant,
-} from "@patternfly/react-core";
+import { Button } from "@components/Button";
+import { Input } from "@components/Input";
+import { Select } from "@components/Select";
+import { Modal } from "@components/Modal";
+import { Field } from "@components/Field";
 import { AddAmmunition } from "@app/Ammunition/AmmunitionData";
+import allFirearmsManufacturer from "@data/firearms-manufacturers.json";
+import allCalibers from "@data/calibers.json";
+import ammunitionBrands from "@data/ammunition-brands.json";
 
 interface AmmoFormState {
   manufacturer: string;
@@ -19,6 +16,15 @@ interface AmmoFormState {
   purchase_date: string;
   lot_number: string;
   qty: string;
+}
+
+interface ValidationState {
+  manufacturer: string | boolean;
+  brand: string | boolean;
+  caliber: string | boolean;
+  purchase_date: string | boolean;
+  lot_number: string | boolean;
+  qty: string | boolean;
 }
 
 const initialFormState: AmmoFormState = {
@@ -30,156 +36,244 @@ const initialFormState: AmmoFormState = {
   qty: "",
 };
 
+const initialValidationState: ValidationState = {
+  manufacturer: false,
+  brand: false,
+  caliber: false,
+  purchase_date: false,
+  lot_number: false,
+  qty: false,
+};
+
 interface AddAmmoFormProps {
   onAddSuccess: () => void;
+  isDisabled?: boolean;
 }
 
 const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   onAddSuccess,
+  isDisabled,
 }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [formState, setFormState] =
     React.useState<AmmoFormState>(initialFormState);
+  const [validationState, setValidationState] = React.useState<ValidationState>(
+    initialValidationState,
+  );
 
-  const handleInputChange =
-    (name: keyof AmmoFormState) =>
-    (_event: React.FormEvent<HTMLInputElement>, value: string) => {
-      setFormState((prevState) => ({
+  const manufacturerOptions = allFirearmsManufacturer.map((m) => ({
+    label: m.name,
+    value: m.name,
+  }));
+
+  const caliberOptions = allCalibers.map((c) => ({
+    label: c.name,
+    value: c.name,
+  }));
+
+  const handleInputChange = (field: keyof AmmoFormState, value: string) => {
+    setFormState((prevState) => {
+      const newState = {
         ...prevState,
-        [name]: value,
-      }));
+        [field]: value,
+      };
+
+      if (field === "manufacturer") {
+        newState.brand = "";
+      }
+
+      return newState;
+    });
+    setValidationState((prevState) => ({
+      ...prevState,
+      [field]: false,
+    }));
+  };
+
+  const validate = (): boolean => {
+    const updatedState: ValidationState = {
+      manufacturer:
+        formState.manufacturer === "Select a manufacturer"
+          ? "Please select a manufacturer"
+          : false,
+      brand:
+        !formState.brand || formState.brand === "Select a model"
+          ? "Please select a model"
+          : false,
+      caliber:
+        formState.caliber === "Select a caliber"
+          ? "Please select a caliber"
+          : false,
+      purchase_date: formState.purchase_date
+        ? false
+        : "Please enter a purchase date",
+      lot_number: formState.lot_number.trim()
+        ? false
+        : "Please enter a lot number",
+      qty: formState.qty ? "Please enter a quantity" : false,
     };
 
+    setValidationState(updatedState);
+    return Object.values(updatedState).every((status) => status === false);
+  };
+
   const handleSubmitAmmo = () => {
+    if (!validate()) return;
     AddAmmunition(formState)
       .then(() => {
-        onAddSuccess(); // This will trigger the refetch
-        setFormState(initialFormState); // Reset form
+        onAddSuccess();
+        setFormState(initialFormState);
         setIsModalOpen(false);
+        setValidationState(initialValidationState);
       })
       .catch(console.error);
   };
 
-  const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
+  const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
-    if (isModalOpen) setFormState(initialFormState);
+    if (!isModalOpen) {
+      setFormState(initialFormState);
+      setValidationState(initialValidationState);
+    }
   };
+
+  const footer = (
+    <>
+      <Button variant="link" onClick={handleModalToggle}>
+        Cancel
+      </Button>
+      <Button variant="primary" onClick={handleSubmitAmmo}>
+        Add
+      </Button>
+    </>
+  );
+
+  const filteredBrandOptions = ammunitionBrands
+    .filter((brand) => brand.manufacturer === formState.manufacturer)
+    .map((brand) => ({ label: brand.name, value: brand.name }));
 
   return (
     <React.Fragment>
-      <Button variant="primary" onClick={handleModalToggle}>
+      <Button
+        variant="primary"
+        onClick={handleModalToggle}
+        disabled={isDisabled}
+      >
         Add Ammunition
       </Button>
       <Modal
-        variant={ModalVariant.small}
         isOpen={isModalOpen}
         onClose={handleModalToggle}
+        title="Add Ammunition"
+        description="Enter information below."
+        footer={footer}
+        size="md"
       >
-        <ModalHeader
-          title="Add Ammunition"
-          description="Enter information below."
-        />
-        <ModalBody>
-          <Form id="modal-with-form-form-ammo">
-            <FormGroup
-              label="Manufacturer"
-              isRequired
-              fieldId="modal-with-form-form-manufacturer"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-manufacturer"
-                name="manufacturer"
-                value={formState.manufacturer}
-                onChange={handleInputChange("manufacturer")}
-              />
-            </FormGroup>
+        <form id="modal-with-form-form-ammo" className="flex flex-col gap-4">
+          <Field
+            label="Manufacturer"
+            required
+            error={validationState.manufacturer}
+            id="manufacturer"
+          >
+            <Select
+              value={
+                formState.manufacturer === "Select a manufacturer"
+                  ? undefined
+                  : formState.manufacturer
+              }
+              onChange={(val) => handleInputChange("manufacturer", val)}
+              options={manufacturerOptions}
+              placeholder="Select a manufacturer"
+              error={!!validationState.manufacturer}
+            />
+          </Field>
 
-            <FormGroup
-              label="Brand"
-              isRequired
-              fieldId="modal-with-form-form-brand"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-brand"
-                name="brand"
-                value={formState.brand}
-                onChange={handleInputChange("brand")}
-              />
-            </FormGroup>
+          <Field
+            label="Brand"
+            required
+            id="brand"
+            error={validationState.brand}
+          >
+            <Select
+              value={
+                !formState.brand || formState.brand === "Select a model"
+                  ? undefined
+                  : formState.brand
+              }
+              onChange={(val) => handleInputChange("brand", val)}
+              options={filteredBrandOptions}
+              placeholder="Select a brand"
+              error={!!validationState.brand}
+              disabled={formState.brand === "Select a manufacturer"}
+            />
+          </Field>
 
-            <FormGroup
-              label="Caliber"
-              isRequired
-              fieldId="modal-with-form-form-caliber"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-caliber"
-                name="caliber"
-                value={formState.caliber}
-                onChange={handleInputChange("caliber")}
-              />
-            </FormGroup>
+          <Field
+            label="Caliber"
+            required
+            error={validationState.caliber}
+            id="caliber"
+          >
+            <Select
+              value={
+                formState.caliber === "Select a caliber"
+                  ? undefined
+                  : formState.caliber
+              }
+              onChange={(val) => handleInputChange("caliber", val)}
+              options={caliberOptions}
+              placeholder="Select a caliber"
+              error={!!validationState.caliber}
+            />
+          </Field>
 
-            <FormGroup
-              label="Purchase Date"
-              isRequired
-              fieldId="modal-with-form-form-purchase-date"
-            >
-              <TextInput
-                isRequired
-                type="date"
-                id="modal-with-form-form-purchase-date"
-                name="purchase_date"
-                value={formState.purchase_date}
-                onChange={handleInputChange("purchase_date")}
-              />
-            </FormGroup>
+          <Field
+            label="Purchase Date"
+            required
+            error={validationState.purchase_date}
+            id="purchase_date"
+          >
+            <Input
+              type="date"
+              id="purchase_date"
+              name="purchase_date"
+              value={formState.purchase_date}
+              onChange={(e) =>
+                handleInputChange("purchase_date", e.target.value)
+              }
+              error={!!validationState.purchase_date}
+              required
+            />
+          </Field>
 
-            <FormGroup
-              label="Lot Number"
-              isRequired
-              fieldId="modal-with-form-form-lot-number"
-            >
-              <TextInput
-                isRequired
-                type="text"
-                id="modal-with-form-form-lot-number"
-                name="lot_number"
-                value={formState.lot_number}
-                onChange={handleInputChange("lot_number")}
-              />
-            </FormGroup>
+          <Field
+            label="Lot Number"
+            required
+            error={validationState.lot_number}
+            id="lot_number"
+          >
+            <Input
+              required
+              type="text"
+              id="lot_number"
+              name="lot_number"
+              value={formState.lot_number}
+              onChange={(e) => handleInputChange("lot_number", e.target.value)}
+            />
+          </Field>
 
-            <FormGroup
-              label="Quantity"
-              isRequired
-              fieldId="modal-with-form-form-qty"
-            >
-              <TextInput
-                isRequired
-                type="number"
-                id="modal-with-form-form-lot-qty"
-                name="qty"
-                value={formState.qty}
-                onChange={handleInputChange("qty")}
-              />
-            </FormGroup>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button key="create" variant="primary" onClick={handleSubmitAmmo}>
-            Add
-          </Button>
-          <Button key="cancel" variant="link" onClick={handleModalToggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
+          <Field label="Quantity" required error={validationState.qty} id="qty">
+            <Input
+              required
+              type="number"
+              id="qty"
+              name="qty"
+              value={formState.qty}
+              onChange={(e) => handleInputChange("qty", e.target.value)}
+            />
+          </Field>
+        </form>
       </Modal>
     </React.Fragment>
   );

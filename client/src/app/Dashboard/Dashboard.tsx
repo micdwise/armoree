@@ -1,19 +1,17 @@
 import * as React from "react";
-import { PageSection, Grid, GridItem } from "@patternfly/react-core";
 import { AmmoCaliberTypeCard } from "@app/Charts/AmmoCaliberTypes";
 import { CardUtilizationDemo3 } from "@app/Charts/utilizationCard";
 
-const Dashboard: React.FunctionComponent = () => (
-  <PageSection hasBodyWrapper={false}>
-    <Grid hasGutter={true} md={6}>
-      <GridItem>
+const Dashboard: React.FunctionComponent = () => {
+  return (
+    <div className="grid sm:grid-cols-2 gap-4">
+      <div>
         <AmmoCaliberTypeCard />
-      </GridItem>
-      <GridItem>
+      </div>
+      <div>
         <CardUtilizationDemo3 />
-      </GridItem>
-    </Grid>
-  </PageSection>
-);
-
+      </div>
+    </div>
+  );
+};
 export { Dashboard };
