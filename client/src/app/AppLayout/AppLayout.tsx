@@ -27,6 +27,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        onOpen={() => setSidebarOpen(true)}
         routes={routes}
         className={cn("lg:block", sidebarOpen ? "block" : "hidden lg:block")}
       />

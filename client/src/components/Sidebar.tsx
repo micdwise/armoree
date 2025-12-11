@@ -7,12 +7,14 @@ import { supabase } from "../lib/supabase";
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
   onClose: () => void;
+  onOpen: () => void;
   routes: any[];
 }
 
 export function Sidebar({
   isOpen,
   onClose,
+  onOpen,
   routes,
   className,
   ...props
@@ -66,6 +68,8 @@ export function Sidebar({
               route={route}
               currentPath={location.pathname}
               isSidebarOpen={isOpen}
+              onClose={onClose}
+              onOpen={onOpen}
             />
           ))}
         </ul>
@@ -91,10 +95,14 @@ function SidebarItem({
   route,
   currentPath,
   isSidebarOpen,
+  onClose,
+  onOpen,
 }: Readonly<{
   route: any;
   currentPath: string;
   isSidebarOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
 }>) {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
@@ -130,7 +138,14 @@ function SidebarItem({
     return (
       <li>
         <button
-          onClick={() => isSidebarOpen && setIsExpanded(!isExpanded)}
+          onClick={() => {
+            if (isSidebarOpen) {
+              setIsExpanded(!isExpanded);
+            } else {
+              onOpen();
+              setIsExpanded(true);
+            }
+          }}
           className={cn(
             "flex w-full items-center rounded-md py-2 text-sm font-medium transition-colors",
             isSidebarOpen ? "px-3 justify-between" : "justify-center px-0",
@@ -164,6 +179,8 @@ function SidebarItem({
                 route={childRoute}
                 currentPath={currentPath}
                 isSidebarOpen={isSidebarOpen}
+                onClose={onClose}
+                onOpen={onOpen}
               />
             ))}
           </ul>
@@ -172,10 +189,17 @@ function SidebarItem({
     );
   }
 
+  const handleItemClick = () => {
+    if (window.innerWidth < 1024) {
+      onClose();
+    }
+  };
+
   return (
     <li>
       <NavLink
         to={route.path}
+        onClick={handleItemClick}
         className={({ isActive }) =>
           cn(
             "flex items-center rounded-md py-2 text-sm font-medium transition-colors",
