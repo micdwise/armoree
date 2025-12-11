@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { AppLayout } from "@app/AppLayout/AppLayout";
 import { NotFound } from "@app/NotFound/NotFound";
-import { LayoutDashboard, Package, Backpack, Archive, Settings, Database } from "lucide-react";
+import { LayoutDashboard, Users, Package, Backpack, Archive, Settings, Database } from "lucide-react";
 
 // Lazy Loaded Pages
 const Dashboard = React.lazy(() =>
@@ -17,6 +17,12 @@ const Dashboard = React.lazy(() =>
     default: module.Dashboard,
   })),
 );
+const PersonnelPage = React.lazy(() =>
+  import("./Personnel/PersonnelPage").then((module) => ({
+    default: module.PersonnelPage,
+  })),
+);
+
 const FirearmsPage = React.lazy(() =>
   import("@app/Firearms/FirearmsPage").then((module) => ({
     default: module.FirearmsPage,
@@ -61,6 +67,12 @@ const navigationRoutes: AppRouteConfig[] = [
     path: "/",
     title: "Dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    label: "Personnel",
+    path: "/Personnel",
+    title: "Personnel",
+    icon: Users,
   },
   {
     label: "Inventory",
@@ -145,6 +157,7 @@ export const router = createBrowserRouter(
         <Route path="/" element={<AppRoot />}>
           <Route index element={<Dashboard />} />
           <Route path="Dashboard" element={<Navigate to="/" replace />} />
+          <Route path="Personnel" element={<PersonnelPage />} />
           <Route path="Firearms" element={<FirearmsPage />} />
           <Route path="Firearms/:id" element={<FirearmInformation />} />
           <Route path="Ammunition/*" element={<AmmunitionPage />} />

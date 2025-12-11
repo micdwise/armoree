@@ -7,6 +7,7 @@ export interface Ammunition {
   caliber_gauge: string;
   lot_number: string;
   quantity_on_hand: number;
+  min_stock_level: number;
 }
 
 export interface AmmunitionSummary {

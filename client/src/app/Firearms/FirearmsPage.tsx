@@ -9,16 +9,25 @@ import {
 } from "@app/Firearms/FirearmsData";
 import { DeleteFirearmModal } from "@app/Firearms/DeleteFirearmModal";
 
+import { useSearchParams } from "react-router-dom";
+// ... imports
+
 const FirearmsPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetFirearms();
+  const [searchParams] = useSearchParams(); // Get URL params
   const [sortBy, setSortBy] = React.useState<SortBy>({});
+  /* State */
   const [page, setPage] = React.useState(1);
   const [perPage, setPerPage] = React.useState(10);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [firearmToDelete, setFirearmToDelete] = React.useState<Firearm | null>(
     null,
   );
-  const [filterValue, setFilterValue] = React.useState("");
+
+  // Initialize filterValue from searchParams
+  const initialFilter = searchParams.get("search") || "";
+  const [filterValue, setFilterValue] = React.useState(initialFilter);
+  const activeFilterType = searchParams.get("filter");
 
   const columnKeys: (keyof Omit<Firearm, "firearm_id">)[] = [
     "manufacturer",
@@ -28,6 +37,7 @@ const FirearmsPage: React.FunctionComponent = () => {
     "serial_number",
   ];
 
+  /* Handlers */
   const onSort = (
     _event: React.MouseEvent,
     index: number,
@@ -41,19 +51,31 @@ const FirearmsPage: React.FunctionComponent = () => {
     value: string,
   ) => {
     setFilterValue(value);
-    setPage(1); // Reset to first page when filter changes
+    setPage(1);
   };
 
   const filteredData = React.useMemo(() => {
     if (!data) return [];
-    if (!filterValue) return data;
 
-    return data.filter((firearm) =>
+    let filtered = data;
+
+    // Apply special filters first
+    if (activeFilterType === 'maintenance_overdue') {
+      const today = new Date();
+      filtered = filtered.filter(f => {
+        if (!f.next_due_date) return false;
+        return new Date(f.next_due_date) < today;
+      });
+    }
+
+    if (!filterValue) return filtered;
+
+    return filtered.filter((firearm) =>
       Object.values(firearm).some((val) =>
         String(val).toLowerCase().includes(filterValue.toLowerCase()),
       ),
     );
-  }, [data, filterValue]);
+  }, [data, filterValue, activeFilterType]);
 
   const sortedData = React.useMemo(() => {
     if (sortBy.index === undefined || !filteredData) {
