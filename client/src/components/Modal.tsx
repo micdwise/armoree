@@ -34,7 +34,7 @@ export function Modal({
         <BaseDialog.Backdrop className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-in fade-in-0" />
         <BaseDialog.Popup
           className={cn(
-            "fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border border-neutral-border bg-default-background p-6 shadow-lg duration-200 animate-in fade-in-0 sm:rounded-lg",
+            "fixed left-[50%] top-[50%] z-50 grid w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 border border-neutral-border bg-default-background p-6 shadow-lg duration-200 animate-in fade-in-0 sm:w-full sm:rounded-lg max-h-[85vh] overflow-y-auto",
             sizes[size],
           )}
         >

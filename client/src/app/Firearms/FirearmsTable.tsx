@@ -179,6 +179,99 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     ));
   };
 
+  const renderMobileContent = () => {
+    if (isError) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-red-600">
+          <AlertTriangle className="h-8 w-8" />
+          <p>Error loading firearms</p>
+          <p className="text-sm text-subtext-color">
+            There was a problem loading your inventory. Please try again later.
+          </p>
+        </div>
+      );
+    }
+
+    if (firearms.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-gray-500">
+          {filterValue ? (
+            <>
+              <Search className="h-8 w-8 opacity-50" />
+              <p>No Results found</p>
+              <p className="text-sm">
+                No firearms match your current filter criteria.
+              </p>
+            </>
+          ) : (
+            <>
+              <Box className="h-8 w-8 opacity-0" />
+              <p> No firearms in inventory</p>
+              <p className="text-sm">
+                Get started by adding a firearm to your inventory.
+              </p>
+            </>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {firearms.map((repo) => (
+          <div
+            key={repo.firearm_id}
+            className="rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+            onClick={() => navigate(`/Firearms/${repo.firearm_id}`)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                navigate(`/Firearms/${repo.firearm_id}`);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+          >
+            <div className="mb-2 flex items-start justify-between">
+              <div>
+                <h3 className="font-medium text-default-font">
+                  {repo.manufacturer} {repo.model}
+                </h3>
+                <p className="text-sm text-subtext-color">{repo.type}</p>
+              </div>
+              <Button
+                variant="link"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDeleteFirearm(repo);
+                }}
+                aria-label="Delete"
+                className="text-gray-500 hover:text-red-600"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="space-y-1 text-sm text-subtext-color">
+              <div className="flex justify-between">
+                <span>Caliber:</span>
+                <span className="text-default-font">{repo.caliber}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Serial:</span>
+                <span className="text-default-font">{repo.serial_number}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Status:</span>
+                <span className="text-default-font">{repo.current_status}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <PageSection>
       <Card>
@@ -197,7 +290,9 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
               </ToolbarContent>
             </Toolbar>
 
-            <div className="rounded-md bg-default-background">
+            <div className="lg:hidden">{renderMobileContent()}</div>
+
+            <div className="hidden rounded-md bg-default-background lg:block">
               <Table>
                 <TableHeader>
                   <TableRow>
