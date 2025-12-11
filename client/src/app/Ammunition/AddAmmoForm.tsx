@@ -5,44 +5,35 @@ import { Select } from "@components/Select";
 import { Modal } from "@components/Modal";
 import { Field } from "@components/Field";
 import { AddAmmunition } from "@app/Ammunition/AmmunitionData";
-import allFirearmsManufacturer from "@data/firearms-manufacturers.json";
-import allCalibers from "@data/calibers.json";
-import ammunitionBrands from "@data/ammunition-brands.json";
+import { GetManufacturers, Manufacturer, Caliber } from "@app/Firearms/FirearmsData";
+import { GetAllCalibers } from "@app/Settings/ReferenceDataFunctions";
 
 interface AmmoFormState {
   manufacturer: string;
-  brand: string;
-  caliber: string;
-  purchase_date: string;
+  caliber_gauge: string;
   lot_number: string;
-  qty: string;
+  quantity_on_hand: string;
 }
 
 interface ValidationState {
   manufacturer: string | boolean;
-  brand: string | boolean;
-  caliber: string | boolean;
-  purchase_date: string | boolean;
+  caliber_gauge: string | boolean;
   lot_number: string | boolean;
-  qty: string | boolean;
+  quantity_on_hand: string | boolean;
 }
 
 const initialFormState: AmmoFormState = {
   manufacturer: "",
-  brand: "",
-  caliber: "",
-  purchase_date: "",
+  caliber_gauge: "",
   lot_number: "",
-  qty: "",
+  quantity_on_hand: "",
 };
 
 const initialValidationState: ValidationState = {
   manufacturer: false,
-  brand: false,
-  caliber: false,
-  purchase_date: false,
+  caliber_gauge: false,
   lot_number: false,
-  qty: false,
+  quantity_on_hand: false,
 };
 
 interface AddAmmoFormProps {
@@ -60,13 +51,29 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   const [validationState, setValidationState] = React.useState<ValidationState>(
     initialValidationState,
   );
+  const [manufacturers, setManufacturers] = React.useState<Manufacturer[]>([]);
+  const [calibers, setCalibers] = React.useState<Caliber[]>([]);
 
-  const manufacturerOptions = allFirearmsManufacturer.map((m) => ({
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const m = await GetManufacturers();
+        setManufacturers(m);
+        const c = await GetAllCalibers();
+        setCalibers(c);
+      } catch (e) {
+        console.error("Failed to load reference data", e);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const manufacturerOptions = manufacturers.map((m) => ({
     label: m.name,
     value: m.name,
   }));
 
-  const caliberOptions = allCalibers.map((c) => ({
+  const caliberOptions = calibers.map((c) => ({
     label: c.name,
     value: c.name,
   }));
@@ -77,10 +84,6 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         ...prevState,
         [field]: value,
       };
-
-      if (field === "manufacturer") {
-        newState.brand = "";
-      }
 
       return newState;
     });
@@ -96,21 +99,16 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         formState.manufacturer === "Select a manufacturer"
           ? "Please select a manufacturer"
           : false,
-      brand:
-        !formState.brand || formState.brand === "Select a model"
-          ? "Please select a model"
-          : false,
-      caliber:
-        formState.caliber === "Select a caliber"
+      caliber_gauge:
+        formState.caliber_gauge === "Select a caliber"
           ? "Please select a caliber"
           : false,
-      purchase_date: formState.purchase_date
-        ? false
-        : "Please enter a purchase date",
       lot_number: formState.lot_number.trim()
         ? false
         : "Please enter a lot number",
-      qty: formState.qty ? "Please enter a quantity" : false,
+      quantity_on_hand: formState.quantity_on_hand
+        ? false
+        : "Please enter a quantity",
     };
 
     setValidationState(updatedState);
@@ -119,7 +117,11 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
 
   const handleSubmitAmmo = () => {
     if (!validate()) return;
-    AddAmmunition(formState)
+    const payload = {
+      ...formState,
+      quantity_on_hand: Number(formState.quantity_on_hand),
+    };
+    AddAmmunition(payload)
       .then(() => {
         onAddSuccess();
         setFormState(initialFormState);
@@ -147,10 +149,6 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
       </Button>
     </>
   );
-
-  const filteredBrandOptions = ammunitionBrands
-    .filter((brand) => brand.manufacturer === formState.manufacturer)
-    .map((brand) => ({ label: brand.name, value: brand.name }));
 
   return (
     <React.Fragment>
@@ -190,60 +188,21 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
           </Field>
 
           <Field
-            label="Brand"
-            required
-            id="brand"
-            error={validationState.brand}
-          >
-            <Select
-              value={
-                !formState.brand || formState.brand === "Select a model"
-                  ? undefined
-                  : formState.brand
-              }
-              onChange={(val) => handleInputChange("brand", val)}
-              options={filteredBrandOptions}
-              placeholder="Select a brand"
-              error={!!validationState.brand}
-              disabled={formState.brand === "Select a manufacturer"}
-            />
-          </Field>
-
-          <Field
             label="Caliber"
             required
-            error={validationState.caliber}
+            error={validationState.caliber_gauge}
             id="caliber"
           >
             <Select
               value={
-                formState.caliber === "Select a caliber"
+                formState.caliber_gauge === "Select a caliber"
                   ? undefined
-                  : formState.caliber
+                  : formState.caliber_gauge
               }
-              onChange={(val) => handleInputChange("caliber", val)}
+              onChange={(val) => handleInputChange("caliber_gauge", val)}
               options={caliberOptions}
               placeholder="Select a caliber"
-              error={!!validationState.caliber}
-            />
-          </Field>
-
-          <Field
-            label="Purchase Date"
-            required
-            error={validationState.purchase_date}
-            id="purchase_date"
-          >
-            <Input
-              type="date"
-              id="purchase_date"
-              name="purchase_date"
-              value={formState.purchase_date}
-              onChange={(e) =>
-                handleInputChange("purchase_date", e.target.value)
-              }
-              error={!!validationState.purchase_date}
-              required
+              error={!!validationState.caliber_gauge}
             />
           </Field>
 
@@ -263,14 +222,21 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
             />
           </Field>
 
-          <Field label="Quantity" required error={validationState.qty} id="qty">
+          <Field
+            label="Quantity"
+            required
+            error={validationState.quantity_on_hand}
+            id="qty"
+          >
             <Input
               required
               type="number"
               id="qty"
               name="qty"
-              value={formState.qty}
-              onChange={(e) => handleInputChange("qty", e.target.value)}
+              value={formState.quantity_on_hand}
+              onChange={(e) =>
+                handleInputChange("quantity_on_hand", e.target.value)
+              }
             />
           </Field>
         </form>

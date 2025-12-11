@@ -34,6 +34,15 @@ export async function DeleteManufacturer(id: number) {
 
 // --- Calibers ---
 
+export async function GetAllCalibers() {
+    const { data, error } = await supabase
+        .from("reference_calibers")
+        .select("*")
+        .order("name");
+    if (error) throw error;
+    return data as Caliber[];
+}
+
 export async function AddCaliber(name: string) {
     const { data, error } = await supabase
         .from("reference_calibers")
