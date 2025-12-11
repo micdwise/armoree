@@ -94,4 +94,66 @@ const GetFirearm = (id: string | undefined) => {
   return { data, isLoading, isError };
 };
 
-export { GetFirearms, GetFirearm, AddFirearms, DeleteFirearm };
+export interface Manufacturer {
+  manufacturer_id: number;
+  name: string;
+}
+
+export interface Model {
+  model_id: number;
+  manufacturer_id: number;
+  name: string;
+}
+
+export interface Caliber {
+  caliber_id: number;
+  name: string;
+}
+
+async function GetManufacturers() {
+  const { data, error } = await supabase
+    .from("reference_manufacturers")
+    .select("*")
+    .order("name", { ascending: true });
+  if (error) throw error;
+  return data as Manufacturer[];
+}
+
+async function GetModels(manufacturerId: number) {
+  const { data, error } = await supabase
+    .from("reference_models")
+    .select("*")
+    .eq("manufacturer_id", manufacturerId)
+    .order("name", { ascending: true });
+  if (error) throw error;
+  return data as Model[];
+}
+
+async function GetCalibers(modelId: number) {
+  const { data, error } = await supabase
+    .from("model_valid_calibers")
+    .select(
+      `
+      caliber_id,
+      reference_calibers (
+        caliber_id,
+        name
+      )
+    `,
+    )
+    .eq("model_id", modelId);
+
+  if (error) throw error;
+  // Flatten the result
+  return data.map((item: any) => item.reference_calibers) as Caliber[];
+}
+
+export {
+  GetFirearms,
+  GetFirearm,
+  AddFirearms,
+  DeleteFirearm,
+  GetManufacturers,
+  GetModels,
+  GetCalibers,
+};

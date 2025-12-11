@@ -4,10 +4,15 @@ import { Input } from "@components/Input";
 import { Select } from "@components/Select";
 import { Modal } from "@components/Modal";
 import { Field } from "@components/Field";
-import { AddFirearms } from "@app/Firearms/FirearmsData";
-import allFirearmsManufacturer from "@data/firearms-manufacturers.json";
-import allCalibers from "@data/calibers.json";
-import firearmModels from "@data/firearms-models.json";
+import {
+  AddFirearms,
+  GetManufacturers,
+  GetModels,
+  GetCalibers,
+  Manufacturer,
+  Model,
+  Caliber,
+} from "@app/Firearms/FirearmsData";
 
 interface FirearmFormState {
   manufacturer: string;
@@ -69,12 +74,36 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     initialValidationState,
   );
 
-  const manufacturerOptions = allFirearmsManufacturer.map((m) => ({
+  // Dynamic Options State
+  const [manufacturers, setManufacturers] = React.useState<Manufacturer[]>([]);
+  const [models, setModels] = React.useState<Model[]>([]);
+  const [calibers, setCalibers] = React.useState<Caliber[]>([]);
+
+  // Track IDs for dependency fetching
+  const [selectedManufacturerId, setSelectedManufacturerId] = React.useState<
+    number | null
+  >(null);
+  const [selectedModelId, setSelectedModelId] = React.useState<number | null>(
+    null,
+  );
+
+  // Fetch Manufacturers on Load
+  React.useEffect(() => {
+    GetManufacturers().then(setManufacturers).catch(console.error);
+  }, []);
+
+  const manufacturerOptions = manufacturers.map((m) => ({
+    label: m.name,
+    value: m.name,
+    id: m.manufacturer_id, // Custom prop handling might be needed if Select doesn't pass full object, but we use ID lookup below
+  }));
+
+  const modelOptions = models.map((m) => ({
     label: m.name,
     value: m.name,
   }));
 
-  const caliberOptions = allCalibers.map((c) => ({
+  const caliberOptions = calibers.map((c) => ({
     label: c.name,
     value: c.name,
   }));
@@ -99,17 +128,53 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
         ...prevState,
         [field]: value,
       };
-
+      // Reset dependencies in form state if parent changes
       if (field === "manufacturer") {
         newState.model = "";
+        newState.caliber_gauge = "Select a caliber";
       }
-
+      if (field === "model") {
+        newState.caliber_gauge = "Select a caliber";
+      }
       return newState;
     });
+
     setValidationState((prevState) => ({
       ...prevState,
       [field]: false, // Clear error on change
     }));
+
+    // Handle Dependency Fetching
+    if (field === "manufacturer") {
+      const selectedMfg = manufacturers.find((m) => m.name === value);
+      if (selectedMfg) {
+        setSelectedManufacturerId(selectedMfg.manufacturer_id);
+        // Fetch Models
+        GetModels(selectedMfg.manufacturer_id)
+          .then((data) => {
+            setModels(data);
+            setCalibers([]); // Reset calibers
+            setSelectedModelId(null);
+          })
+          .catch(console.error);
+      } else {
+        setModels([]);
+        setCalibers([]);
+      }
+    }
+
+    if (field === "model") {
+      const selectedModel = models.find((m) => m.name === value);
+      if (selectedModel) {
+        setSelectedModelId(selectedModel.model_id);
+        // Fetch Calibers
+        GetCalibers(selectedModel.model_id)
+          .then(setCalibers)
+          .catch(console.error);
+      } else {
+        setCalibers([]);
+      }
+    }
   };
 
   const validate = (): boolean => {
@@ -164,6 +229,11 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       // Opening
       setFormState(initialFormState);
       setValidationState(initialValidationState);
+      // Reset selections
+      setSelectedManufacturerId(null);
+      setSelectedModelId(null);
+      setModels([]);
+      setCalibers([]);
     }
   };
 
@@ -177,10 +247,6 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       </Button>
     </>
   );
-
-  const filteredModelOptions = firearmModels
-    .filter((model) => model.manufacturer === formState.manufacturer)
-    .map((model) => ({ label: model.name, value: model.name }));
 
   return (
     <React.Fragment>
@@ -232,7 +298,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
                   : formState.model
               }
               onChange={(val) => handleInputChange("model", val)}
-              options={filteredModelOptions}
+              options={modelOptions}
               placeholder="Select a model"
               error={!!validationState.model}
               disabled={formState.manufacturer === "Select a manufacturer"}
