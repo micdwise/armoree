@@ -14,14 +14,15 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   return (
     <div className="flex h-screen overflow-hidden bg-screen-background">
       {/* Mobile sidebar backdrop */}
-      {sidebarOpen && (
-        <button
-          type="button"
-          className="fixed inset-0 z-30 h-full w-full bg-gray-600 bg-opacity-75 transition-opacity lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-          aria-label="Close sidebar"
-        />
-      )}
+      {/* Mobile sidebar backdrop */}
+      <div
+        className={cn(
+          "fixed inset-0 z-30 h-full w-full bg-black/30 backdrop-blur-sm transition-all duration-300 lg:hidden",
+          sidebarOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        )}
+        onClick={() => setSidebarOpen(false)}
+        aria-hidden="true"
+      />
 
       {/* Sidebar */}
       <Sidebar
@@ -29,7 +30,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         onClose={() => setSidebarOpen(false)}
         onOpen={() => setSidebarOpen(true)}
         routes={routes}
-        className={cn("lg:block", sidebarOpen ? "block" : "hidden lg:block")}
+        className={cn("lg:block z-40", sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0")}
       />
 
       {/* Main Content */}
