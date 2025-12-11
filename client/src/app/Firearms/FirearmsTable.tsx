@@ -275,7 +275,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   return (
     <PageSection>
       <Card>
-        <CardContent className="p-6">
+        <CardContent className="p-4 lg:p-6">
           <div className="flex flex-col gap-4">
             <Toolbar>
               <ToolbarContent>
@@ -328,13 +328,17 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
               </Table>
             </div>
 
-            <Pagination
-              itemCount={itemCount}
-              perPage={perPage}
-              page={page}
-              onSetPage={(p) => onSetPage(null, p)}
-              onPerPageSelect={(pp) => onPerPageSelect(null, pp, 1)}
-            />
+            {!isError && itemCount > 0 && (
+              <div className="mt-4">
+                <Pagination
+                  itemCount={itemCount}
+                  perPage={perPage}
+                  page={page}
+                  onSetPage={(p) => onSetPage(null, p)}
+                  onPerPageSelect={(pp) => onPerPageSelect(null, pp, 1)}
+                />
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
