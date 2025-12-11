@@ -22,6 +22,11 @@ const PersonnelPage = React.lazy(() =>
     default: module.PersonnelPage,
   })),
 );
+const PersonnelDetail = React.lazy(() =>
+  import("./Personnel/PersonnelDetail").then((module) => ({
+    default: module.PersonnelDetail,
+  })),
+);
 
 const FirearmsPage = React.lazy(() =>
   import("@app/Firearms/FirearmsPage").then((module) => ({
@@ -158,6 +163,7 @@ export const router = createBrowserRouter(
           <Route index element={<Dashboard />} />
           <Route path="Dashboard" element={<Navigate to="/" replace />} />
           <Route path="Personnel" element={<PersonnelPage />} />
+          <Route path="Personnel/:id" element={<PersonnelDetail />} />
           <Route path="Firearms" element={<FirearmsPage />} />
           <Route path="Firearms/:id" element={<FirearmInformation />} />
           <Route path="Ammunition/*" element={<AmmunitionPage />} />

@@ -6,7 +6,6 @@ import { useSearchParams } from "react-router-dom";
 
 import { AddPersonnelForm } from "./AddPersonnelForm";
 import { DeletePersonnelModal } from "./DeletePersonnelModal";
-import { TrainingManagementModal } from "./TrainingManagementModal";
 
 const PersonnelPage: React.FunctionComponent = () => {
     const { data, isLoading, isError, refetch } = GetPersonnel();
@@ -18,7 +17,6 @@ const PersonnelPage: React.FunctionComponent = () => {
     const [perPage, setPerPage] = React.useState(10);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
     const [personnelToDelete, setPersonnelToDelete] = React.useState<Personnel | null>(null);
-    const [trainingPersonnel, setTrainingPersonnel] = React.useState<Personnel | null>(null);
 
     // Filter State
     const initialFilter = searchParams.get("search") || "";
@@ -108,13 +106,7 @@ const PersonnelPage: React.FunctionComponent = () => {
         }
     }
 
-    const handleViewTraining = (person: Personnel) => {
-        setTrainingPersonnel(person);
-    };
 
-    const handleCloseTrainingModal = () => {
-        setTrainingPersonnel(null);
-    };
 
     return (
         <PageSection>
@@ -137,7 +129,7 @@ const PersonnelPage: React.FunctionComponent = () => {
                 filterValue={filterValue}
                 onFilterChange={onFilterChange}
                 onDeletePersonnel={handleOpenDeleteModal}
-                onViewTraining={handleViewTraining}
+                onViewTraining={() => { }} // No longer used
             />
 
             <DeletePersonnelModal
@@ -147,11 +139,6 @@ const PersonnelPage: React.FunctionComponent = () => {
                 onConfirm={handleDeletePersonnel}
             />
 
-            <TrainingManagementModal
-                personnel={trainingPersonnel}
-                isOpen={!!trainingPersonnel}
-                onClose={handleCloseTrainingModal}
-            />
         </PageSection>
     );
 };

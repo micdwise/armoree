@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Table,
     TableBody,
@@ -59,6 +60,7 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
     onDeletePersonnel,
     onViewTraining,
 }) => {
+    const navigate = useNavigate();
     const columnNames = {
         badge_number: "Badge #",
         first_name: "First Name",
@@ -122,7 +124,11 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
         }
 
         return personnel.map((person) => (
-            <TableRow key={person.personnel_id}>
+            <TableRow
+                key={person.personnel_id}
+                onClick={() => navigate(`/Personnel/${person.personnel_id}`)}
+                className="cursor-pointer hover:bg-neutral-50"
+            >
                 <TableCell>{person.badge_number}</TableCell>
                 <TableCell>{person.first_name}</TableCell>
                 <TableCell>{person.last_name}</TableCell>
@@ -133,14 +139,10 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
                         <Button
                             variant="secondary"
                             size="sm"
-                            onClick={() => onViewTraining(person)}
-                        >
-                            Training
-                        </Button>
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            onClick={() => onDeletePersonnel(person)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onDeletePersonnel(person);
+                            }}
                             aria-label="Delete personnel"
                         >
                             <Trash2 className="h-4 w-4 text-red-500" />

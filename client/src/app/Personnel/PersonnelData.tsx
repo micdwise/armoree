@@ -56,11 +56,6 @@ export function GetPersonnel() {
 
             if (error) throw error;
 
-            // We might need to fetch qualification expiry separately or join logic
-            // For now, let's just return the basic data. 
-            // To get qualification expiry, we'd need to join with 'qualifications' which isn't in my immediate view of schema but I recall 'personnel_qualifications'
-            // Let's assume for the list view we just show basic info first.
-
             setData(data as unknown as Personnel[]);
         } catch (error) {
             console.error("Error fetching personnel:", error);
@@ -73,6 +68,54 @@ export function GetPersonnel() {
     useEffect(() => {
         fetchData();
     }, [fetchData]);
+
+    return { data, isLoading, isError, refetch: fetchData };
+}
+
+export async function GetPersonnelList() {
+    const { data, error } = await supabase
+        .from("personnel")
+        .select("personnel_id, first_name, last_name, badge_number")
+        .order("last_name");
+
+    if (error) throw error;
+    return data as Personnel[];
+}
+
+export function GetPersonnelById(id: string) {
+    const [data, setData] = useState<Personnel | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
+
+    const fetchData = useCallback(async () => {
+        setIsLoading(true);
+        setIsError(false);
+        try {
+            const { data, error } = await supabase
+                .from("personnel")
+                .select(`
+          *,
+          unit:unit_id (unit_name)
+        `)
+                .eq("personnel_id", id)
+                .single();
+
+            if (error) throw error;
+
+            setData(data as unknown as Personnel);
+        } catch (error) {
+            console.error("Error fetching personnel details:", error);
+            setIsError(true);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (id) {
+            fetchData();
+        }
+    }, [fetchData, id]);
 
     return { data, isLoading, isError, refetch: fetchData };
 }
@@ -98,18 +141,42 @@ export async function DeletePersonnel(id: number) {
 }
 
 export async function GetPersonnelTraining(personnelId: number) {
-    const { data, error } = await supabase
+    const { data: trainingData, error: trainingError } = await supabase
         .from("personnel_training")
         .select(`
             *,
-            course:course_id (*),
-            instructor:instructor_id (first_name, last_name, badge_number)
+            course:training_course (*)
         `)
         .eq("personnel_id", personnelId)
         .order("date_completed", { ascending: false });
 
-    if (error) throw error;
-    return data as PersonnelTraining[];
+    if (trainingError) throw trainingError;
+
+    const data = trainingData as PersonnelTraining[];
+
+    // Manual join for instructor
+    const instructorIds = [...new Set(data.filter(t => t.instructor_id).map(t => t.instructor_id))];
+
+    if (instructorIds.length > 0) {
+        const { data: instructors, error: instructorError } = await supabase
+            .from("personnel")
+            .select("personnel_id, first_name, last_name, badge_number")
+            .in("personnel_id", instructorIds);
+
+        if (instructorError) {
+            console.warn("Could not fetch instructors", instructorError);
+            // Don't throw, just return data without instructor details
+        } else {
+            const instructorMap = new Map(instructors?.map(i => [i.personnel_id, i]));
+            data.forEach(t => {
+                if (t.instructor_id && instructorMap.has(t.instructor_id)) {
+                    t.instructor = instructorMap.get(t.instructor_id);
+                }
+            });
+        }
+    }
+
+    return data;
 }
 
 export async function GetTrainingCourses() {
