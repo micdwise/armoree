@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Button } from "../../components/Button";
-import { Modal } from "../../components/Modal";
+import { Button } from "@components/Button";
+import { Modal } from "@components/Modal";
 import { Ammunition } from "@app/Ammunition/AmmunitionData";
 
 interface DeleteAmmunitionProps {

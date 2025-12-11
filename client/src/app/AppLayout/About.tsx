@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Modal } from "../../components/Modal";
-import { Button } from "../../components/Button";
+import { Modal } from "@components/Modal";
+import { Button } from "@components/Button";
 import { HelpCircle } from "lucide-react";
 
 const AboutModalBasic: React.FunctionComponent = () => {
@@ -23,7 +23,11 @@ const AboutModalBasic: React.FunctionComponent = () => {
       >
         <div className="flex flex-col gap-4">
           <div className="flex justify-center mb-4">
-            <img src="/ArmoreeLogo.png" alt="Armoree Logo" className="h-16 w-auto" />
+            <img
+              src="/ArmoreeLogo.png"
+              alt="Armoree Logo"
+              className="h-16 w-auto"
+            />
           </div>
           <div className="space-y-2 text-sm text-gray-600">
             <div className="grid grid-cols-2 gap-2">

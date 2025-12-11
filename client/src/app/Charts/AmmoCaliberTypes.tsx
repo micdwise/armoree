@@ -5,8 +5,8 @@ import {
   CardTitle,
   CardContent,
   CardFooter,
-} from "../../components/Card";
-import { Spinner } from "../../components/Spinner";
+} from "@components/Card";
+import { Spinner } from "@components/Spinner";
 import { GetAmmunitionSummary } from "@app/Ammunition/AmmunitionData";
 import {
   VictoryChart,
@@ -16,7 +16,7 @@ import {
   VictoryLegend,
 } from "victory";
 import { Box } from "lucide-react";
-import { useTheme } from "../../components/ThemeContext";
+import { useTheme } from "@components/ThemeContext";
 
 const AmmoCaliberTypeCard: React.FunctionComponent = () => {
   const { data, isLoading } = GetAmmunitionSummary();

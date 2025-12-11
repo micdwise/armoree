@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  PageSection,
-  Toolbar,
-  ToolbarContent,
-  ToolbarItem,
-  Title,
-} from "../../components/Layout";
+import { PageSection } from "@components/Layout";
 import { AmmunitionTable, SortBy } from "@app/Ammunition/AmmunitionTable";
 import { AddAmmoForm } from "@app/Ammunition/AddAmmoForm";
 import {
@@ -107,16 +101,6 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
   return (
     <React.Fragment>
-      <PageSection className="bg-default-background border-b border-neutral-border shadow-sm mb-6">
-        <Toolbar>
-          <ToolbarContent>
-            <ToolbarItem>
-              <Title>Ammunition</Title>
-            </ToolbarItem>
-          </ToolbarContent>
-        </Toolbar>
-      </PageSection>
-
       <AmmunitionTable
         ammunition={paginatedData}
         isLoading={isLoading}

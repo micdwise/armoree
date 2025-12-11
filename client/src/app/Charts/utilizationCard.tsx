@@ -5,9 +5,17 @@ import {
   CardTitle,
   CardContent,
   CardFooter,
-} from "../../components/Card";
-import { VictoryChart, VictoryStack, VictoryBar, VictoryTooltip, VictoryTheme, VictoryAxis, VictoryLegend } from "victory";
-import { Select } from "../../components/Select";
+} from "@components/Card";
+import {
+  VictoryChart,
+  VictoryStack,
+  VictoryBar,
+  VictoryTooltip,
+  VictoryTheme,
+  VictoryAxis,
+  VictoryLegend,
+} from "victory";
+import { Select } from "@components/Select";
 import { AlertCircle } from "lucide-react";
 
 export const CardUtilizationDemo3: React.FunctionComponent = () => {
@@ -49,7 +57,9 @@ export const CardUtilizationDemo3: React.FunctionComponent = () => {
             <span className="text-sm font-semibold text-gray-700">System</span>
             <div className="flex items-center gap-2 mt-1 text-red-600">
               <AlertCircle className="h-4 w-4" />
-              <span className="hover:underline text-sm font-medium">25 incidents detected</span>
+              <span className="hover:underline text-sm font-medium">
+                25 incidents detected
+              </span>
             </div>
           </div>
 
@@ -60,7 +70,9 @@ export const CardUtilizationDemo3: React.FunctionComponent = () => {
               height={200}
               padding={{ top: 20, bottom: 60, left: 40, right: 40 }}
             >
-              <VictoryLegend x={40} y={160}
+              <VictoryLegend
+                x={40}
+                y={160}
                 orientation="horizontal"
                 gutter={20}
                 style={{ border: { stroke: "black" }, title: { fontSize: 12 } }}
@@ -68,24 +80,44 @@ export const CardUtilizationDemo3: React.FunctionComponent = () => {
                   { name: "Low", symbol: { fill: "#FCE96A" } },
                   { name: "Important", symbol: { fill: "#F6C142" } },
                   { name: "Moderate", symbol: { fill: "#F09833" } },
-                  { name: "Critical", symbol: { fill: "#E26F2D" } }
+                  { name: "Critical", symbol: { fill: "#E26F2D" } },
                 ]}
               />
-              <VictoryAxis style={{ axis: { stroke: "none" }, tickLabels: { fill: "none" } }} />
-              <VictoryStack horizontal
+              <VictoryAxis
+                style={{
+                  axis: { stroke: "none" },
+                  tickLabels: { fill: "none" },
+                }}
+              />
+              <VictoryStack
+                horizontal
                 colorScale={["#FCE96A", "#F6C142", "#F09833", "#E26F2D"]}
               >
-                <VictoryBar data={dataLow} labelComponent={<VictoryTooltip />} />
-                <VictoryBar data={dataImportant} labelComponent={<VictoryTooltip />} />
-                <VictoryBar data={dataModerate} labelComponent={<VictoryTooltip />} />
-                <VictoryBar data={dataCritical} labelComponent={<VictoryTooltip />} />
+                <VictoryBar
+                  data={dataLow}
+                  labelComponent={<VictoryTooltip />}
+                />
+                <VictoryBar
+                  data={dataImportant}
+                  labelComponent={<VictoryTooltip />}
+                />
+                <VictoryBar
+                  data={dataModerate}
+                  labelComponent={<VictoryTooltip />}
+                />
+                <VictoryBar
+                  data={dataCritical}
+                  labelComponent={<VictoryTooltip />}
+                />
               </VictoryStack>
             </VictoryChart>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        <span className="text-sm text-blue-600 hover:underline">See details</span>
+        <span className="text-sm text-blue-600 hover:underline">
+          See details
+        </span>
       </CardFooter>
     </Card>
   );

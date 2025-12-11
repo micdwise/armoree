@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  PageSection,
-  Toolbar,
-  ToolbarContent,
-  ToolbarItem,
-  Title,
-} from "../../components/Layout";
+import { PageSection } from "@components/Layout";
 import { FirearmsTable, SortBy } from "@app/Firearms/FirearmsTable";
 import { AddFirearmForm } from "@app/Firearms/AddFirearmForm";
 import {
@@ -107,16 +101,6 @@ const FirearmsPage: React.FunctionComponent = () => {
 
   return (
     <React.Fragment>
-      <PageSection className="bg-default-background border-b border-neutral-border shadow-sm mb-6">
-        <Toolbar>
-          <ToolbarContent>
-            <ToolbarItem>
-              <Title>Firearms</Title>
-            </ToolbarItem>
-          </ToolbarContent>
-        </Toolbar>
-      </PageSection>
-
       <FirearmsTable
         firearms={paginatedData}
         isLoading={isLoading}
