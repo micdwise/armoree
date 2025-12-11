@@ -11,6 +11,7 @@ export interface Firearm {
   serial_number: string;
   asset_tag: string;
   current_status: string;
+  next_due_date?: string;
 }
 
 async function AddFirearms(newFirearm: Partial<Firearm>) {
@@ -39,13 +40,22 @@ const GetFirearms = () => {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase.from("firearm").select("*");
+      const { data, error } = await supabase.from("firearm").select(`
+        *,
+        service_schedule (
+          next_due_date
+        )
+      `);
 
       if (error) throw error;
 
       if (data) {
-        // Ensure data matches Firearm interface, may need casting or runtime validation if strictly typed
-        setData(data as unknown as Firearm[]);
+        // Flatten the data
+        const flattenedData = data.map((item: any) => ({
+          ...item,
+          next_due_date: item.service_schedule?.next_due_date
+        }));
+        setData(flattenedData as Firearm[]);
       }
     } catch (error) {
       console.log(error);

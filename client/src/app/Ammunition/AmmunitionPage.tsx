@@ -9,15 +9,23 @@ import {
 } from "@app/Ammunition/AmmunitionData";
 import { DeleteAmmunitionModal } from "./DeleteAmmunitionModal";
 
+import { useSearchParams } from "react-router-dom";
+// ... imports
+
 const AmmunitionPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetAmmunition();
+  const [searchParams] = useSearchParams();
   const [sortBy, setSortBy] = React.useState<SortBy>({});
+  /* State */
   const [page, setPage] = React.useState(1);
   const [perPage, setPerPage] = React.useState(10);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [ammunitionToDelete, setAmmunitionToDelete] =
     React.useState<Ammunition | null>(null);
+
+  // Initialize filterValue
   const [filterValue, setFilterValue] = React.useState("");
+  const activeFilterType = searchParams.get("filter");
 
   const columnKeys: (keyof Omit<Ammunition, "id">)[] = [
     "manufacturer",
@@ -28,6 +36,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
     "qty",
   ];
 
+  /* Handlers */
   const onSort = (
     _event: React.MouseEvent,
     index: number,
@@ -41,19 +50,30 @@ const AmmunitionPage: React.FunctionComponent = () => {
     value: string,
   ) => {
     setFilterValue(value);
-    setPage(1); //Reset to first page when filter changes
+    setPage(1);
   };
 
   const filteredData = React.useMemo(() => {
     if (!data) return [];
-    if (!filterValue) return data;
 
-    return data.filter((ammunition) =>
+    let filtered = data;
+
+    if (activeFilterType === 'low_stock') {
+      filtered = filtered.filter(a =>
+        a.min_stock_level !== undefined &&
+        a.min_stock_level !== null &&
+        a.quantity_on_hand < a.min_stock_level
+      );
+    }
+
+    if (!filterValue) return filtered;
+
+    return filtered.filter((ammunition) =>
       Object.values(ammunition).some((val) =>
         String(val).toLocaleLowerCase().includes(filterValue.toLowerCase()),
       ),
     );
-  }, [data, filterValue]);
+  }, [data, filterValue, activeFilterType]);
 
   const sortedData = React.useMemo(() => {
     if (sortBy.index === undefined || !filteredData) {
