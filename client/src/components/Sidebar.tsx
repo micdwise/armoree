@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "../lib/utils";
 import { ChevronDown, ChevronRight, Menu, LogOut } from "lucide-react";
 import { supabase } from "../lib/supabase";
@@ -18,6 +18,7 @@ export function Sidebar({
   ...props
 }: Readonly<SidebarProps>) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <aside
@@ -36,17 +37,18 @@ export function Sidebar({
           isOpen ? "justify-between px-4" : "justify-center lg:px-0",
         )}
       >
-        <span
+        <Link
+          to="/"
           className={cn(
             "text-xl font-bold text-default-font transition-opacity duration-200 whitespace-nowrap",
             isOpen ? "opacity-100" : "opacity-0 lg:hidden",
           )}
         >
           Armoree
-        </span>
+        </Link>
         {/* Show a mini logo or icon when collapsed if needed, for now just hiding text to prevent overflow */}
         {!isOpen && (
-          <span className="hidden lg:block font-bold text-xl">A</span>
+          <Link to="/" className="hidden lg:block font-bold text-xl">A</Link>
         )}
 
         <button

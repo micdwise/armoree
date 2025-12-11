@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { Menu, Settings, Bell, Sun, Moon, Laptop } from "lucide-react";
 import { Button } from "./Button";
 import { useTheme } from "./ThemeContext";
@@ -23,9 +24,11 @@ export const Header: React.FC<IHeaderProps> = ({
         >
           <Menu className="h-6 w-6" />
         </button>
-        <h1 className="text-xl font-semibold text-default-font lg:hidden">
-          Armoree
-        </h1>
+        <Link to="/" className="lg:hidden">
+          <h1 className="text-xl font-semibold text-default-font">
+            Armoree
+          </h1>
+        </Link>
       </div>
 
       <div className="flex items-center gap-2 md:gap-4">
