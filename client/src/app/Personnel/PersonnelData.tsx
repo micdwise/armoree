@@ -179,6 +179,26 @@ export async function GetPersonnelTraining(personnelId: number) {
     return data;
 }
 
+export async function GetExpiringPersonnelIds(): Promise<number[]> {
+    const today = new Date();
+    const thirtyDaysFromNow = new Date();
+    thirtyDaysFromNow.setDate(today.getDate() + 30);
+
+    const { data, error } = await supabase
+        .from("personnel_training")
+        .select("personnel_id")
+        .lte("date_expires", thirtyDaysFromNow.toISOString())
+        .gte("date_expires", today.toISOString());
+
+    if (error) {
+        console.error("Error fetching expiring personnel:", error);
+        return [];
+    }
+
+    // Return unique IDs
+    return [...new Set(data.map(d => d.personnel_id))];
+}
+
 export async function GetTrainingCourses() {
     const { data, error } = await supabase
         .from("training_course")

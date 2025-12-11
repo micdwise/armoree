@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PageSection } from "@components/Layout";
 import { PersonnelTable, SortBy } from "./PersonnelTable";
-import { GetPersonnel, Personnel, DeletePersonnel } from "./PersonnelData";
+import { GetPersonnel, Personnel, DeletePersonnel, GetExpiringPersonnelIds } from "./PersonnelData";
 import { useSearchParams } from "react-router-dom";
 
 import { AddPersonnelForm } from "./AddPersonnelForm";
@@ -22,6 +22,15 @@ const PersonnelPage: React.FunctionComponent = () => {
     const initialFilter = searchParams.get("search") || "";
     const [filterValue, setFilterValue] = React.useState(initialFilter);
     const activeFilterType = searchParams.get("filter"); // e.g. 'expiring'
+    const [expiringIds, setExpiringIds] = React.useState<number[]>([]);
+
+    React.useEffect(() => {
+        if (activeFilterType === "expiring") {
+            GetExpiringPersonnelIds().then(setExpiringIds);
+        } else {
+            setExpiringIds([]);
+        }
+    }, [activeFilterType]);
 
     const columnKeys: (keyof Personnel)[] = ["badge_number", "last_name", "first_name", "status"];
 
@@ -49,9 +58,7 @@ const PersonnelPage: React.FunctionComponent = () => {
 
         // Special Dashboard Filter
         if (activeFilterType === 'expiring') {
-            // Mock logic for now since explicit qualification data isn't joined yet
-            // In a real scenario, check `p.qualification_expiry`
-            filtered = filtered.filter(p => p.status === 'Active'); // Placeholder: filter active only or similar
+            filtered = filtered.filter(p => expiringIds.includes(p.personnel_id));
         }
 
         if (!filterValue) return filtered;
@@ -61,7 +68,7 @@ const PersonnelPage: React.FunctionComponent = () => {
                 String(val).toLowerCase().includes(filterValue.toLowerCase())
             )
         );
-    }, [data, filterValue, activeFilterType]);
+    }, [data, filterValue, activeFilterType, expiringIds]);
 
     const sortedData = React.useMemo(() => {
         if (sortBy.index === undefined || sortBy.direction === undefined) {

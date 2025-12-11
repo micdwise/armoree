@@ -55,7 +55,7 @@ export const Tier1Alerts: React.FC<Tier1AlertsProps> = ({
                 </Card>
             </Link>
 
-            <Link to="/Settings/Personnel?filter=expiring">
+            <Link to="/Personnel?filter=expiring">
                 <Card className="hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors cursor-pointer h-full">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Expiring Qualifications</CardTitle>
