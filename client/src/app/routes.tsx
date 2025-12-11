@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { AppLayout } from "@app/AppLayout/AppLayout";
 import { NotFound } from "@app/NotFound/NotFound";
-import { LayoutDashboard, Package, Backpack } from "lucide-react";
+import { LayoutDashboard, Package, Backpack, Archive } from "lucide-react";
 
 // Lazy Loaded Pages
 const Dashboard = React.lazy(() =>
@@ -58,16 +58,24 @@ const navigationRoutes: AppRouteConfig[] = [
     icon: LayoutDashboard,
   },
   {
-    label: "Firearms",
-    path: "/Firearms",
-    title: "Firearms",
-    icon: Package,
-  },
-  {
-    label: "Ammunition",
-    path: "/Ammunition",
-    title: "Ammunition",
-    icon: Backpack,
+    label: "Inventory",
+    path: "",
+    title: "Inventory",
+    icon: Archive,
+    routes: [
+      {
+        label: "Firearms",
+        path: "/Firearms",
+        title: "Firearms",
+        icon: Package,
+      },
+      {
+        label: "Ammunition",
+        path: "/Ammunition",
+        title: "Ammunition",
+        icon: Backpack,
+      },
+    ],
   },
 ];
 
