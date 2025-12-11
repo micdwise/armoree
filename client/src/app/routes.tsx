@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { AppLayout } from "@app/AppLayout/AppLayout";
 import { NotFound } from "@app/NotFound/NotFound";
-import { LayoutDashboard, Package, Backpack, Archive } from "lucide-react";
+import { LayoutDashboard, Package, Backpack, Archive, Settings, Database } from "lucide-react";
 
 // Lazy Loaded Pages
 const Dashboard = React.lazy(() =>
@@ -30,6 +30,11 @@ const AmmunitionPage = React.lazy(() =>
 const FirearmInformation = React.lazy(() =>
   import("@app/Firearms/FirearmInformation").then((module) => ({
     default: module.FirearmInformation,
+  })),
+);
+const ReferenceDataPage = React.lazy(() =>
+  import("@app/Settings/ReferenceDataPage").then((module) => ({
+    default: module.ReferenceDataPage,
   })),
 );
 
@@ -74,6 +79,20 @@ const navigationRoutes: AppRouteConfig[] = [
         path: "/Ammunition",
         title: "Ammunition",
         icon: Backpack,
+      },
+    ],
+  },
+  {
+    label: "Settings",
+    path: "",
+    title: "Settings",
+    icon: Settings,
+    routes: [
+      {
+        label: "Reference Tables",
+        path: "/Settings/ReferenceTables",
+        title: "Reference Tables",
+        icon: Database,
       },
     ],
   },
@@ -129,6 +148,7 @@ export const router = createBrowserRouter(
           <Route path="Firearms" element={<FirearmsPage />} />
           <Route path="Firearms/:id" element={<FirearmInformation />} />
           <Route path="Ammunition/*" element={<AmmunitionPage />} />
+          <Route path="Settings/ReferenceTables" element={<ReferenceDataPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

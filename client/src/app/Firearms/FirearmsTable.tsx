@@ -219,26 +219,36 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {firearms.map((repo) => (
-          <div
-            key={repo.firearm_id}
-            className="rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-            onClick={() => navigate(`/Firearms/${repo.firearm_id}`)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                navigate(`/Firearms/${repo.firearm_id}`);
-              }
-            }}
-            role="button"
-            tabIndex={0}
-          >
-            <div className="mb-2 flex items-start justify-between">
-              <div>
-                <h3 className="font-medium text-default-font">
-                  {repo.manufacturer} {repo.model}
-                </h3>
-                <p className="text-sm text-subtext-color">{repo.type}</p>
+          <div key={repo.firearm_id} className="relative">
+            <button
+              type="button"
+              className="w-full text-left rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              onClick={() => navigate(`/Firearms/${repo.firearm_id}`)}
+            >
+              <div className="mb-2 flex items-start justify-between">
+                <div className="pr-8">
+                  <h3 className="font-medium text-default-font">
+                    {repo.manufacturer} {repo.model}
+                  </h3>
+                  <p className="text-sm text-subtext-color">{repo.type}</p>
+                </div>
               </div>
+              <div className="space-y-1 text-sm text-subtext-color">
+                <div className="flex justify-between">
+                  <span>Caliber:</span>
+                  <span className="text-default-font">{repo.caliber}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Serial:</span>
+                  <span className="text-default-font">{repo.serial_number}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Status:</span>
+                  <span className="text-default-font">{repo.current_status}</span>
+                </div>
+              </div>
+            </button>
+            <div className="absolute top-4 right-4">
               <Button
                 variant="link"
                 size="sm"
@@ -252,20 +262,6 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            <div className="space-y-1 text-sm text-subtext-color">
-              <div className="flex justify-between">
-                <span>Caliber:</span>
-                <span className="text-default-font">{repo.caliber}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Serial:</span>
-                <span className="text-default-font">{repo.serial_number}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Status:</span>
-                <span className="text-default-font">{repo.current_status}</span>
-              </div>
-            </div>
           </div>
         ))}
       </div>
@@ -275,7 +271,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   return (
     <PageSection>
       <Card>
-        <CardContent className="p-6">
+        <CardContent className="p-4 lg:p-6">
           <div className="flex flex-col gap-4">
             <Toolbar>
               <ToolbarContent>
@@ -328,13 +324,17 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
               </Table>
             </div>
 
-            <Pagination
-              itemCount={itemCount}
-              perPage={perPage}
-              page={page}
-              onSetPage={(p) => onSetPage(null, p)}
-              onPerPageSelect={(pp) => onPerPageSelect(null, pp, 1)}
-            />
+            {!isError && itemCount > 0 && (
+              <div className="mt-4">
+                <Pagination
+                  itemCount={itemCount}
+                  perPage={perPage}
+                  page={page}
+                  onSetPage={(p) => onSetPage(null, p)}
+                  onPerPageSelect={(pp) => onPerPageSelect(null, pp, 1)}
+                />
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
