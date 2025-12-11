@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Sidebar } from "../../components/Sidebar";
-import { Header } from "../../components/Header";
+import { Sidebar } from "@components/Sidebar";
+import { Header } from "@components/Header";
 import { routes } from "@app/routes";
 import { cn } from "../../lib/utils";
 

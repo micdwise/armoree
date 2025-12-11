@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { cn } from "../lib/utils";
 import { ChevronDown, ChevronRight, Menu, LogOut } from "lucide-react";
 import { supabase } from "../lib/supabase";
@@ -18,7 +18,6 @@ export function Sidebar({
   ...props
 }: Readonly<SidebarProps>) {
   const location = useLocation();
-  const navigate = useNavigate();
 
   return (
     <aside

@@ -8,19 +8,19 @@ import {
   TableCell,
   SortableHead,
 } from "../../components/Table";
-import { Card, CardContent } from "../../components/Card";
+import { Card, CardContent } from "@components/Card";
 import { Ammunition } from "@app/Ammunition/AmmunitionData";
 import {
   PageSection,
   Toolbar,
   ToolbarContent,
   ToolbarItem,
-} from "../../components/Layout";
-import { Spinner } from "../../components/Spinner";
+} from "@components/Layout";
+import { Spinner } from "@components/Spinner";
 
-import { Pagination } from "../../components/Pagination";
-import { Input } from "../../components/Input";
-import { Button } from "../../components/Button";
+import { Pagination } from "@components/Pagination";
+import { Input } from "@components/Input";
+import { Button } from "@components/Button";
 import { Search, Box, Trash2, AlertTriangle } from "lucide-react";
 
 export interface SortBy {

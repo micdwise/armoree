@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, Settings, Bell, Sun, Moon, Laptop } from "lucide-react";
 import { Button } from "./Button";
 import { useTheme } from "./ThemeContext";
+import { UserMenu } from "./UserMenu";
 
 interface IHeaderProps {
   sidebarOpen: boolean;
@@ -25,9 +26,7 @@ export const Header: React.FC<IHeaderProps> = ({
           <Menu className="h-6 w-6" />
         </button>
         <Link to="/" className="lg:hidden">
-          <h1 className="text-xl font-semibold text-default-font">
-            Armoree
-          </h1>
+          <h1 className="text-xl font-semibold text-default-font">Armoree</h1>
         </Link>
       </div>
 
@@ -57,6 +56,9 @@ export const Header: React.FC<IHeaderProps> = ({
         <Button variant="link" aria-label="Settings">
           <Settings className="h-5 w-5 text-subtext-color hover:text-default-font" />
         </Button>
+        <div className="border-t border-neutral-border p-4 md:border-t-0 md:p-0">
+          <UserMenu />
+        </div>
       </div>
     </header>
   );

@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Button } from "../../components/Button";
-import { Input } from "../../components/Input";
-import { Select } from "../../components/Select";
-import { Modal } from "../../components/Modal";
-import { Field } from "../../components/Field";
+import { Button } from "@components/Button";
+import { Input } from "@components/Input";
+import { Select } from "@components/Select";
+import { Modal } from "@components/Modal";
+import { Field } from "@components/Field";
 import { AddFirearms } from "@app/Firearms/FirearmsData";
 import allFirearmsManufacturer from "@data/firearms-manufacturers.json";
 import allCalibers from "@data/calibers.json";
@@ -122,8 +122,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
         !formState.model || formState.model === "Select a model"
           ? "Please select a model"
           : false,
-      type:
-        formState.type === "Select a type" ? "Please select a type" : false,
+      type: formState.type === "Select a type" ? "Please select a type" : false,
       caliber_gauge:
         formState.caliber_gauge === "Select a caliber"
           ? "Please select a caliber"
@@ -240,17 +239,10 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             />
           </Field>
 
-          <Field
-            label="Type"
-            required
-            error={validationState.type}
-            id="type"
-          >
+          <Field label="Type" required error={validationState.type} id="type">
             <Select
               value={
-                formState.type === "Select a type"
-                  ? undefined
-                  : formState.type
+                formState.type === "Select a type" ? undefined : formState.type
               }
               onChange={(val) => handleInputChange("type", val)}
               options={typeOptions}
@@ -327,9 +319,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
               id="asset_tag"
               name="asset_tag"
               value={formState.asset_tag}
-              onChange={(e) =>
-                handleInputChange("asset_tag", e.target.value)
-              }
+              onChange={(e) => handleInputChange("asset_tag", e.target.value)}
               error={!!validationState.asset_tag}
               required
             />
