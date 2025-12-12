@@ -38,7 +38,7 @@ interface FirearmsTableProps {
   onSort: (
     event: React.MouseEvent,
     index: number,
-    direction: "asc" | "desc",
+    direction: "asc" | "desc"
   ) => void;
   itemCount: number;
   page: number;
@@ -49,7 +49,7 @@ interface FirearmsTableProps {
   filterValue: string;
   onFilterChange: (
     event: React.FormEvent<HTMLInputElement>,
-    value: string,
+    value: string
   ) => void;
   dashboardFilterLabel?: string;
   onClearDashboardFilter?: () => void;
@@ -154,8 +154,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
       <TableRow
         key={repo.firearm_id}
         onClick={() => navigate(`/Firearms/${repo.firearm_id}`)}
-        className="cursor-pointer hover:bg-gray-50"
-      >
+        className="cursor-pointer hover:bg-gray-50">
         <TableCell>{repo.manufacturer}</TableCell>
         <TableCell>{repo.model}</TableCell>
         <TableCell>{repo.type}</TableCell>
@@ -175,8 +174,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
               onDeleteFirearm(repo);
             }}
             aria-label="Delete"
-            className="text-gray-500 hover:text-red-600"
-          >
+            className="text-gray-500 hover:text-red-600">
             <Trash2 className="h-4 w-4" />
           </Button>
         </TableCell>
@@ -228,8 +226,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
             <button
               type="button"
               className="w-full text-left rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-              onClick={() => navigate(`/Firearms/${repo.firearm_id}`)}
-            >
+              onClick={() => navigate(`/Firearms/${repo.firearm_id}`)}>
               <div className="mb-2 flex items-start justify-between">
                 <div className="pr-8">
                   <h3 className="font-medium text-default-font">
@@ -268,8 +265,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                   onDeleteFirearm(repo);
                 }}
                 aria-label="Delete"
-                className="text-gray-500 hover:text-red-600"
-              >
+                className="text-gray-500 hover:text-red-600">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
@@ -332,15 +328,14 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                               sortBy.index === columnIndex &&
                                 sortBy.direction === "asc"
                                 ? "desc"
-                                : "asc",
+                                : "asc"
                             )
-                          }
-                        >
+                          }>
                           {column.title}
                         </SortableHead>
                       ) : (
                         <TableHead key={column.key} />
-                      ),
+                      )
                     )}
                   </TableRow>
                 </TableHeader>

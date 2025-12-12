@@ -22,7 +22,7 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
   const { data, isLoading } = useAmmunitionSummary();
   const { theme } = useTheme();
   const [resolvedTheme, setResolvedTheme] = React.useState<"light" | "dark">(
-    "light",
+    "light"
   );
 
   React.useEffect(() => {
@@ -94,8 +94,7 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
           theme={VictoryTheme.material}
           domainPadding={{ x: 50 }}
           width={600}
-          height={350}
-        >
+          height={350}>
           <VictoryLegend
             x={50} // Legend inside chart area, adjusting positon
             y={10}
@@ -156,8 +155,7 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
       <CardFooter>
         <a
           href="/Ammunition"
-          className="text-sm text-brand-primary hover:underline"
-        >
+          className="text-sm text-brand-primary hover:underline">
           See details
         </a>
       </CardFooter>

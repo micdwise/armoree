@@ -38,14 +38,14 @@ const AmmunitionPage: React.FunctionComponent = () => {
   const onSort = (
     _event: React.MouseEvent,
     index: number,
-    direction: "asc" | "desc",
+    direction: "asc" | "desc"
   ) => {
     setSortBy({ index, direction });
   };
 
   const onFilterChange = (
     _event: React.FormEvent<HTMLInputElement>,
-    value: string,
+    value: string
   ) => {
     setFilterValue(value);
     setPage(1);
@@ -61,7 +61,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
         (a) =>
           a.min_stock_level !== undefined &&
           a.min_stock_level !== null &&
-          a.quantity_on_hand < a.min_stock_level,
+          a.quantity_on_hand < a.min_stock_level
       );
     }
 
@@ -69,8 +69,8 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
     return filtered.filter((ammunition) =>
       Object.values(ammunition).some((val) =>
-        String(val).toLocaleLowerCase().includes(filterValue.toLowerCase()),
-      ),
+        String(val).toLocaleLowerCase().includes(filterValue.toLowerCase())
+      )
     );
   }, [data, filterValue, activeFilterType]);
 
@@ -80,7 +80,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
     }
     const sortKey = columnKeys[sortBy.index];
     const sorted = [...filteredData].sort((a, b) =>
-      a[sortKey] < b[sortKey] ? -1 : 1,
+      a[sortKey] < b[sortKey] ? -1 : 1
     );
     return sortBy.direction === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
@@ -92,7 +92,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
   const onPerPageSelect = (
     _event: any,
     newPerPage: number,
-    newPage: number,
+    newPage: number
   ) => {
     setPerPage(newPerPage);
     setPage(newPage);

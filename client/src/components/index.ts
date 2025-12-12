@@ -12,8 +12,22 @@ export { Pagination } from "./Pagination";
 export { Select } from "./Select";
 export { Sidebar } from "./Sidebar";
 export { Spinner } from "./Spinner";
-export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, SortableHead } from "./Table";
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  SortableHead,
+} from "./Table";
 export { TextArea } from "./TextArea";
 export { ThemeProvider, useTheme } from "./ThemeContext";
 export { UserMenu } from "./UserMenu";
-export { PageSection, Toolbar, ToolbarContent, ToolbarItem, Title } from "./Layout";
+export {
+  PageSection,
+  Toolbar,
+  ToolbarContent,
+  ToolbarItem,
+  Title,
+} from "./Layout";

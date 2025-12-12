@@ -10,7 +10,13 @@ export interface ConfirmModalProps {
   description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  confirmVariant?: "primary" | "destructive" | "secondary" | "outline" | "ghost" | "link";
+  confirmVariant?:
+    | "primary"
+    | "destructive"
+    | "secondary"
+    | "outline"
+    | "ghost"
+    | "link";
   size?: "sm" | "md" | "lg";
   children?: React.ReactNode;
 }
@@ -32,14 +38,23 @@ export function ConfirmModal({
       <Button variant="link" onClick={onClose} aria-label={cancelLabel}>
         {cancelLabel}
       </Button>
-      <Button variant={confirmVariant} onClick={onConfirm} aria-label={confirmLabel}>
+      <Button
+        variant={confirmVariant}
+        onClick={onConfirm}
+        aria-label={confirmLabel}>
         {confirmLabel}
       </Button>
     </>
   );
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={title} description={description} footer={footer} size={size}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+      description={description}
+      footer={footer}
+      size={size}>
       {children}
     </Modal>
   );

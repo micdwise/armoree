@@ -26,8 +26,7 @@ const DeleteFirearmModal: React.FunctionComponent<DeleteFirearmModalProps> = ({
       onConfirm={onConfirm}
       title="Confirm Deletion"
       confirmLabel="Delete"
-      size="sm"
-    >
+      size="sm">
       <p>
         Are you sure you want to delete the firearm:{" "}
         <strong>

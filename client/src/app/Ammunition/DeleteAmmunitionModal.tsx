@@ -26,8 +26,7 @@ const DeleteAmmunitionModal: React.FunctionComponent<DeleteAmmunitionProps> = ({
       onConfirm={onConfirm}
       title="Confirm Deletion"
       confirmLabel="Delete"
-      size="sm"
-    >
+      size="sm">
       <p>Are you sure you want to delete the ammunition?</p>
     </ConfirmModal>
   );

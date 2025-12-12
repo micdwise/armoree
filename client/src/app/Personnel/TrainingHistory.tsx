@@ -8,7 +8,7 @@ import {
   TableRow,
   Spinner,
   Button,
-} from "@components";
+} from "@components/index";
 import { Plus } from "lucide-react";
 import { usePersonnelTraining, PersonnelTraining } from "./hooks";
 import { AddTrainingModal } from "./AddTrainingModal";
@@ -63,8 +63,7 @@ export const TrainingHistory = ({
         <Button
           size="sm"
           variant="secondary"
-          onClick={() => setIsAddModalOpen(true)}
-        >
+          onClick={() => setIsAddModalOpen(true)}>
           <Plus className="h-3 w-3 mr-2" />
           Add Entry
         </Button>
@@ -94,8 +93,7 @@ export const TrainingHistory = ({
                   </TableCell>
                   <TableCell>{record.date_completed}</TableCell>
                   <TableCell
-                    className={isExpired ? "text-red-500 font-bold" : ""}
-                  >
+                    className={isExpired ? "text-red-500 font-bold" : ""}>
                     {record.date_expires || "-"}
                   </TableCell>
                   <TableCell>{record.score_achieved || "-"}</TableCell>

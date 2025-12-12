@@ -46,13 +46,19 @@ export interface Caliber {
 }
 
 export async function addFirearm(newFirearm: Partial<Firearm>) {
-  const { data, error } = await supabase.from("firearm").insert([newFirearm]).select();
+  const { data, error } = await supabase
+    .from("firearm")
+    .insert([newFirearm])
+    .select();
   if (error) throw error;
   return data as Firearm[];
 }
 
 export async function deleteFirearm(id: number) {
-  const { error } = await supabase.from("firearm").delete().eq("firearm_id", id);
+  const { error } = await supabase
+    .from("firearm")
+    .delete()
+    .eq("firearm_id", id);
   if (error) throw error;
 }
 
@@ -65,9 +71,9 @@ export function useFirearms() {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase.from("firearm").select(
-        `*, service_schedule ( next_due_date )`,
-      );
+      const { data, error } = await supabase
+        .from("firearm")
+        .select(`*, service_schedule ( next_due_date )`);
       if (error) throw error;
       const flattened = (data || []).map((item: any) => ({
         ...item,
@@ -132,9 +138,7 @@ export function useMaintenanceLogs(firearmId: string | undefined) {
     try {
       const { data, error } = await supabase
         .from("maintenance_log")
-        .select(
-          `*, personnel ( first_name, last_name, badge_number )`,
-        )
+        .select(`*, personnel ( first_name, last_name, badge_number )`)
         .eq("firearm_id", firearmId)
         .order("date_performed", { ascending: false });
       if (error) throw error;
@@ -155,7 +159,10 @@ export function useMaintenanceLogs(firearmId: string | undefined) {
 }
 
 export async function addMaintenanceLog(log: Partial<MaintenanceLog>) {
-  const { data, error } = await supabase.from("maintenance_log").insert([log]).select();
+  const { data, error } = await supabase
+    .from("maintenance_log")
+    .insert([log])
+    .select();
   if (error) throw error;
   return data as MaintenanceLog[];
 }
@@ -182,9 +189,7 @@ export async function getModels(manufacturerId: number) {
 export async function getCalibers(modelId: number) {
   const { data, error } = await supabase
     .from("model_valid_calibers")
-    .select(
-      `caliber_id, reference_calibers ( caliber_id, name )`,
-    )
+    .select(`caliber_id, reference_calibers ( caliber_id, name )`)
     .eq("model_id", modelId);
   if (error) throw error;
   return (data || []).map((item: any) => item.reference_calibers) as Caliber[];

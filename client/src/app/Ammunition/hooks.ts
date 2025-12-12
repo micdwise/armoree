@@ -25,7 +25,10 @@ export async function addAmmunition(newAmmunition: Partial<Ammunition>) {
 }
 
 export async function deleteAmmunition(id: number) {
-  const { error } = await supabase.from("ammunition_inventory").delete().eq("ammo_id", id);
+  const { error } = await supabase
+    .from("ammunition_inventory")
+    .delete()
+    .eq("ammo_id", id);
   if (error) throw error;
 }
 
@@ -38,7 +41,9 @@ export function useAmmunition() {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase.from("ammunition_inventory").select("*");
+      const { data, error } = await supabase
+        .from("ammunition_inventory")
+        .select("*");
       if (error) throw error;
       setData((data || []) as Ammunition[]);
     } catch (error) {
@@ -72,13 +77,18 @@ export function useAmmunitionSummary() {
       if (error) throw error;
 
       const summaryMap = new Map<string, number>();
-      (data || []).forEach((row: { caliber_gauge: string; quantity_on_hand: number }) => {
-        const qty = Number(row.quantity_on_hand) || 0;
-        summaryMap.set(row.caliber_gauge, (summaryMap.get(row.caliber_gauge) || 0) + qty);
-      });
+      (data || []).forEach(
+        (row: { caliber_gauge: string; quantity_on_hand: number }) => {
+          const qty = Number(row.quantity_on_hand) || 0;
+          summaryMap.set(
+            row.caliber_gauge,
+            (summaryMap.get(row.caliber_gauge) || 0) + qty
+          );
+        }
+      );
 
       const summary: AmmunitionSummary[] = Array.from(summaryMap.entries()).map(
-        ([caliber, total_rounds]) => ({ caliber, total_rounds }),
+        ([caliber, total_rounds]) => ({ caliber, total_rounds })
       );
       setData(summary);
     } catch (error) {
