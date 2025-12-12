@@ -101,6 +101,19 @@
   --bg-brand-highlight: var(--color-brand-50);
   --text-brand-highlight: var(--color-brand-700);
 
+  /* Tailwind semantic surface tokens */
+  --color-primary: var(--brand-primary);
+  --color-primary-foreground: var(--color-neutral-0);
+  --color-secondary: var(--bg-screen);
+  --color-secondary-foreground: var(--text-default);
+  --color-background: var(--bg-default);
+  --color-foreground: var(--text-default);
+  --color-muted: var(--bg-screen);
+  --color-muted-foreground: var(--text-sub);
+  --color-border: var(--border-neutral);
+  --color-destructive: var(--color-error-600);
+  --color-destructive-foreground: var(--color-neutral-0);
+
   /* Notification Defaults (Light) */
   --bg-success: var(--color-success-50);
   --text-success: var(--color-success-800);
@@ -129,6 +142,19 @@
   --bg-screen: var(--color-neutral-900);
   --bg-brand-highlight: var(--color-brand-900);
   --text-brand-highlight: var(--color-brand-300);
+
+  /* Tailwind semantic surface tokens */
+  --color-primary: var(--brand-primary);
+  --color-primary-foreground: var(--color-neutral-50);
+  --color-secondary: var(--color-neutral-800);
+  --color-secondary-foreground: var(--text-default);
+  --color-background: var(--bg-default);
+  --color-foreground: var(--text-default);
+  --color-muted: var(--color-neutral-800);
+  --color-muted-foreground: var(--text-sub);
+  --color-border: var(--border-neutral);
+  --color-destructive: var(--color-error-500);
+  --color-destructive-foreground: var(--color-neutral-50);
 
   /* Notification Overrides (Dark) */
   --bg-success: color-mix(in srgb, var(--color-success-900) 40%, transparent);

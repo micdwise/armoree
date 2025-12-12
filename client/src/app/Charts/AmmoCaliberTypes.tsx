@@ -7,7 +7,7 @@ import {
   CardFooter,
 } from "@components/Card";
 import { Spinner } from "@components/Spinner";
-import { GetAmmunitionSummary } from "@app/Ammunition/AmmunitionData";
+import { useAmmunitionSummary } from "@app/Ammunition/hooks";
 import {
   VictoryChart,
   VictoryBar,
@@ -19,10 +19,10 @@ import { Box } from "lucide-react";
 import { useTheme } from "@components/ThemeContext";
 
 const AmmoCaliberTypeCard: React.FunctionComponent = () => {
-  const { data, isLoading } = GetAmmunitionSummary();
+  const { data, isLoading } = useAmmunitionSummary();
   const { theme } = useTheme();
   const [resolvedTheme, setResolvedTheme] = React.useState<"light" | "dark">(
-    "light",
+    "light"
   );
 
   React.useEffect(() => {
@@ -40,7 +40,7 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
 
   const chartData = data.map((item) => ({
     x: item.caliber,
-    y: Number.parseInt(item.total_rounds, 10),
+    y: Number(item.total_rounds),
     label: `${item.caliber}: ${item.total_rounds}`,
   }));
 
@@ -94,8 +94,7 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
           theme={VictoryTheme.material}
           domainPadding={{ x: 50 }}
           width={600}
-          height={350}
-        >
+          height={350}>
           <VictoryLegend
             x={50} // Legend inside chart area, adjusting positon
             y={10}
@@ -156,8 +155,7 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
       <CardFooter>
         <a
           href="/Ammunition"
-          className="text-sm text-brand-primary hover:underline"
-        >
+          className="text-sm text-brand-primary hover:underline">
           See details
         </a>
       </CardFooter>

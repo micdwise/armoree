@@ -4,8 +4,8 @@ import { Input } from "@components/Input";
 import { Select } from "@components/Select";
 import { Modal } from "@components/Modal";
 import { Field } from "@components/Field";
-import { AddAmmunition } from "@app/Ammunition/AmmunitionData";
-import { GetManufacturers, Manufacturer, Caliber } from "@app/Firearms/FirearmsData";
+import { addAmmunition } from "@app/Ammunition/hooks";
+import { getManufacturers, Manufacturer, Caliber } from "@app/Firearms/hooks";
 import { GetAllCalibers } from "@app/Settings/ReferenceDataFunctions";
 
 interface AmmoFormState {
@@ -49,7 +49,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   const [formState, setFormState] =
     React.useState<AmmoFormState>(initialFormState);
   const [validationState, setValidationState] = React.useState<ValidationState>(
-    initialValidationState,
+    initialValidationState
   );
   const [manufacturers, setManufacturers] = React.useState<Manufacturer[]>([]);
   const [calibers, setCalibers] = React.useState<Caliber[]>([]);
@@ -57,7 +57,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const m = await GetManufacturers();
+        const m = await getManufacturers();
         setManufacturers(m);
         const c = await GetAllCalibers();
         setCalibers(c);
@@ -121,7 +121,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
       ...formState,
       quantity_on_hand: Number(formState.quantity_on_hand),
     };
-    AddAmmunition(payload)
+    addAmmunition(payload)
       .then(() => {
         onAddSuccess();
         setFormState(initialFormState);
@@ -155,8 +155,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
       <Button
         variant="primary"
         onClick={handleModalToggle}
-        disabled={isDisabled}
-      >
+        disabled={isDisabled}>
         Add Ammunition
       </Button>
       <Modal
@@ -165,15 +164,13 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         title="Add Ammunition"
         description="Enter information below."
         footer={footer}
-        size="md"
-      >
+        size="md">
         <form id="modal-with-form-form-ammo" className="flex flex-col gap-4">
           <Field
             label="Manufacturer"
             required
             error={validationState.manufacturer}
-            id="manufacturer"
-          >
+            id="manufacturer">
             <Select
               value={
                 formState.manufacturer === "Select a manufacturer"
@@ -191,8 +188,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
             label="Caliber"
             required
             error={validationState.caliber_gauge}
-            id="caliber"
-          >
+            id="caliber">
             <Select
               value={
                 formState.caliber_gauge === "Select a caliber"
@@ -210,8 +206,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
             label="Lot Number"
             required
             error={validationState.lot_number}
-            id="lot_number"
-          >
+            id="lot_number">
             <Input
               required
               type="text"
@@ -226,8 +221,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
             label="Quantity"
             required
             error={validationState.quantity_on_hand}
-            id="qty"
-          >
+            id="qty">
             <Input
               required
               type="number"

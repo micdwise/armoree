@@ -4,16 +4,16 @@ import { AmmunitionTable, SortBy } from "@app/Ammunition/AmmunitionTable";
 import { AddAmmoForm } from "@app/Ammunition/AddAmmoForm";
 import {
   Ammunition,
-  GetAmmunition,
-  DeleteAmmunition,
-} from "@app/Ammunition/AmmunitionData";
+  useAmmunition,
+  deleteAmmunition,
+} from "@app/Ammunition/hooks";
 import { DeleteAmmunitionModal } from "./DeleteAmmunitionModal";
 
 import { useSearchParams } from "react-router-dom";
 // ... imports
 
 const AmmunitionPage: React.FunctionComponent = () => {
-  const { data, isLoading, isError, refetch } = GetAmmunition();
+  const { data, isLoading, isError, refetch } = useAmmunition();
   const [searchParams, setSearchParams] = useSearchParams();
   const [sortBy, setSortBy] = React.useState<SortBy>({});
   /* State */
@@ -38,14 +38,14 @@ const AmmunitionPage: React.FunctionComponent = () => {
   const onSort = (
     _event: React.MouseEvent,
     index: number,
-    direction: "asc" | "desc",
+    direction: "asc" | "desc"
   ) => {
     setSortBy({ index, direction });
   };
 
   const onFilterChange = (
     _event: React.FormEvent<HTMLInputElement>,
-    value: string,
+    value: string
   ) => {
     setFilterValue(value);
     setPage(1);
@@ -61,7 +61,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
         (a) =>
           a.min_stock_level !== undefined &&
           a.min_stock_level !== null &&
-          a.quantity_on_hand < a.min_stock_level,
+          a.quantity_on_hand < a.min_stock_level
       );
     }
 
@@ -69,8 +69,8 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
     return filtered.filter((ammunition) =>
       Object.values(ammunition).some((val) =>
-        String(val).toLocaleLowerCase().includes(filterValue.toLowerCase()),
-      ),
+        String(val).toLocaleLowerCase().includes(filterValue.toLowerCase())
+      )
     );
   }, [data, filterValue, activeFilterType]);
 
@@ -80,7 +80,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
     }
     const sortKey = columnKeys[sortBy.index];
     const sorted = [...filteredData].sort((a, b) =>
-      a[sortKey] < b[sortKey] ? -1 : 1,
+      a[sortKey] < b[sortKey] ? -1 : 1
     );
     return sortBy.direction === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
@@ -92,7 +92,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
   const onPerPageSelect = (
     _event: any,
     newPerPage: number,
-    newPage: number,
+    newPage: number
   ) => {
     setPerPage(newPerPage);
     setPage(newPage);
@@ -112,7 +112,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
   const handleDeleteAmmunition = () => {
     if (ammunitionToDelete) {
-      DeleteAmmunition(ammunitionToDelete.ammo_id)
+      deleteAmmunition(ammunitionToDelete.ammo_id)
         .then(refetch)
         .then(handleClosedDeleteModal);
     }

@@ -9,7 +9,7 @@ import {
   SortableHead,
 } from "../../components/Table";
 import { Card, CardContent } from "@components/Card";
-import { Ammunition } from "@app/Ammunition/AmmunitionData";
+import { Ammunition } from "@app/Ammunition/hooks";
 import {
   PageSection,
   Toolbar,
@@ -37,7 +37,7 @@ interface AmmunitionTableProps {
   onSort: (
     event: React.MouseEvent,
     index: number,
-    direction: "asc" | "desc",
+    direction: "asc" | "desc"
   ) => void;
   itemCount: number;
   page: number;
@@ -48,7 +48,7 @@ interface AmmunitionTableProps {
   filterValue: string;
   onFilterChange: (
     event: React.FormEvent<HTMLInputElement>,
-    value: string,
+    value: string
   ) => void;
   dashboardFilterLabel?: string;
   onClearDashboardFilter?: () => void;
@@ -152,8 +152,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
             size="sm"
             onClick={() => onDeleteAmmunition(repo)}
             aria-label="Delete"
-            className="text-gray-500 hover:text-red-600"
-          >
+            className="text-gray-500 hover:text-red-600">
             <Trash2 className="h-4 w-4" />
           </Button>
         </TableCell>
@@ -203,8 +202,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
         {ammunition.map((repo) => (
           <div
             key={repo.ammo_id}
-            className="rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm"
-          >
+            className="rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm">
             <div className="mb-2 flex items-start justify-between">
               <div>
                 <h3 className="font-medium text-default-font">
@@ -219,8 +217,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                 size="sm"
                 onClick={() => onDeleteAmmunition(repo)}
                 aria-label="Delete"
-                className="text-gray-500 hover:text-red-600"
-              >
+                className="text-gray-500 hover:text-red-600">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
@@ -295,15 +292,14 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                               sortBy.index === columnIndex &&
                                 sortBy.direction === "asc"
                                 ? "desc"
-                                : "asc",
+                                : "asc"
                             )
-                          }
-                        >
+                          }>
                           {column.title}
                         </SortableHead>
                       ) : (
                         <TableHead key={column.key} />
-                      ),
+                      )
                     )}
                   </TableRow>
                 </TableHeader>
