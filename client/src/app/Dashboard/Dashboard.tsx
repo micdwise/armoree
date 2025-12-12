@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Tier1Alerts } from "./components/Tier1Alerts";
-import { Tier2Inventory } from "./components/Tier2Inventory";
+import { Tier2Assets } from "./components/Tier2Inventory";
 import { Tier3Compliance } from "./components/Tier3Compliance";
 import { getDashboardMetrics, DashboardMetrics } from "./DashboardData";
 import { Button } from "../../components/Button";
@@ -30,8 +30,12 @@ export const Dashboard: React.FunctionComponent = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Armory Dashboard</h1>
-        <Button onClick={fetchMetrics} disabled={isLoading} variant="secondary" className="gap-2">
-          <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+        <Button
+          onClick={fetchMetrics}
+          disabled={isLoading}
+          variant="secondary"
+          className="gap-2">
+          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
           Refresh
         </Button>
       </div>
@@ -46,8 +50,8 @@ export const Dashboard: React.FunctionComponent = () => {
 
       {metrics && (
         <>
-          <Tier2Inventory
-            inventoryStatus={metrics.inventoryStatus}
+          <Tier2Assets
+            assetStatus={metrics.inventoryStatus}
             highWearWeapons={metrics.highWearWeapons}
             assignmentRate={metrics.assignmentRate}
           />

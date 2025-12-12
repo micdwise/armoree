@@ -13,6 +13,7 @@ import {
   Model,
   Caliber,
 } from "@app/Firearms/hooks";
+import { Plus } from "lucide-react";
 
 interface FirearmFormState {
   manufacturer: string;
@@ -71,14 +72,13 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
   const [formState, setFormState] =
     React.useState<FirearmFormState>(initialFormState);
   const [validationState, setValidationState] = React.useState<ValidationState>(
-    initialValidationState
+    initialValidationState,
   );
 
   // Dynamic Options State
   const [manufacturers, setManufacturers] = React.useState<Manufacturer[]>([]);
   const [models, setModels] = React.useState<Model[]>([]);
   const [calibers, setCalibers] = React.useState<Caliber[]>([]);
-
 
   // Fetch Manufacturers on Load
   React.useEffect(() => {
@@ -141,13 +141,11 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     if (field === "manufacturer") {
       const selectedMfg = manufacturers.find((m) => m.name === value);
       if (selectedMfg) {
-
         // Fetch Models
         getModels(selectedMfg.manufacturer_id)
           .then((data) => {
             setModels(data);
             setCalibers([]); // Reset calibers
-
           })
           .catch(console.error);
       } else {
@@ -159,7 +157,6 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     if (field === "model") {
       const selectedModel = models.find((m) => m.name === value);
       if (selectedModel) {
-
         // Fetch Calibers
         getCalibers(selectedModel.model_id)
           .then(setCalibers)
@@ -224,7 +221,6 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       setValidationState(initialValidationState);
       // Reset selections
 
-
       setModels([]);
       setCalibers([]);
     }
@@ -246,7 +242,9 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       <Button
         variant="primary"
         onClick={handleModalToggle}
-        disabled={isDisabled}>
+        disabled={isDisabled}
+      >
+        <Plus className="w-4 h-4 mr-2" />
         Add Firearm
       </Button>
       <Modal
@@ -255,13 +253,15 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
         title="Add Firearm"
         description="Enter information below."
         footer={footer}
-        size="md">
+        size="md"
+      >
         <form id="modal-with-form-form" className="flex flex-col gap-4">
           <Field
             label="Manufacturer"
             required
             error={validationState.manufacturer}
-            id="manufacturer">
+            id="manufacturer"
+          >
             <Select
               value={
                 formState.manufacturer === "Select a manufacturer"
@@ -279,7 +279,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Model"
             required
             error={validationState.model}
-            id="model">
+            id="model"
+          >
             <Select
               value={
                 !formState.model || formState.model === "Select a model"
@@ -310,7 +311,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Caliber"
             required
             error={validationState.caliber_gauge}
-            id="caliber">
+            id="caliber"
+          >
             <Select
               value={
                 formState.caliber_gauge === "Select a caliber"
@@ -328,7 +330,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Purchase Date"
             required
             error={validationState.acquisition_date}
-            id="acquisition_date">
+            id="acquisition_date"
+          >
             <Input
               type="date"
               id="acquisition_date"
@@ -346,7 +349,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Serial Number"
             required
             error={validationState.serial_number}
-            id="serial_number">
+            id="serial_number"
+          >
             <Input
               type="text"
               id="serial_number"
@@ -364,7 +368,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Asset Tag"
             required
             error={validationState.asset_tag}
-            id="asset_tag">
+            id="asset_tag"
+          >
             <Input
               type="text"
               id="asset_tag"
@@ -380,7 +385,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Status"
             required
             error={validationState.current_status}
-            id="current_status">
+            id="current_status"
+          >
             <Select
               value={
                 formState.current_status === "Select a status"

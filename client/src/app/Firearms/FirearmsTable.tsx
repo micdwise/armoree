@@ -113,8 +113,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
               <AlertTriangle className="h-8 w-8" />
               <p>Error loading firearms</p>
               <p className="text-sm text-subtext-color">
-                There was a problem loading your inventory. Please try again
-                later.
+                There was a problem loading your assets. Please try again later.
               </p>
             </div>
           </TableCell>

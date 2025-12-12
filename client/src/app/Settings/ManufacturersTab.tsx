@@ -85,21 +85,40 @@ export const ManufacturersTab = () => {
     setIsModalOpen(true);
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center p-8">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-bold">Manufacturers</h2>
+    <div>
+      {error && (
+        <div className="mb-4 p-4 bg-warning-50 border border-warning-200 rounded-md text-warning-800">
+          {error}
+        </div>
+      )}
+
+      <div className="mb-4">
+        <p className="text-sm text-subtext-color">
+          Manage firearm manufacturers available in the system.
+        </p>
+      </div>
+
+      <div className="flex justify-end mb-4">
         <Button onClick={openAddModal} size="sm">
           <Plus className="w-4 h-4 mr-2" />
           Add Manufacturer
         </Button>
       </div>
 
-      {error && <div className="text-red-600">{error}</div>}
-
-      <div className="rounded-md border border-neutral-border bg-default-background">
+      {manufacturers.length === 0 ? (
+        <div className="text-center py-8 text-subtext-color">
+          No manufacturers found.
+        </div>
+      ) : (
         <Table>
           <TableHeader>
             <TableRow>
@@ -129,7 +148,7 @@ export const ManufacturersTab = () => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      )}
 
       <Modal
         isOpen={isModalOpen}

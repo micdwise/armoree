@@ -89,9 +89,9 @@ const navigationRoutes: AppRouteConfig[] = [
     icon: Users,
   },
   {
-    label: "Inventory",
+    label: "Assets",
     path: "",
-    title: "Inventory",
+    title: "Assets",
     icon: Archive,
     routes: [
       {

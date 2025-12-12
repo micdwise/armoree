@@ -74,6 +74,8 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
   const columnNames = {
     manufacturer: "Manufacturer",
     caliber_gauge: "Caliber",
+    projectile_type: "Type",
+    location: "Location",
     lot_number: "Lot Number",
     quantity_on_hand: "Quantity",
   };
@@ -81,6 +83,8 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
   const columns = [
     { title: columnNames.manufacturer, key: "manufacturer" },
     { title: columnNames.caliber_gauge, key: "caliber_gauge" },
+    { title: columnNames.projectile_type, key: "projectile_type" },
+    { title: columnNames.location, key: "location" },
     { title: columnNames.lot_number, key: "lot_number" },
     { title: columnNames.quantity_on_hand, key: "quantity_on_hand" },
     { title: "", key: "actions" }, // Actions column
@@ -103,8 +107,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
               <AlertTriangle className="h-8 w-8" />
               <p>Error loading ammunition</p>
               <p className="text-sm text-subtext-color">
-                There was a problem loading your inventory. Please try again
-                later.
+                There was a problem loading your assets. Please try again later.
               </p>
             </div>
           </TableCell>
@@ -128,9 +131,9 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
               ) : (
                 <>
                   <Box className="h-8 w-8 opacity-50" />
-                  <p>No Ammunition in Inventory</p>
+                  <p>No Ammunition in Assets</p>
                   <p className="text-sm">
-                    Get started by adding ammunition to your inventory.
+                    Get started by adding ammunition to your assets.
                   </p>
                 </>
               )}
@@ -144,6 +147,10 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
       <TableRow key={repo.ammo_id}>
         <TableCell>{repo.manufacturer}</TableCell>
         <TableCell>{repo.caliber_gauge}</TableCell>
+        <TableCell>{repo.projectile_type}</TableCell>
+        <TableCell>
+          {repo.location?.location_name || repo.storage_location_id || "—"}
+        </TableCell>
         <TableCell>{repo.lot_number}</TableCell>
         <TableCell>{repo.quantity_on_hand}</TableCell>
         <TableCell className="text-right">
@@ -167,7 +174,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
           <AlertTriangle className="h-8 w-8" />
           <p>Error loading ammunition</p>
           <p className="text-sm text-subtext-color">
-            There was a problem loading your inventory. Please try again later.
+            There was a problem loading your assets. Please try again later.
           </p>
         </div>
       );
@@ -209,7 +216,12 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                   {repo.manufacturer}
                 </h3>
                 <p className="text-sm text-subtext-color">
-                  {repo.caliber_gauge}
+                  {repo.caliber_gauge} • {repo.projectile_type}
+                </p>
+                <p className="text-xs text-subtext-color mt-1">
+                  {repo.location?.location_name ||
+                    repo.storage_location_id ||
+                    "No location"}
                 </p>
               </div>
               <Button
