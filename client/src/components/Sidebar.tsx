@@ -101,6 +101,41 @@ function SidebarItem({
   onClose: () => void;
   onOpen: () => void;
 }>) {
+  if (!route.label) return null;
+
+  const hasChildren = route.routes && route.routes.length > 0;
+  return hasChildren ? (
+    <SidebarItemWithChildren
+      route={route}
+      currentPath={currentPath}
+      isSidebarOpen={isSidebarOpen}
+      onClose={onClose}
+      onOpen={onOpen}
+    />
+  ) : (
+    <SidebarItemLeaf
+      route={route}
+      currentPath={currentPath}
+      isSidebarOpen={isSidebarOpen}
+      onClose={onClose}
+      onOpen={onOpen}
+    />
+  );
+}
+
+function SidebarItemWithChildren({
+  route,
+  currentPath,
+  isSidebarOpen,
+  onClose,
+  onOpen,
+}: Readonly<{
+  route: any;
+  currentPath: string;
+  isSidebarOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+}>) {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const hasChildren = route.routes && route.routes.length > 0;
@@ -119,69 +154,69 @@ function SidebarItem({
     if (!isSidebarOpen) setIsExpanded(false);
   }, [isSidebarOpen]);
 
-  if (!route.label) return null;
-
-  // If sidebar is collapsed (rail), we probably shouldn't show accordion children inline easily.
-  // For simplicity in this iteration:
-  // - If collapsed: clicking parent navigates to main route or does nothing (if wrapper)?
-  // - Or we can use a Popover.
-  // Given user request "Leave the icon showing", showing just the parent icon is standard rail behavior.
-  // If clicking it needs to show submenus, that's more complex.
-  // We'll treat parent item as a link or toggle. If it has no path, it's just a toggle.
-
-  if (hasChildren) {
-    return (
-      <li>
-        <button
-          onClick={() => {
-            if (isSidebarOpen) {
-              setIsExpanded(!isExpanded);
-            } else {
-              onOpen();
-              setIsExpanded(true);
-            }
-          }}
-          className={cn(
-            "flex w-full items-center rounded-md py-2 text-sm font-medium transition-colors",
-            isSidebarOpen ? "px-3 justify-between" : "justify-center px-0",
-            isChildActive
-              ? "bg-brand-highlight-bg text-brand-highlight-text"
-              : "text-subtext-color hover:bg-screen-background hover:text-default-font"
-          )}
-          title={isSidebarOpen ? undefined : route.label}>
-          <div
-            className={cn(
-              "flex items-center",
-              isSidebarOpen ? "gap-3" : "justify-center"
-            )}>
-            {route.icon && <route.icon className="h-5 w-5" />}
-            {isSidebarOpen && <span>{route.label}</span>}
-          </div>
-          {isSidebarOpen &&
-            (isExpanded ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            ))}
-        </button>
-        {isSidebarOpen && isExpanded && (
-          <ul className="mt-1 space-y-1 pl-4">
-            {route.routes.map((childRoute: any) => (
-              <SidebarItem
-                key={childRoute.path || childRoute.label}
-                route={childRoute}
-                currentPath={currentPath}
-                isSidebarOpen={isSidebarOpen}
-                onClose={onClose}
-                onOpen={onOpen}
-              />
-            ))}
-          </ul>
+  return (
+    <li>
+      <button
+        onClick={() => {
+          if (isSidebarOpen) {
+            setIsExpanded(!isExpanded);
+          } else {
+            onOpen();
+            setIsExpanded(true);
+          }
+        }}
+        className={cn(
+          "flex w-full items-center rounded-md py-2 text-sm font-medium transition-colors",
+          isSidebarOpen ? "px-3 justify-between" : "justify-center px-0",
+          isChildActive
+            ? "bg-brand-highlight-bg text-brand-highlight-text"
+            : "text-subtext-color hover:bg-screen-background hover:text-default-font"
         )}
-      </li>
-    );
-  }
+        title={isSidebarOpen ? undefined : route.label}>
+        <div
+          className={cn(
+            "flex items-center",
+            isSidebarOpen ? "gap-3" : "justify-center"
+          )}>
+          {route.icon && <route.icon className="h-5 w-5" />}
+          {isSidebarOpen && <span>{route.label}</span>}
+        </div>
+        {isSidebarOpen &&
+          (isExpanded ? (
+            <ChevronDown className="h-4 w-4" />
+          ) : (
+            <ChevronRight className="h-4 w-4" />
+          ))}
+      </button>
+      {isSidebarOpen && isExpanded && (
+        <ul className="mt-1 space-y-1 pl-4">
+          {route.routes.map((childRoute: any) => (
+            <SidebarItem
+              key={childRoute.path || childRoute.label}
+              route={childRoute}
+              currentPath={currentPath}
+              isSidebarOpen={isSidebarOpen}
+              onClose={onClose}
+              onOpen={onOpen}
+            />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
 
+function SidebarItemLeaf({
+  route,
+  isSidebarOpen,
+  onClose,
+}: Readonly<{
+  route: any;
+  currentPath: string;
+  isSidebarOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+}>) {
   const handleItemClick = () => {
     if (window.innerWidth < 1024) {
       onClose();
