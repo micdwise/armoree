@@ -3,17 +3,17 @@ import { PageSection } from "@components/Layout";
 import { FirearmsTable, SortBy } from "@app/Firearms/FirearmsTable";
 import { AddFirearmForm } from "@app/Firearms/AddFirearmForm";
 import {
-  GetFirearms,
+  useFirearms,
   Firearm,
-  DeleteFirearm,
-} from "@app/Firearms/FirearmsData";
+  deleteFirearm,
+} from "@app/Firearms/hooks";
 import { DeleteFirearmModal } from "@app/Firearms/DeleteFirearmModal";
 
 import { useSearchParams } from "react-router-dom";
 // ... imports
 
 const FirearmsPage: React.FunctionComponent = () => {
-  const { data, isLoading, isError, refetch } = GetFirearms();
+  const { data, isLoading, isError, refetch } = useFirearms();
   const [searchParams, setSearchParams] = useSearchParams(); // Get URL params
   const [sortBy, setSortBy] = React.useState<SortBy>({});
   /* State */
@@ -120,7 +120,7 @@ const FirearmsPage: React.FunctionComponent = () => {
 
   const handleDeleteFirearm = () => {
     if (firearmToDelete) {
-      DeleteFirearm(firearmToDelete.firearm_id)
+      deleteFirearm(firearmToDelete.firearm_id)
         .then(refetch)
         .then(handleCloseDeleteModal);
     }

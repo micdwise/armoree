@@ -1,17 +1,14 @@
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { PageSection } from "@components/Layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@components/Card";
-import { Button } from "@components/Button";
-import { Spinner } from "@components/Spinner";
+import { PageSection, Card, CardContent, CardHeader, CardTitle, Button, Spinner } from "@components";
 import { ArrowLeft, User, Shield, Calendar } from "lucide-react";
-import { GetPersonnelById } from "./PersonnelData";
+import { usePersonnelById } from "./hooks";
 import { TrainingHistory } from "./TrainingHistory";
 
 export const PersonnelDetail: React.FunctionComponent = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { data: person, isLoading, isError } = GetPersonnelById(id || "");
+    const { data: person, isLoading, isError } = usePersonnelById(id || "");
 
     if (isLoading) {
         return (

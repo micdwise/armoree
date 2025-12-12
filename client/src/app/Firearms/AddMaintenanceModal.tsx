@@ -1,12 +1,7 @@
 import * as React from "react";
-import { Modal } from "@components/Modal";
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
-import { TextArea } from "@components/TextArea";
-import { Select } from "@components/Select";
-import { Field } from "@components/Field";
-import { GetPersonnelList, Personnel } from "../Personnel/PersonnelData";
-import { AddMaintenanceLog } from "./FirearmsData";
+import { Modal, Button, Input, TextArea, Select, Field } from "@components";
+import { getPersonnelList, Personnel } from "../Personnel/hooks";
+import { addMaintenanceLog } from "./hooks";
 
 interface AddMaintenanceModalProps {
     isOpen: boolean;
@@ -48,7 +43,7 @@ export const AddMaintenanceModal: React.FunctionComponent<AddMaintenanceModalPro
 
     const loadOptions = async () => {
         try {
-            const data = await GetPersonnelList();
+            const data = await getPersonnelList();
             setPersonnel(data);
         } catch (error) {
             console.error("Error loading personnel", error);
@@ -67,7 +62,7 @@ export const AddMaintenanceModal: React.FunctionComponent<AddMaintenanceModalPro
         e.preventDefault();
         setIsLoading(true);
         try {
-            await AddMaintenanceLog({
+            await addMaintenanceLog({
                 firearm_id: firearmId,
                 date_performed: datePerformed,
                 type: type,

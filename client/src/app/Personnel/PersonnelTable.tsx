@@ -8,20 +8,19 @@ import {
     TableHeader,
     TableRow,
     SortableHead,
-} from "@components/Table";
-import { Card, CardContent } from "@components/Card";
-import {
+    Card,
+    CardContent,
     Toolbar,
     ToolbarContent,
     ToolbarItem,
-} from "@components/Layout";
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
-import { Pagination } from "@components/Pagination";
-import { Spinner } from "@components/Spinner";
-import { FilterFeedback } from "@components/FilterFeedback";
+    Button,
+    Input,
+    Pagination,
+    Spinner,
+    FilterFeedback,
+} from "@components";
 import { Trash2, Search, AlertTriangle, Box } from "lucide-react";
-import { Personnel } from "./PersonnelData";
+import { Personnel } from "./hooks";
 
 export type SortBy = {
     index?: number;

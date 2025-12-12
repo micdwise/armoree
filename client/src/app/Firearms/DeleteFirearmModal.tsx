@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Button } from "@components/Button";
-import { Modal } from "@components/Modal";
-import { Firearm } from "@app/Firearms/FirearmsData";
+import { ConfirmModal } from "@components/ConfirmModal";
+import { Firearm } from "@app/Firearms/hooks";
 
 interface DeleteFirearmModalProps {
   firearm: Firearm | null;
@@ -20,24 +19,14 @@ const DeleteFirearmModal: React.FunctionComponent<DeleteFirearmModalProps> = ({
     return null;
   }
 
-  const footer = (
-    <>
-      <Button variant="link" onClick={onClose}>
-        Cancel
-      </Button>
-      <Button variant="danger" onClick={onConfirm}>
-        Delete
-      </Button>
-    </>
-  );
-
   return (
-    <Modal
+    <ConfirmModal
       isOpen={isOpen}
       onClose={onClose}
+      onConfirm={onConfirm}
       title="Confirm Deletion"
+      confirmLabel="Delete"
       size="sm"
-      footer={footer}
     >
       <p>
         Are you sure you want to delete the firearm:{" "}
@@ -46,7 +35,7 @@ const DeleteFirearmModal: React.FunctionComponent<DeleteFirearmModalProps> = ({
         </strong>{" "}
         (S/N: {firearm.serial_number})?
       </p>
-    </Modal>
+    </ConfirmModal>
   );
 };
 

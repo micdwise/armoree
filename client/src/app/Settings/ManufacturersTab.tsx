@@ -13,7 +13,7 @@ import { Field } from "@components/Field";
 import { Modal } from "@components/Modal";
 import { Spinner } from "@components/Spinner";
 import { Trash2, Edit2, Plus } from "lucide-react";
-import { GetManufacturers, Manufacturer } from "../Firearms/FirearmsData";
+import { getManufacturers, Manufacturer } from "../Firearms/hooks";
 import {
     AddManufacturer,
     UpdateManufacturer,
@@ -31,7 +31,7 @@ export const ManufacturersTab = () => {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const data = await GetManufacturers();
+            const data = await getManufacturers();
             setManufacturers(data);
         } catch (err) {
             console.error(err);

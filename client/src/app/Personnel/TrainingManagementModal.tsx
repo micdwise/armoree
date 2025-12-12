@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Modal } from "@components/Modal";
-import { Button } from "@components/Button";
+import { Modal, Button } from "@components";
 import { TrainingHistory } from "./TrainingHistory";
 import { AddTrainingModal } from "./AddTrainingModal";
-import { Personnel } from "./PersonnelData";
+import { Personnel } from "./hooks";
 
 interface TrainingManagementModalProps {
     personnel: Personnel | null;
@@ -17,10 +16,15 @@ export const TrainingManagementModal = ({
     onClose,
 }: TrainingManagementModalProps) => {
     const [refreshTrigger, setRefreshTrigger] = React.useState(0);
+    const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
 
     const handleAddSuccess = () => {
         setRefreshTrigger((prev) => prev + 1);
+        setIsAddModalOpen(false);
     };
+
+    const openAddModal = () => setIsAddModalOpen(true);
+    const closeAddModal = () => setIsAddModalOpen(false);
 
     if (!personnel) return null;
 
@@ -40,7 +44,12 @@ export const TrainingManagementModal = ({
         >
             <div className="space-y-4">
                 <div className="flex justify-end">
+                    <Button variant="secondary" size="sm" onClick={openAddModal}>
+                        Add Training Entry
+                    </Button>
                     <AddTrainingModal
+                        isOpen={isAddModalOpen}
+                        onClose={closeAddModal}
                         personnelId={personnel.personnel_id}
                         onAddSuccess={handleAddSuccess}
                     />

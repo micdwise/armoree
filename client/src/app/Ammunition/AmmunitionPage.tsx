@@ -4,16 +4,16 @@ import { AmmunitionTable, SortBy } from "@app/Ammunition/AmmunitionTable";
 import { AddAmmoForm } from "@app/Ammunition/AddAmmoForm";
 import {
   Ammunition,
-  GetAmmunition,
-  DeleteAmmunition,
-} from "@app/Ammunition/AmmunitionData";
+  useAmmunition,
+  deleteAmmunition,
+} from "@app/Ammunition/hooks";
 import { DeleteAmmunitionModal } from "./DeleteAmmunitionModal";
 
 import { useSearchParams } from "react-router-dom";
 // ... imports
 
 const AmmunitionPage: React.FunctionComponent = () => {
-  const { data, isLoading, isError, refetch } = GetAmmunition();
+  const { data, isLoading, isError, refetch } = useAmmunition();
   const [searchParams, setSearchParams] = useSearchParams();
   const [sortBy, setSortBy] = React.useState<SortBy>({});
   /* State */
@@ -112,7 +112,7 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
   const handleDeleteAmmunition = () => {
     if (ammunitionToDelete) {
-      DeleteAmmunition(ammunitionToDelete.ammo_id)
+      deleteAmmunition(ammunitionToDelete.ammo_id)
         .then(refetch)
         .then(handleClosedDeleteModal);
     }

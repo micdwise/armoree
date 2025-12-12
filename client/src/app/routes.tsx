@@ -18,6 +18,7 @@ import {
   Settings,
   Database,
 } from "lucide-react";
+import { Spinner } from "@components/Spinner";
 
 // Lazy Loaded Pages
 const Dashboard = React.lazy(() =>
@@ -146,7 +147,7 @@ const AppRoot = () => {
       <React.Suspense
         fallback={
           <div className="flex h-full items-center justify-center p-4">
-            Loading...
+            <Spinner aria-label="Loading" />
           </div>
         }
       >

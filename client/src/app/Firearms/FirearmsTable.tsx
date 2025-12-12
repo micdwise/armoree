@@ -10,7 +10,7 @@ import {
   SortableHead,
 } from "@components/Table";
 import { Card, CardContent } from "@components/Card";
-import { Firearm } from "@app/Firearms/FirearmsData";
+import { Firearm } from "@app/Firearms/hooks";
 import {
   PageSection,
   Toolbar,

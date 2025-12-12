@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Button } from "@components/Button";
-import { Modal } from "@components/Modal";
-import { Ammunition } from "@app/Ammunition/AmmunitionData";
+import { ConfirmModal } from "@components/ConfirmModal";
+import { Ammunition } from "@app/Ammunition/hooks";
 
 interface DeleteAmmunitionProps {
   ammunition: Ammunition | null;
@@ -20,27 +19,17 @@ const DeleteAmmunitionModal: React.FunctionComponent<DeleteAmmunitionProps> = ({
     return null;
   }
 
-  const footer = (
-    <>
-      <Button variant="link" onClick={onClose}>
-        Cancel
-      </Button>
-      <Button variant="danger" onClick={onConfirm}>
-        Delete
-      </Button>
-    </>
-  );
-
   return (
-    <Modal
+    <ConfirmModal
       isOpen={isOpen}
       onClose={onClose}
+      onConfirm={onConfirm}
       title="Confirm Deletion"
+      confirmLabel="Delete"
       size="sm"
-      footer={footer}
     >
       <p>Are you sure you want to delete the ammunition?</p>
-    </Modal>
+    </ConfirmModal>
   );
 };
 

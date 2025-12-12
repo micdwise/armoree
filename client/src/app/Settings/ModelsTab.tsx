@@ -15,12 +15,12 @@ import { Spinner } from "@components/Spinner";
 import { Select } from "@components/Select";
 import { Trash2, Edit2, Plus } from "lucide-react";
 import {
-    GetManufacturers,
-    GetModels,
+    getManufacturers,
+    getModels,
     Manufacturer,
     Model,
     Caliber,
-} from "../Firearms/FirearmsData";
+} from "../Firearms/hooks";
 import { supabase } from "../../lib/supabase";
 import {
     AddModel,
@@ -55,7 +55,7 @@ export const ModelsTab = () => {
     useEffect(() => {
         const init = async () => {
             try {
-                const m = await GetManufacturers();
+                const m = await getManufacturers();
                 setManufacturers(m);
                 const c = await GetAllCalibers();
                 setAllCalibers(c);
@@ -79,7 +79,7 @@ export const ModelsTab = () => {
         const loadModels = async () => {
             setIsLoading(true);
             try {
-                const data = await GetModels(Number.parseInt(selectedManufacturerId));
+                const data = await getModels(Number.parseInt(selectedManufacturerId));
                 setModels(data);
             } catch (e) {
                 console.error(e);
@@ -111,7 +111,7 @@ export const ModelsTab = () => {
             setEditingItem(null);
             setSelectedCaliberIds([]);
             // Refresh models
-            const data = await GetModels(Number.parseInt(selectedManufacturerId));
+            const data = await getModels(Number.parseInt(selectedManufacturerId));
             setModels(data);
         } catch (err) {
             console.error(err);
@@ -125,7 +125,7 @@ export const ModelsTab = () => {
             await DeleteModel(id);
             // Refresh
             if (selectedManufacturerId) {
-                const data = await GetModels(Number.parseInt(selectedManufacturerId));
+                const data = await getModels(Number.parseInt(selectedManufacturerId));
                 setModels(data);
             }
         } catch (err) {

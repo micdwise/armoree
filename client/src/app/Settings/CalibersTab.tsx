@@ -13,7 +13,7 @@ import { Field } from "@components/Field";
 import { Modal } from "@components/Modal";
 import { Spinner } from "@components/Spinner";
 import { Trash2, Edit2, Plus } from "lucide-react";
-import { GetCalibers, Caliber } from "../Firearms/FirearmsData"; // Note: GetCalibers in FirearmsData expects modelId, we need generic GetCalibers
+import { Caliber } from "../Firearms/hooks";
 import { supabase } from "../../lib/supabase"; // Direct access for generic list or add a helper
 import {
     AddCaliber,

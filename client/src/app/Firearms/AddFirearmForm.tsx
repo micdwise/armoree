@@ -5,14 +5,14 @@ import { Select } from "@components/Select";
 import { Modal } from "@components/Modal";
 import { Field } from "@components/Field";
 import {
-  AddFirearms,
-  GetManufacturers,
-  GetModels,
-  GetCalibers,
+  addFirearm,
+  getManufacturers,
+  getModels,
+  getCalibers,
   Manufacturer,
   Model,
   Caliber,
-} from "@app/Firearms/FirearmsData";
+} from "@app/Firearms/hooks";
 
 interface FirearmFormState {
   manufacturer: string;
@@ -89,7 +89,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
 
   // Fetch Manufacturers on Load
   React.useEffect(() => {
-    GetManufacturers().then(setManufacturers).catch(console.error);
+    getManufacturers().then(setManufacturers).catch(console.error);
   }, []);
 
   const manufacturerOptions = manufacturers.map((m) => ({
@@ -150,7 +150,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       if (selectedMfg) {
         setSelectedManufacturerId(selectedMfg.manufacturer_id);
         // Fetch Models
-        GetModels(selectedMfg.manufacturer_id)
+        getModels(selectedMfg.manufacturer_id)
           .then((data) => {
             setModels(data);
             setCalibers([]); // Reset calibers
@@ -168,7 +168,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       if (selectedModel) {
         setSelectedModelId(selectedModel.model_id);
         // Fetch Calibers
-        GetCalibers(selectedModel.model_id)
+        getCalibers(selectedModel.model_id)
           .then(setCalibers)
           .catch(console.error);
       } else {
@@ -213,7 +213,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
 
   const handleSubmitFirearm = () => {
     if (!validate()) return;
-    AddFirearms(formState)
+    addFirearm(formState)
       .then(() => {
         onAddSuccess();
         setFormState(initialFormState);

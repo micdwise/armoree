@@ -1,14 +1,14 @@
 import * as React from "react";
-import { PageSection } from "@components/Layout";
+import { PageSection } from "@components";
 import { PersonnelTable, SortBy } from "./PersonnelTable";
-import { GetPersonnel, Personnel, DeletePersonnel, GetExpiringPersonnelIds } from "./PersonnelData";
+import { usePersonnel, Personnel, deletePersonnel, getExpiringPersonnelIds } from "./hooks";
 import { useSearchParams } from "react-router-dom";
 
 import { AddPersonnelForm } from "./AddPersonnelForm";
 import { DeletePersonnelModal } from "./DeletePersonnelModal";
 
 const PersonnelPage: React.FunctionComponent = () => {
-    const { data, isLoading, isError, refetch } = GetPersonnel();
+    const { data, isLoading, isError, refetch } = usePersonnel();
     const [searchParams, setSearchParams] = useSearchParams();
 
 
@@ -26,7 +26,7 @@ const PersonnelPage: React.FunctionComponent = () => {
 
     React.useEffect(() => {
         if (activeFilterType === "expiring") {
-            GetExpiringPersonnelIds().then(setExpiringIds);
+            getExpiringPersonnelIds().then(setExpiringIds);
         } else {
             setExpiringIds([]);
         }
@@ -107,7 +107,7 @@ const PersonnelPage: React.FunctionComponent = () => {
 
     const handleDeletePersonnel = () => {
         if (personnelToDelete) {
-            DeletePersonnel(personnelToDelete.personnel_id)
+            deletePersonnel(personnelToDelete.personnel_id)
                 .then(refetch)
                 .then(handleCloseDeleteModal);
         }

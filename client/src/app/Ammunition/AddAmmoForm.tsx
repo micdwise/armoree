@@ -4,8 +4,8 @@ import { Input } from "@components/Input";
 import { Select } from "@components/Select";
 import { Modal } from "@components/Modal";
 import { Field } from "@components/Field";
-import { AddAmmunition } from "@app/Ammunition/AmmunitionData";
-import { GetManufacturers, Manufacturer, Caliber } from "@app/Firearms/FirearmsData";
+import { addAmmunition } from "@app/Ammunition/hooks";
+import { getManufacturers, Manufacturer, Caliber } from "@app/Firearms/hooks";
 import { GetAllCalibers } from "@app/Settings/ReferenceDataFunctions";
 
 interface AmmoFormState {
@@ -57,7 +57,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const m = await GetManufacturers();
+        const m = await getManufacturers();
         setManufacturers(m);
         const c = await GetAllCalibers();
         setCalibers(c);
@@ -121,7 +121,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
       ...formState,
       quantity_on_hand: Number(formState.quantity_on_hand),
     };
-    AddAmmunition(payload)
+    addAmmunition(payload)
       .then(() => {
         onAddSuccess();
         setFormState(initialFormState);

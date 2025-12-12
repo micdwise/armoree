@@ -9,7 +9,7 @@ import {
   SortableHead,
 } from "../../components/Table";
 import { Card, CardContent } from "@components/Card";
-import { Ammunition } from "@app/Ammunition/AmmunitionData";
+import { Ammunition } from "@app/Ammunition/hooks";
 import {
   PageSection,
   Toolbar,

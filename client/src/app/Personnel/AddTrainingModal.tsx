@@ -1,16 +1,12 @@
 import * as React from "react";
-import { Modal } from "@components/Modal";
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
-import { Select } from "@components/Select";
-import { Field } from "@components/Field";
+import { Modal, Button, Input, Select, Field } from "@components";
 import {
-    AddPersonnelTraining,
-    GetTrainingCourses,
-    GetPersonnelList,
+    addPersonnelTraining,
+    getTrainingCourses,
+    getPersonnelList,
     TrainingCourse,
     Personnel,
-} from "./PersonnelData";
+} from "./hooks";
 
 interface AddTrainingModalProps {
     isOpen: boolean;
@@ -49,8 +45,8 @@ export const AddTrainingModal: React.FunctionComponent<AddTrainingModalProps> = 
     const loadOptions = async () => {
         try {
             const [coursesData, personnelData] = await Promise.all([
-                GetTrainingCourses(),
-                GetPersonnelList(),
+                getTrainingCourses(),
+                getPersonnelList(),
             ]);
 
             setCourses(coursesData);
@@ -73,7 +69,7 @@ export const AddTrainingModal: React.FunctionComponent<AddTrainingModalProps> = 
                 dateExpires = date.toISOString().split("T")[0];
             }
 
-            await AddPersonnelTraining({
+            await addPersonnelTraining({
                 personnel_id: personnelId,
                 course_id: parseInt(selectedCourse),
                 date_completed: dateCompleted,

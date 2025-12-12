@@ -1,5 +1,5 @@
 import { supabase } from "../../lib/supabase";
-import { Manufacturer, Model, Caliber } from "../Firearms/FirearmsData";
+import { Manufacturer, Model, Caliber } from "../Firearms/hooks";
 
 // --- Manufacturers ---
 

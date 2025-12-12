@@ -1,10 +1,7 @@
 import * as React from "react";
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
-import { Modal } from "@components/Modal";
-import { Field } from "@components/Field";
+import { Button, Input, Modal, Field } from "@components";
 import { Plus } from "lucide-react";
-import { AddPersonnel } from "./PersonnelData";
+import { addPersonnel } from "./hooks";
 
 interface AddPersonnelFormProps {
     onAddSuccess: () => void;
@@ -53,7 +50,7 @@ export function AddPersonnelForm({
 
         setError(null);
         try {
-            await AddPersonnel(formState);
+            await addPersonnel(formState);
             setFormState(initialFormState);
             setIsModalOpen(false);
             onAddSuccess();

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { GetFirearm, GetMaintenanceLogs } from "@app/Firearms/FirearmsData";
+import { useFirearm, useMaintenanceLogs } from "@app/Firearms/hooks";
 import { AddMaintenanceModal } from "./AddMaintenanceModal";
 import {
   Table,
@@ -25,13 +25,13 @@ const getStatusColor = (status: string) => {
 export const FirearmInformation: React.FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data: firearm, isLoading, isError } = GetFirearm(id);
+  const { data: firearm, isLoading, isError } = useFirearm(id);
   const {
     data: maintenanceLogs,
     isLoading: isLogsLoading,
     isError: isLogsError,
     refetch: refetchLogs,
-  } = GetMaintenanceLogs(id);
+  } = useMaintenanceLogs(id);
   const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
 
   if (isLoading) {

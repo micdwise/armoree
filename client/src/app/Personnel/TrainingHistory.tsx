@@ -6,11 +6,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@components/Table";
-import { Spinner } from "@components/Spinner";
-import { Button } from "@components/Button";
+  Spinner,
+  Button,
+} from "@components";
 import { Plus } from "lucide-react";
-import { GetPersonnelTraining, PersonnelTraining } from "./PersonnelData";
+import { usePersonnelTraining, PersonnelTraining } from "./hooks";
 import { AddTrainingModal } from "./AddTrainingModal";
 
 interface TrainingHistoryProps {
@@ -27,7 +27,7 @@ export const TrainingHistory = ({
     isLoading,
     isError,
     refetch,
-  } = GetPersonnelTraining(personnelId);
+  } = usePersonnelTraining(personnelId);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
