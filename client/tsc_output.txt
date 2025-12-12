@@ -1,0 +1,3 @@
+src/app/Charts/AmmoCaliberTypes.tsx(43,24): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/app/Charts/AmmoCaliberTypes.tsx(139,45): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+src/app/Personnel/TrainingManagementModal.tsx(43,22): error TS2739: Type '{ personnelId: number; onAddSuccess: () => void; }' is missing the following properties from type 'AddTrainingModalProps': isOpen, onClose

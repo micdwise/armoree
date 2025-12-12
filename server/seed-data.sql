@@ -1,32 +1,32 @@
 -- DANGER: This script wipes existing data to ensure a clean state for testing.
 -- We use TRUNCATE ... RESTART IDENTITY CASCADE to clear tables and reset ID sequences to 1.
 
-TRUNCATE TABLE 
-    asset_custody, 
-    security_asset, 
-    usage_log, 
-    parts_used, 
-    maintenance_log, 
-    service_schedule, 
-    current_assignment, 
-    personnel_training, 
-    firearm, 
-    personnel, 
-    unit, 
-    ammunition_inventory, 
-    training_course, 
-    location 
+TRUNCATE TABLE
+    asset_custody,
+    security_asset,
+    usage_log,
+    parts_used,
+    maintenance_log,
+    service_schedule,
+    current_assignment,
+    personnel_training,
+    firearm,
+    personnel,
+    unit,
+    ammunition_inventory,
+    training_course,
+    location
 RESTART IDENTITY CASCADE;
 
 -- 1. Units (Explicit IDs to guarantee FK matches)
-INSERT INTO unit (unit_id, unit_name) VALUES 
+INSERT INTO unit (unit_id, unit_name) VALUES
 (1, 'Patrol Division'),
 (2, 'SWAT'),
 (3, 'Training Division'),
 (4, 'Investigations');
 
 -- 2. Locations (Explicit IDs)
-INSERT INTO location (location_id, location_name, security_level) VALUES 
+INSERT INTO location (location_id, location_name, security_level) VALUES
 (1, 'Main Armory Vault', 5),
 (2, 'Range Storage', 3),
 (3, 'Patrol Ready Room', 4),
@@ -109,3 +109,12 @@ INSERT INTO security_asset (asset_name, asset_type, location_access, status, dat
 ('Range Key Card', 'Key Card', 2, 'Lost', '2023-05-01', CURRENT_DATE - 20), -- Issue (ALERT)
 ('Armory Master Key', 'Physical Key', 1, 'Missing', '2023-06-01', CURRENT_DATE - 5), -- Issue (ALERT)
 ('Evidence Locker Key', 'Physical Key', 4, 'issued', '2021-01-01', CURRENT_DATE - 10);
+
+-- Insert test data into maintenance_log
+-- Assumes firearms with IDs 1, 3, 4 exist and personnel with ID 5 (Armorer) exists.
+INSERT INTO maintenance_log (firearm_id, date_performed, type, armorer_id, problem_reported, work_performed) VALUES
+(1, CURRENT_DATE - 30, 'routine_cleaning', 5, 'Scheduled quarterly maintenance', 'Field stripped, cleaned, lubricated, and function checked. No issues found.'),
+(3, CURRENT_DATE - 60, 'repair', 5, 'Failure to eject reported by officer', 'Inspected extractor and ejector. Replaced worn extractor spring. Test fired 50 rounds without malfunction.'),
+(4, CURRENT_DATE - 90, 'inspection', 5, 'Annual safety inspection', 'Detailed inspection of all components. Verified headspace and bore condition. Passed.'),
+(1, CURRENT_DATE - 120, 'routine_cleaning', 5, 'Post-range cleaning', 'Standard cleaning after qualification.'),
+(3, CURRENT_DATE - 5, 'repair', 5, 'Slide not locking back on empty', 'Replaced magazine catch spring. Pending test fire.');

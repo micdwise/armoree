@@ -1,6 +1,14 @@
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { GetFirearm } from "@app/Firearms/FirearmsData";
+import { GetFirearm, GetMaintenanceLogs } from "@app/Firearms/FirearmsData";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@components/Table";
 import { PageSection, Title } from "@components/Layout";
 import { Card, CardContent } from "@components/Card";
 import { Spinner } from "@components/Spinner";
@@ -17,6 +25,11 @@ export const FirearmInformation: React.FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: firearm, isLoading, isError } = GetFirearm(id);
+  const {
+    data: maintenanceLogs,
+    isLoading: isLogsLoading,
+    isError: isLogsError,
+  } = GetMaintenanceLogs(id);
 
   if (isLoading) {
     return (
@@ -86,7 +99,7 @@ export const FirearmInformation: React.FunctionComponent = () => {
                   Caliber
                 </dt>
                 <dd className="mt-1 text-sm text-default-font">
-                  {firearm.caliber}
+                  {firearm.caliber_gauge}
                 </dd>
               </div>
               <div>
@@ -116,7 +129,7 @@ export const FirearmInformation: React.FunctionComponent = () => {
                   Purchase Date
                 </dt>
                 <dd className="mt-1 text-sm text-default-font">
-                  {new Date(firearm.purchase_date).toLocaleDateString()}
+                  {new Date(firearm.acquisition_date).toLocaleDateString()}
                 </dd>
               </div>
             </dl>
@@ -129,12 +142,57 @@ export const FirearmInformation: React.FunctionComponent = () => {
             <h3 className="mb-4 text-lg font-semibold text-default-font">
               History
             </h3>
-            <p className="text-sm text-subtext-color">
-              No history available yet.
-            </p>
+            {isLogsLoading ? (
+              <div className="flex justify-center p-4">
+                <Spinner size="md" />
+              </div>
+            ) : isLogsError ? (
+              <p className="text-red-600">Error loading maintenance history.</p>
+            ) : maintenanceLogs.length === 0 ? (
+              <p className="text-sm text-subtext-color">
+                No history available yet.
+              </p>
+            ) : (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Armorer</TableHead>
+                      <TableHead>Problem</TableHead>
+                      <TableHead>Work Performed</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {maintenanceLogs.map((log) => (
+                      <TableRow key={log.log_id}>
+                        <TableCell>
+                          {new Date(log.date_performed).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell className="capitalize">
+                          {log.type.replace(/_/g, " ")}
+                        </TableCell>
+                        <TableCell>
+                          {log.personnel
+                            ? `${log.personnel.first_name} ${log.personnel.last_name}`
+                            : "Unknown"}
+                        </TableCell>
+                        <TableCell className="max-w-xs truncate" title={log.problem_reported}>
+                          {log.problem_reported || "-"}
+                        </TableCell>
+                        <TableCell className="max-w-xs truncate" title={log.work_performed}>
+                          {log.work_performed || "-"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
-    </PageSection>
+    </PageSection >
   );
 };

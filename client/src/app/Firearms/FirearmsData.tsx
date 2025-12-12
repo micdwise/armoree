@@ -6,12 +6,26 @@ export interface Firearm {
   manufacturer: string;
   model: string;
   type: string;
-  purchase_date: string;
-  caliber: string;
+  acquisition_date: string;
+  caliber_gauge: string;
   serial_number: string;
   asset_tag: string;
   current_status: string;
   next_due_date?: string;
+}
+
+export interface MaintenanceLog {
+  log_id: number;
+  firearm_id: number;
+  date_performed: string;
+  type: string;
+  armorer_id: number;
+  problem_reported: string;
+  work_performed: string;
+  personnel?: {
+    first_name: string;
+    last_name: string;
+  };
 }
 
 async function AddFirearms(newFirearm: Partial<Firearm>) {
@@ -53,7 +67,7 @@ const GetFirearms = () => {
         // Flatten the data
         const flattenedData = data.map((item: any) => ({
           ...item,
-          next_due_date: item.service_schedule?.next_due_date
+          next_due_date: item.service_schedule?.next_due_date,
         }));
         setData(flattenedData as Firearm[]);
       }
@@ -102,6 +116,45 @@ const GetFirearm = (id: string | undefined) => {
   }, [id]);
 
   return { data, isLoading, isError };
+};
+
+const GetMaintenanceLogs = (firearmId: string | undefined) => {
+  const [data, setData] = useState<MaintenanceLog[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const fetchLogs = useCallback(async () => {
+    if (!firearmId) return;
+    setIsLoading(true);
+    setIsError(false);
+    try {
+      const { data, error } = await supabase
+        .from("maintenance_log")
+        .select(`
+          *,
+          personnel (
+            first_name,
+            last_name
+          )
+        `)
+        .eq("firearm_id", firearmId)
+        .order("date_performed", { ascending: false });
+
+      if (error) throw error;
+      setData(data as unknown as MaintenanceLog[]);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [firearmId]);
+
+  useEffect(() => {
+    fetchLogs();
+  }, [fetchLogs]);
+
+  return { data, isLoading, isError, refetch: fetchLogs };
 };
 
 export interface Manufacturer {
@@ -166,4 +219,5 @@ export {
   GetManufacturers,
   GetModels,
   GetCalibers,
+  GetMaintenanceLogs,
 };

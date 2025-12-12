@@ -21,6 +21,7 @@ import { Spinner } from "@components/Spinner";
 import { Pagination } from "@components/Pagination";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
+import { FilterFeedback } from "@components/FilterFeedback";
 import { Search, Box, Trash2, AlertTriangle } from "lucide-react";
 
 export interface SortBy {
@@ -49,6 +50,8 @@ interface AmmunitionTableProps {
     event: React.FormEvent<HTMLInputElement>,
     value: string,
   ) => void;
+  dashboardFilterLabel?: string;
+  onClearDashboardFilter?: () => void;
 }
 
 const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
@@ -65,23 +68,21 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
   onDeleteAmmunition,
   filterValue,
   onFilterChange,
+  dashboardFilterLabel,
+  onClearDashboardFilter,
 }) => {
   const columnNames = {
     manufacturer: "Manufacturer",
-    brand: "Brand",
-    purchase_date: "Purchase Date",
-    caliber: "Caliber",
+    caliber_gauge: "Caliber",
     lot_number: "Lot Number",
-    qty: "Quantity",
+    quantity_on_hand: "Quantity",
   };
 
   const columns = [
     { title: columnNames.manufacturer, key: "manufacturer" },
-    { title: columnNames.brand, key: "brand" },
-    { title: columnNames.purchase_date, key: "purchase_date" },
-    { title: columnNames.caliber, key: "caliber" },
+    { title: columnNames.caliber_gauge, key: "caliber_gauge" },
     { title: columnNames.lot_number, key: "lot_number" },
-    { title: columnNames.qty, key: "qty" },
+    { title: columnNames.quantity_on_hand, key: "quantity_on_hand" },
     { title: "", key: "actions" }, // Actions column
   ];
 
@@ -140,15 +141,11 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
     }
 
     return ammunition.map((repo: Ammunition) => (
-      <TableRow key={repo.id}>
+      <TableRow key={repo.ammo_id}>
         <TableCell>{repo.manufacturer}</TableCell>
-        <TableCell>{repo.brand}</TableCell>
-        <TableCell>
-          {new Date(repo.purchase_date).toLocaleDateString("en-US")}
-        </TableCell>
-        <TableCell>{repo.caliber}</TableCell>
+        <TableCell>{repo.caliber_gauge}</TableCell>
         <TableCell>{repo.lot_number}</TableCell>
-        <TableCell>{repo.qty}</TableCell>
+        <TableCell>{repo.quantity_on_hand}</TableCell>
         <TableCell className="text-right">
           <Button
             variant="link"
@@ -205,15 +202,17 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {ammunition.map((repo) => (
           <div
-            key={repo.id}
+            key={repo.ammo_id}
             className="rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm"
           >
             <div className="mb-2 flex items-start justify-between">
               <div>
                 <h3 className="font-medium text-default-font">
-                  {repo.manufacturer} {repo.brand}
+                  {repo.manufacturer}
                 </h3>
-                <p className="text-sm text-subtext-color">{repo.caliber}</p>
+                <p className="text-sm text-subtext-color">
+                  {repo.caliber_gauge}
+                </p>
               </div>
               <Button
                 variant="link"
@@ -232,12 +231,8 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
               </div>
               <div className="flex justify-between">
                 <span>Quantity:</span>
-                <span className="text-default-font">{repo.qty}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Purchase Date:</span>
                 <span className="text-default-font">
-                  {new Date(repo.purchase_date).toLocaleDateString("en-US")}
+                  {repo.quantity_on_hand}
                 </span>
               </div>
             </div>
@@ -261,6 +256,19 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                     onChange={(e) => onFilterChange(e, e.target.value)}
                     startContent={<Search className="h-4 w-4" />}
                   />
+                  <div className="mt-2">
+                    <FilterFeedback
+                      filterValue={filterValue}
+                      onClear={() => onFilterChange({} as any, "")}
+                    />
+                    {dashboardFilterLabel && (
+                      <FilterFeedback
+                        label="status"
+                        filterValue={dashboardFilterLabel}
+                        onClear={onClearDashboardFilter}
+                      />
+                    )}
+                  </div>
                 </ToolbarItem>
               </ToolbarContent>
             </Toolbar>

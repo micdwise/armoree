@@ -19,6 +19,7 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { Pagination } from "@components/Pagination";
 import { Spinner } from "@components/Spinner";
+import { FilterFeedback } from "@components/FilterFeedback";
 import { Trash2, Search, AlertTriangle, Box } from "lucide-react";
 import { Personnel } from "./PersonnelData";
 
@@ -42,6 +43,8 @@ interface PersonnelTableProps {
     onFilterChange: (event: React.FormEvent<HTMLInputElement>, value: string) => void;
     onDeletePersonnel: (personnel: Personnel) => void;
     onViewTraining: (personnel: Personnel) => void;
+    dashboardFilterLabel?: string;
+    onClearDashboardFilter?: () => void;
 }
 
 export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
@@ -59,6 +62,8 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
     onFilterChange,
     onDeletePersonnel,
     onViewTraining,
+    dashboardFilterLabel,
+    onClearDashboardFilter,
 }) => {
     const navigate = useNavigate();
     const columnNames = {
@@ -260,6 +265,19 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
                                     onChange={(e) => onFilterChange(e, e.target.value)}
                                     startContent={<Search className="h-4 w-4" />}
                                 />
+                                <div className="mt-2">
+                                    <FilterFeedback
+                                        filterValue={filterValue}
+                                        onClear={() => onFilterChange({} as any, "")}
+                                    />
+                                    {dashboardFilterLabel && (
+                                        <FilterFeedback
+                                            label="status"
+                                            filterValue={dashboardFilterLabel}
+                                            onClear={onClearDashboardFilter}
+                                        />
+                                    )}
+                                </div>
                             </ToolbarItem>
                         </ToolbarContent>
                     </Toolbar>
