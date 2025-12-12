@@ -19,6 +19,7 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { Pagination } from "@components/Pagination";
 import { Spinner } from "@components/Spinner";
+import { FilterFeedback } from "@components/FilterFeedback";
 import { Trash2, Search, AlertTriangle, Box } from "lucide-react";
 import { Personnel } from "./PersonnelData";
 
@@ -42,6 +43,8 @@ interface PersonnelTableProps {
     onFilterChange: (event: React.FormEvent<HTMLInputElement>, value: string) => void;
     onDeletePersonnel: (personnel: Personnel) => void;
     onViewTraining: (personnel: Personnel) => void;
+    dashboardFilterLabel?: string;
+    onClearDashboardFilter?: () => void;
 }
 
 export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
@@ -59,6 +62,8 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
     onFilterChange,
     onDeletePersonnel,
     onViewTraining,
+    dashboardFilterLabel,
+    onClearDashboardFilter,
 }) => {
     const navigate = useNavigate();
     const columnNames = {
@@ -193,37 +198,39 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
         return (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {personnel.map((person) => (
-                    <div key={person.personnel_id} className="relative rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm">
-                        <div className="mb-2 flex items-start justify-between">
-                            <div className="pr-8">
-                                <h3 className="font-medium text-default-font">
-                                    {person.first_name} {person.last_name}
-                                </h3>
-                                <p className="text-sm text-subtext-color">Badge: {person.badge_number}</p>
+                    <div key={person.personnel_id} className="relative">
+                        <button
+                            type="button"
+                            className="w-full text-left rounded-lg border border-neutral-border bg-default-background p-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                            onClick={() => navigate(`/Personnel/${person.personnel_id}`)}
+                        >
+                            <div className="mb-2 flex items-start justify-between">
+                                <div className="pr-8">
+                                    <h3 className="font-medium text-default-font">
+                                        {person.first_name} {person.last_name}
+                                    </h3>
+                                    <p className="text-sm text-subtext-color">Badge: {person.badge_number}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="space-y-1 text-sm text-subtext-color">
-                            <div className="flex justify-between">
-                                <span>Unit:</span>
-                                <span className="text-default-font">{person.unit?.unit_name || "-"}</span>
+                            <div className="space-y-1 text-sm text-subtext-color">
+                                <div className="flex justify-between">
+                                    <span>Unit:</span>
+                                    <span className="text-default-font">{person.unit?.unit_name || "-"}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>Status:</span>
+                                    <span className="text-default-font">{person.status}</span>
+                                </div>
                             </div>
-                            <div className="flex justify-between">
-                                <span>Status:</span>
-                                <span className="text-default-font">{person.status}</span>
-                            </div>
-                        </div>
-                        <div className="mt-4 flex justify-end gap-2">
+                        </button>
+                        <div className="absolute top-4 right-4">
                             <Button
                                 variant="secondary"
                                 size="sm"
-                                onClick={() => onViewTraining(person)}
-                            >
-                                Training
-                            </Button>
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                                onClick={() => onDeletePersonnel(person)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDeletePersonnel(person);
+                                }}
                                 aria-label="Delete personnel"
                             >
                                 <Trash2 className="h-4 w-4 text-red-500" />
@@ -258,6 +265,19 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
                                     onChange={(e) => onFilterChange(e, e.target.value)}
                                     startContent={<Search className="h-4 w-4" />}
                                 />
+                                <div className="mt-2">
+                                    <FilterFeedback
+                                        filterValue={filterValue}
+                                        onClear={() => onFilterChange({} as any, "")}
+                                    />
+                                    {dashboardFilterLabel && (
+                                        <FilterFeedback
+                                            label="status"
+                                            filterValue={dashboardFilterLabel}
+                                            onClear={onClearDashboardFilter}
+                                        />
+                                    )}
+                                </div>
                             </ToolbarItem>
                         </ToolbarContent>
                     </Toolbar>

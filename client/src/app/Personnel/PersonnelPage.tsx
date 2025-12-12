@@ -9,7 +9,7 @@ import { DeletePersonnelModal } from "./DeletePersonnelModal";
 
 const PersonnelPage: React.FunctionComponent = () => {
     const { data, isLoading, isError, refetch } = GetPersonnel();
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
 
     const [sortBy, setSortBy] = React.useState<SortBy>({});
@@ -137,6 +137,12 @@ const PersonnelPage: React.FunctionComponent = () => {
                 onFilterChange={onFilterChange}
                 onDeletePersonnel={handleOpenDeleteModal}
                 onViewTraining={() => { }} // No longer used
+                dashboardFilterLabel={activeFilterType === "expiring" ? "Expiring Qualifications" : undefined}
+                onClearDashboardFilter={() => {
+                    const newParams = new URLSearchParams(searchParams);
+                    newParams.delete("filter");
+                    setSearchParams(newParams);
+                }}
             />
 
             <DeletePersonnelModal

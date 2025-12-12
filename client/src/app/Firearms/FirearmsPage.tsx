@@ -14,7 +14,7 @@ import { useSearchParams } from "react-router-dom";
 
 const FirearmsPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetFirearms();
-  const [searchParams] = useSearchParams(); // Get URL params
+  const [searchParams, setSearchParams] = useSearchParams(); // Get URL params
   const [sortBy, setSortBy] = React.useState<SortBy>({});
   /* State */
   const [page, setPage] = React.useState(1);
@@ -29,12 +29,15 @@ const FirearmsPage: React.FunctionComponent = () => {
   const [filterValue, setFilterValue] = React.useState(initialFilter);
   const activeFilterType = searchParams.get("filter");
 
-  const columnKeys: (keyof Omit<Firearm, "firearm_id">)[] = [
+  const columnKeys: (keyof Omit<Firearm, "firearm_id" | "next_due_date">)[] = [
     "manufacturer",
     "model",
-    "purchase_date",
-    "caliber",
+    "type",
+    "acquisition_date",
+    "caliber_gauge",
     "serial_number",
+    "asset_tag",
+    "current_status",
   ];
 
   /* Handlers */
@@ -60,9 +63,9 @@ const FirearmsPage: React.FunctionComponent = () => {
     let filtered = data;
 
     // Apply special filters first
-    if (activeFilterType === 'maintenance_overdue') {
+    if (activeFilterType === "maintenance_overdue") {
       const today = new Date();
-      filtered = filtered.filter(f => {
+      filtered = filtered.filter((f) => {
         if (!f.next_due_date) return false;
         return new Date(f.next_due_date) < today;
       });
@@ -82,6 +85,8 @@ const FirearmsPage: React.FunctionComponent = () => {
       return filteredData;
     }
     const sortKey = columnKeys[sortBy.index];
+    if (!sortKey) return filteredData;
+
     const sorted = [...filteredData].sort((a, b) =>
       a[sortKey] < b[sortKey] ? -1 : 1,
     );
@@ -122,7 +127,12 @@ const FirearmsPage: React.FunctionComponent = () => {
   };
 
   return (
-    <React.Fragment>
+    <PageSection>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Firearms</h1>
+        <AddFirearmForm onAddSuccess={refetch} isDisabled={isError} />
+      </div>
+
       <FirearmsTable
         firearms={paginatedData}
         isLoading={isLoading}
@@ -137,20 +147,25 @@ const FirearmsPage: React.FunctionComponent = () => {
         filterValue={filterValue}
         onFilterChange={onFilterChange}
         onDeleteFirearm={handleOpenDeleteModal}
+        dashboardFilterLabel={
+          activeFilterType === "maintenance_overdue"
+            ? "Maintenance Overdue"
+            : undefined
+        }
+        onClearDashboardFilter={() => {
+          const newParams = new URLSearchParams(searchParams);
+          newParams.delete("filter");
+          setSearchParams(newParams);
+        }}
       />
 
-      <PageSection>
-        <div className="flex justify-end">
-          <AddFirearmForm onAddSuccess={refetch} isDisabled={isError} />
-        </div>
-        <DeleteFirearmModal
-          firearm={firearmToDelete}
-          isOpen={isDeleteModalOpen}
-          onClose={handleCloseDeleteModal}
-          onConfirm={handleDeleteFirearm}
-        />
-      </PageSection>
-    </React.Fragment>
+      <DeleteFirearmModal
+        firearm={firearmToDelete}
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteFirearm}
+      />
+    </PageSection>
   );
 };
 

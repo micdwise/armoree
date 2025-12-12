@@ -28,7 +28,7 @@ async function DeleteAmmunition(id: number) {
   const { error } = await supabase
     .from("ammunition_inventory")
     .delete()
-    .eq("id", id);
+    .eq("ammo_id", id);
   if (error) throw error;
 }
 

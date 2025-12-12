@@ -14,7 +14,7 @@ import { useSearchParams } from "react-router-dom";
 
 const AmmunitionPage: React.FunctionComponent = () => {
   const { data, isLoading, isError, refetch } = GetAmmunition();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sortBy, setSortBy] = React.useState<SortBy>({});
   /* State */
   const [page, setPage] = React.useState(1);
@@ -27,13 +27,11 @@ const AmmunitionPage: React.FunctionComponent = () => {
   const [filterValue, setFilterValue] = React.useState("");
   const activeFilterType = searchParams.get("filter");
 
-  const columnKeys: (keyof Omit<Ammunition, "id">)[] = [
+  const columnKeys: (keyof Omit<Ammunition, "ammo_id">)[] = [
     "manufacturer",
-    "brand",
-    "purchase_date",
-    "caliber",
+    "caliber_gauge",
     "lot_number",
-    "qty",
+    "quantity_on_hand",
   ];
 
   /* Handlers */
@@ -58,11 +56,12 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
     let filtered = data;
 
-    if (activeFilterType === 'low_stock') {
-      filtered = filtered.filter(a =>
-        a.min_stock_level !== undefined &&
-        a.min_stock_level !== null &&
-        a.quantity_on_hand < a.min_stock_level
+    if (activeFilterType === "low_stock") {
+      filtered = filtered.filter(
+        (a) =>
+          a.min_stock_level !== undefined &&
+          a.min_stock_level !== null &&
+          a.quantity_on_hand < a.min_stock_level,
       );
     }
 
@@ -113,14 +112,18 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
   const handleDeleteAmmunition = () => {
     if (ammunitionToDelete) {
-      DeleteAmmunition(ammunitionToDelete.id)
+      DeleteAmmunition(ammunitionToDelete.ammo_id)
         .then(refetch)
         .then(handleClosedDeleteModal);
     }
   };
 
   return (
-    <React.Fragment>
+    <PageSection>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Ammunition</h1>
+        <AddAmmoForm onAddSuccess={refetch} isDisabled={isError} />
+      </div>
       <AmmunitionTable
         ammunition={paginatedData}
         isLoading={isLoading}
@@ -135,20 +138,23 @@ const AmmunitionPage: React.FunctionComponent = () => {
         filterValue={filterValue}
         onFilterChange={onFilterChange}
         onDeleteAmmunition={handleOpenDeleteModal}
+        dashboardFilterLabel={
+          activeFilterType === "low_stock" ? "Low Stock" : undefined
+        }
+        onClearDashboardFilter={() => {
+          const newParams = new URLSearchParams(searchParams);
+          newParams.delete("filter");
+          setSearchParams(newParams);
+        }}
       />
 
-      <PageSection>
-        <div className="flex justify-end">
-          <AddAmmoForm onAddSuccess={refetch} isDisabled={isError} />
-        </div>
-        <DeleteAmmunitionModal
-          ammunition={ammunitionToDelete}
-          isOpen={isDeleteModalOpen}
-          onClose={handleClosedDeleteModal}
-          onConfirm={handleDeleteAmmunition}
-        />
-      </PageSection>
-    </React.Fragment>
+      <DeleteAmmunitionModal
+        ammunition={ammunitionToDelete}
+        isOpen={isDeleteModalOpen}
+        onClose={handleClosedDeleteModal}
+        onConfirm={handleDeleteAmmunition}
+      />
+    </PageSection>
   );
 };
 

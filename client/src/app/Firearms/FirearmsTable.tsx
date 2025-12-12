@@ -22,6 +22,7 @@ import { Spinner } from "@components/Spinner";
 import { Pagination } from "@components/Pagination";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
+import { FilterFeedback } from "@components/FilterFeedback";
 import { Search, Box, Trash2, AlertTriangle } from "lucide-react";
 
 export interface SortBy {
@@ -50,6 +51,8 @@ interface FirearmsTableProps {
     event: React.FormEvent<HTMLInputElement>,
     value: string,
   ) => void;
+  dashboardFilterLabel?: string;
+  onClearDashboardFilter?: () => void;
 }
 
 const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
@@ -66,14 +69,16 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   onDeleteFirearm,
   filterValue,
   onFilterChange,
+  dashboardFilterLabel,
+  onClearDashboardFilter,
 }) => {
   const navigate = useNavigate();
   const columnNames = {
     manufacturer: "Manufacturer",
     model: "Model",
     type: "Type",
-    purchase_date: "Purchase Date",
-    caliber: "Caliber",
+    aquisition_date: "Aquisition Date",
+    caliber_gauge: "Caliber",
     serial_number: "Serial Number",
     asset_tag: "Asset Tag",
     current_status: "Status",
@@ -83,8 +88,8 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     { title: columnNames.manufacturer, key: "manufacturer" },
     { title: columnNames.model, key: "model" },
     { title: columnNames.type, key: "type" },
-    { title: columnNames.purchase_date, key: "purchase_date" },
-    { title: columnNames.caliber, key: "caliber" },
+    { title: columnNames.aquisition_date, key: "aquisition_date" },
+    { title: columnNames.caliber_gauge, key: "caliber" },
     { title: columnNames.serial_number, key: "serial_number" },
     { title: columnNames.asset_tag, key: "asset_tag" },
     { title: columnNames.current_status, key: "current_status" },
@@ -155,9 +160,9 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
         <TableCell>{repo.model}</TableCell>
         <TableCell>{repo.type}</TableCell>
         <TableCell>
-          {new Date(repo.purchase_date).toLocaleDateString("en-US")}
+          {new Date(repo.acquisition_date).toLocaleDateString("en-US")}
         </TableCell>
-        <TableCell>{repo.caliber}</TableCell>
+        <TableCell>{repo.caliber_gauge}</TableCell>
         <TableCell>{repo.serial_number}</TableCell>
         <TableCell>{repo.asset_tag}</TableCell>
         <TableCell>{repo.current_status}</TableCell>
@@ -236,15 +241,21 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
               <div className="space-y-1 text-sm text-subtext-color">
                 <div className="flex justify-between">
                   <span>Caliber:</span>
-                  <span className="text-default-font">{repo.caliber}</span>
+                  <span className="text-default-font">
+                    {repo.caliber_gauge}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Serial:</span>
-                  <span className="text-default-font">{repo.serial_number}</span>
+                  <span className="text-default-font">
+                    {repo.serial_number}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Status:</span>
-                  <span className="text-default-font">{repo.current_status}</span>
+                  <span className="text-default-font">
+                    {repo.current_status}
+                  </span>
                 </div>
               </div>
             </button>
@@ -282,6 +293,19 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                     onChange={(e) => onFilterChange(e, e.target.value)}
                     startContent={<Search className="h-4 w-4" />}
                   />
+                  <div className="mt-2">
+                    <FilterFeedback
+                      filterValue={filterValue}
+                      onClear={() => onFilterChange({} as any, "")}
+                    />
+                    {dashboardFilterLabel && (
+                      <FilterFeedback
+                        label="status"
+                        filterValue={dashboardFilterLabel}
+                        onClear={onClearDashboardFilter}
+                      />
+                    )}
+                  </div>
                 </ToolbarItem>
               </ToolbarContent>
             </Toolbar>
