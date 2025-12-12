@@ -206,3 +206,38 @@ CREATE TABLE asset_custody (
     is_current BOOLEAN NOT NULL DEFAULT TRUE,
     UNIQUE (asset_id, is_current)
 );
+
+CREATE TABLE reference_manufacturers (
+    manufacturer_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Create Models Table
+CREATE TABLE reference_models (
+    model_id SERIAL PRIMARY KEY,
+    manufacturer_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (manufacturer_id) REFERENCES reference_manufacturers(manufacturer_id) ON DELETE CASCADE,
+    UNIQUE (manufacturer_id, name)
+);
+
+-- Create Calibers Table
+CREATE TABLE reference_calibers (
+    caliber_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- Create Model Valid Calibers (Many-to-Many for Model -> Caliber)
+CREATE TABLE model_valid_calibers (
+    id SERIAL PRIMARY KEY,
+    model_id INT NOT NULL,
+    caliber_id INT NOT NULL,
+    FOREIGN KEY (model_id) REFERENCES reference_models(model_id) ON DELETE CASCADE,
+    FOREIGN KEY (caliber_id) REFERENCES reference_calibers(caliber_id) ON DELETE CASCADE,
+    UNIQUE (model_id, caliber_id)
+);
+
+CREATE TABLE reference_projectile_types (
+    projectile_type_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
