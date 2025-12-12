@@ -79,13 +79,6 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
   const [models, setModels] = React.useState<Model[]>([]);
   const [calibers, setCalibers] = React.useState<Caliber[]>([]);
 
-  // Track IDs for dependency fetching
-  const [selectedManufacturerId, setSelectedManufacturerId] = React.useState<
-    number | null
-  >(null);
-  const [selectedModelId, setSelectedModelId] = React.useState<number | null>(
-    null
-  );
 
   // Fetch Manufacturers on Load
   React.useEffect(() => {
@@ -148,13 +141,13 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     if (field === "manufacturer") {
       const selectedMfg = manufacturers.find((m) => m.name === value);
       if (selectedMfg) {
-        setSelectedManufacturerId(selectedMfg.manufacturer_id);
+
         // Fetch Models
         getModels(selectedMfg.manufacturer_id)
           .then((data) => {
             setModels(data);
             setCalibers([]); // Reset calibers
-            setSelectedModelId(null);
+
           })
           .catch(console.error);
       } else {
@@ -166,7 +159,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
     if (field === "model") {
       const selectedModel = models.find((m) => m.name === value);
       if (selectedModel) {
-        setSelectedModelId(selectedModel.model_id);
+
         // Fetch Calibers
         getCalibers(selectedModel.model_id)
           .then(setCalibers)
@@ -230,8 +223,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       setFormState(initialFormState);
       setValidationState(initialValidationState);
       // Reset selections
-      setSelectedManufacturerId(null);
-      setSelectedModelId(null);
+
+
       setModels([]);
       setCalibers([]);
     }

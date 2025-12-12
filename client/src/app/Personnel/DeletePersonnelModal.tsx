@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ConfirmModal } from "@components";
+import { ConfirmModal } from "@components/index";
 import { Personnel } from "./hooks";
 
 interface DeletePersonnelModalProps {

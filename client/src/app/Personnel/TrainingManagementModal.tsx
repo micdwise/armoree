@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, Button } from "@components";
+import { Modal, Button } from "@components/index";
 import { TrainingHistory } from "./TrainingHistory";
 import { AddTrainingModal } from "./AddTrainingModal";
 import { Personnel } from "./hooks";

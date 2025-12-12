@@ -135,7 +135,7 @@ const AmmoCaliberTypeCard: React.FunctionComponent = () => {
             labels={({ datum }) => datum.y}
             style={{
               data: {
-                fill: ({ index }) => COLORS[(index || 0) % COLORS.length],
+                fill: ({ index }) => COLORS[Number(index || 0) % COLORS.length],
               },
               labels: { fontSize: 12, fill: TEXT_COLOR },
             }}

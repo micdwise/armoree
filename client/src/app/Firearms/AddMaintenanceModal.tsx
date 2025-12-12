@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, Button, Input, TextArea, Select, Field } from "@components";
+import { Modal, Button, Input, TextArea, Select, Field } from "@components/index";
 import { getPersonnelList, Personnel } from "../Personnel/hooks";
 import { addMaintenanceLog } from "./hooks";
 
@@ -55,7 +55,7 @@ export const AddMaintenanceModal: React.FunctionComponent<
     setWorkPerformed("");
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
@@ -93,7 +93,7 @@ export const AddMaintenanceModal: React.FunctionComponent<
           </Button>
           <Button
             type="submit"
-            onClick={(e) => handleSubmit(e as any)}
+            onClick={handleSubmit}
             isLoading={isLoading}>
             Save Record
           </Button>

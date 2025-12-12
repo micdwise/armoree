@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { PageSection } from "@components/Layout";
-import { Card, CardContent, CardHeader } from "@components/Card";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, PageSection } from "@components/index";
 import { ManufacturersTab } from "./ManufacturersTab";
 import { ModelsTab } from "./ModelsTab";
 import { CalibersTab } from "./CalibersTab";
