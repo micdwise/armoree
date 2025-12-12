@@ -28,34 +28,32 @@ export function Sidebar({
         isOpen
           ? "w-64 translate-x-0"
           : "w-64 -translate-x-full lg:w-16 lg:translate-x-0",
-        className,
+        className
       )}
-      {...props}
-    >
+      {...props}>
       <div
         className={cn(
           "flex h-16 items-center border-b border-neutral-border transition-all duration-300",
-          isOpen ? "justify-between px-4" : "justify-center lg:px-0",
-        )}
-      >
+          isOpen ? "justify-between px-4" : "justify-center lg:px-0"
+        )}>
         <Link
           to="/"
           className={cn(
             "text-xl font-bold text-default-font transition-opacity duration-200 whitespace-nowrap",
-            isOpen ? "opacity-100" : "opacity-0 lg:hidden",
-          )}
-        >
+            isOpen ? "opacity-100" : "opacity-0 lg:hidden"
+          )}>
           Armoree
         </Link>
         {/* Show a mini logo or icon when collapsed if needed, for now just hiding text to prevent overflow */}
         {!isOpen && (
-          <Link to="/" className="hidden lg:block font-bold text-xl">A</Link>
+          <Link to="/" className="hidden lg:block font-bold text-xl">
+            A
+          </Link>
         )}
 
         <button
           onClick={onClose}
-          className="lg:hidden text-subtext-color hover:text-default-font"
-        >
+          className="lg:hidden text-subtext-color hover:text-default-font">
           <Menu className="h-6 w-6" />
         </button>
       </div>
@@ -79,10 +77,9 @@ export function Sidebar({
           onClick={() => supabase.auth.signOut()}
           className={cn(
             "flex w-full items-center rounded-md py-2 text-sm font-medium text-subtext-color transition-colors hover:bg-screen-background hover:text-red-600",
-            isOpen ? "px-3 gap-3" : "justify-center px-0",
+            isOpen ? "px-3 gap-3" : "justify-center px-0"
           )}
-          title={isOpen ? undefined : "Logout"}
-        >
+          title={isOpen ? undefined : "Logout"}>
           <LogOut className="h-5 w-5" />
           {isOpen && "Logout"}
         </button>
@@ -149,16 +146,14 @@ function SidebarItem({
             isSidebarOpen ? "px-3 justify-between" : "justify-center px-0",
             isChildActive
               ? "bg-brand-highlight-bg text-brand-highlight-text"
-              : "text-subtext-color hover:bg-screen-background hover:text-default-font",
+              : "text-subtext-color hover:bg-screen-background hover:text-default-font"
           )}
-          title={isSidebarOpen ? undefined : route.label}
-        >
+          title={isSidebarOpen ? undefined : route.label}>
           <div
             className={cn(
               "flex items-center",
-              isSidebarOpen ? "gap-3" : "justify-center",
-            )}
-          >
+              isSidebarOpen ? "gap-3" : "justify-center"
+            )}>
             {route.icon && <route.icon className="h-5 w-5" />}
             {isSidebarOpen && <span>{route.label}</span>}
           </div>
@@ -204,11 +199,10 @@ function SidebarItem({
             isSidebarOpen ? "px-3 gap-3" : "justify-center px-0",
             isActive
               ? "bg-brand-highlight-bg text-brand-highlight-text"
-              : "text-subtext-color hover:bg-screen-background hover:text-default-font",
+              : "text-subtext-color hover:bg-screen-background hover:text-default-font"
           )
         }
-        title={isSidebarOpen ? undefined : route.label}
-      >
+        title={isSidebarOpen ? undefined : route.label}>
         {route.icon && <route.icon className="h-5 w-5" />}
         {isSidebarOpen && route.label}
       </NavLink>
