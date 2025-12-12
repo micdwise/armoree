@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Input, Modal, Field } from "@components";
+import { Button, Input, Modal, Field } from "@components/index";
 import { Plus } from "lucide-react";
 import { addPersonnel } from "./hooks";
 

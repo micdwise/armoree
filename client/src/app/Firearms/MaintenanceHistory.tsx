@@ -12,7 +12,7 @@ import {
   CardContent,
   Spinner,
   Button,
-} from "@components";
+} from "@components/index";
 import { Plus } from "lucide-react";
 import { AddMaintenanceModal } from "./AddMaintenanceModal";
 
@@ -43,7 +43,8 @@ export const MaintenanceHistory: React.FunctionComponent<
           <Button
             size="sm"
             variant="secondary"
-            onClick={() => setIsAddModalOpen(true)}>
+            onClick={() => setIsAddModalOpen(true)}
+          >
             <Plus className="h-3 w-3 mr-2" />
             Add Entry
           </Button>
@@ -54,7 +55,7 @@ export const MaintenanceHistory: React.FunctionComponent<
             <Spinner size="md" />
           </div>
         ) : isError ? (
-          <p className="text-red-600">Error loading maintenance history.</p>
+          <p className="text-error-600">Error loading maintenance history.</p>
         ) : (maintenanceLogs || []).length === 0 ? (
           <p className="text-sm text-subtext-color">
             No history available yet.
@@ -86,13 +87,15 @@ export const MaintenanceHistory: React.FunctionComponent<
                         : "Unknown"}
                     </TableCell>
                     <TableCell
-                      className="max-w-xs truncate"
-                      title={log.problem_reported}>
+                      className="whitespace-pre-wrap break-words"
+                      title={log.problem_reported}
+                    >
                       {log.problem_reported || "-"}
                     </TableCell>
                     <TableCell
-                      className="max-w-xs truncate"
-                      title={log.work_performed}>
+                      className="whitespace-pre-wrap break-words"
+                      title={log.work_performed}
+                    >
                       {log.work_performed || "-"}
                     </TableCell>
                   </TableRow>

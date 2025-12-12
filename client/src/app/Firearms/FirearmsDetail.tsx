@@ -10,13 +10,13 @@ import {
   Card,
   CardContent,
   Spinner,
-} from "@components";
-import { ArrowLeft } from "lucide-react";
+} from "@components/index";
+import { ArrowLeft, Crosshair, Shield, Tag, Calendar, Hash } from "lucide-react";
 
 const getStatusColor = (status: string) => {
-  if (status === "Active") return "bg-green-100 text-green-800";
-  if (status === "Maintenance") return "bg-yellow-100 text-yellow-800";
-  return "bg-gray-100 text-gray-800";
+  if (status === "Active") return "bg-success-100 text-success-800";
+  if (status === "Maintenance") return "bg-warning-100 text-warning-800";
+  return "bg-neutral-100 text-neutral-800";
 };
 
 export const FirearmsDetail: React.FunctionComponent = () => {
@@ -37,7 +37,7 @@ export const FirearmsDetail: React.FunctionComponent = () => {
   if (isError || !firearm) {
     return (
       <PageSection className="p-8">
-        <div className="text-center text-red-600">
+        <div className="text-center text-error-600">
           <h2 className="text-xl font-bold">Error loading firearm</h2>
           <p>
             The firearm could not be found or there was an error loading it.
@@ -65,64 +65,67 @@ export const FirearmsDetail: React.FunctionComponent = () => {
         </Button>
       </div>
 
-      <div className="mb-6">
-        <Title>
-          {firearm.manufacturer} {firearm.model}
-        </Title>
-        <p className="text-subtext-color text-sm">
-          S/N: {firearm.serial_number}
-        </p>
-      </div>
-
       <div className="space-y-6">
         <Card>
           <CardContent className="p-6">
-            <h3 className="mb-4 text-lg font-semibold text-default-font">
-              Details
-            </h3>
-            <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <dt className="text-sm font-medium text-subtext-color">Type</dt>
-                <dd className="mt-1 text-sm text-default-font">
+            <div className="flex flex-col items-center text-center mb-6">
+              <div className="h-24 w-24 rounded-full bg-neutral-100 flex items-center justify-center mb-4">
+                <Crosshair className="h-12 w-12 text-neutral-400" />
+              </div>
+              <h1 className="text-2xl font-bold text-default-font">
+                {firearm.manufacturer} {firearm.model}
+              </h1>
+              <div
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2 ${getStatusColor(
+                  firearm.current_status
+                )}`}
+              >
+                {firearm.current_status}
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-4 border-t border-neutral-border max-w-md mx-auto">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-subtext-color flex items-center gap-2">
+                  <Hash className="h-4 w-4" /> Serial Number
+                </span>
+                <span className="font-medium text-default-font">
+                  {firearm.serial_number}
+                </span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-subtext-color flex items-center gap-2">
+                  <Shield className="h-4 w-4" /> Type
+                </span>
+                <span className="font-medium text-default-font">
                   {firearm.type || "-"}
-                </dd>
+                </span>
               </div>
-              <div>
-                <dt className="text-sm font-medium text-subtext-color">
-                  Caliber
-                </dt>
-                <dd className="mt-1 text-sm text-default-font">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-subtext-color flex items-center gap-2">
+                  <Crosshair className="h-4 w-4" /> Caliber
+                </span>
+                <span className="font-medium text-default-font">
                   {firearm.caliber_gauge}
-                </dd>
+                </span>
               </div>
-              <div>
-                <dt className="text-sm font-medium text-subtext-color">
-                  Asset Tag
-                </dt>
-                <dd className="mt-1 text-sm text-default-font">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-subtext-color flex items-center gap-2">
+                  <Tag className="h-4 w-4" /> Asset Tag
+                </span>
+                <span className="font-medium text-default-font">
                   {firearm.asset_tag || "-"}
-                </dd>
+                </span>
               </div>
-              <div>
-                <dt className="text-sm font-medium text-subtext-color">
-                  Status
-                </dt>
-                <dd className="mt-1 text-sm text-default-font">
-                  <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusColor(firearm.current_status)}`}>
-                    {firearm.current_status}
-                  </span>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-subtext-color">
-                  Purchase Date
-                </dt>
-                <dd className="mt-1 text-sm text-default-font">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-subtext-color flex items-center gap-2">
+                  <Calendar className="h-4 w-4" /> Purchase Date
+                </span>
+                <span className="font-medium text-default-font">
                   {new Date(firearm.acquisition_date).toLocaleDateString()}
-                </dd>
+                </span>
               </div>
-            </dl>
+            </div>
           </CardContent>
         </Card>
 
