@@ -12,6 +12,7 @@ interface SelectProps<T extends string = string> {
     disabled?: boolean;
     className?: string;
     error?: boolean;
+    id?: string;
 }
 
 export function Select<T extends string = string>({
@@ -23,6 +24,7 @@ export function Select<T extends string = string>({
     disabled,
     className,
     error,
+    id,
 }: Readonly<SelectProps<T>>) {
     return (
         <BaseSelect.Root
@@ -32,6 +34,7 @@ export function Select<T extends string = string>({
             disabled={disabled}
         >
             <BaseSelect.Trigger
+                id={id}
                 className={cn(
                     'flex h-10 w-full items-center justify-between rounded-md border border-neutral-border bg-default-background px-3 py-2 text-sm text-default-font placeholder:text-subtext-color focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200',
                     error && 'border-red-500 focus:ring-red-500',

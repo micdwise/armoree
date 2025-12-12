@@ -168,12 +168,60 @@ export const ModelsTab = () => {
     );
   };
 
+  const renderTableBody = () => {
+    if (isLoading) {
+      return (
+        <TableRow>
+          <TableCell colSpan={3} className="text-center py-8">
+            <Spinner />
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (models.length === 0) {
+      return (
+        <TableRow>
+          <TableCell
+            colSpan={3}
+            className="text-center py-8 text-subtext-color">
+            No models found for this manufacturer.
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    return models.map((m) => (
+      <TableRow key={m.model_id}>
+        <TableCell>{m.name}</TableCell>
+        <TableCell className="text-subtext-color text-sm">
+          Use edit to view
+        </TableCell>
+        <TableCell className="text-right space-x-2">
+          <Button
+            variant="link"
+            className="p-1"
+            onClick={() => openEditModal(m)}>
+            <Edit2 className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="link"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1"
+            onClick={() => handleDelete(m.model_id)}>
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </TableCell>
+      </TableRow>
+    ));
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-end sm:items-center">
         <div className="w-full sm:w-64">
-          <label className="text-sm font-medium mb-1 block">Manufacturer</label>
+          <label htmlFor="manufacturer-select" className="text-sm font-medium mb-1 block">Manufacturer</label>
           <Select
+            id="manufacturer-select"
             value={selectedManufacturerId}
             onChange={(val) => setSelectedManufacturerId(val)}
             options={manufacturers.map((m) => ({
@@ -201,44 +249,7 @@ export const ModelsTab = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={3} className="text-center py-8">
-                  <Spinner />
-                </TableCell>
-              </TableRow>
-            ) : models.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={3}
-                  className="text-center py-8 text-subtext-color">
-                  No models found for this manufacturer.
-                </TableCell>
-              </TableRow>
-            ) : (
-              models.map((m) => (
-                <TableRow key={m.model_id}>
-                  <TableCell>{m.name}</TableCell>
-                  <TableCell className="text-subtext-color text-sm">
-                    Use edit to view
-                  </TableCell>
-                  <TableCell className="text-right space-x-2">
-                    <Button
-                      variant="link"
-                      className="p-1"
-                      onClick={() => openEditModal(m)}>
-                      <Edit2 className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="link"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1"
-                      onClick={() => handleDelete(m.model_id)}>
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            {renderTableBody()}
           </TableBody>
         </Table>
       </div>
@@ -266,9 +277,9 @@ export const ModelsTab = () => {
           </Field>
 
           <div>
-            <label className="text-sm font-medium mb-2 block">
+            <div className="text-sm font-medium mb-2 block">
               Valid Calibers
-            </label>
+            </div>
             <div className="border border-neutral-border rounded p-3 h-48 overflow-y-auto grid grid-cols-2 gap-2">
               {allCalibers.map((c) => (
                 <label

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, Button, Input, Select, Field } from "@components";
+import { Modal, Button, Input, Select, Field } from "@components/index";
 import {
   addPersonnelTraining,
   getTrainingCourses,
@@ -71,12 +71,12 @@ export const AddTrainingModal: React.FunctionComponent<
 
       await addPersonnelTraining({
         personnel_id: personnelId,
-        course_id: parseInt(selectedCourse),
+        course_id: Number.parseInt(selectedCourse),
         date_completed: dateCompleted,
         date_expires: dateExpires,
-        score_achieved: score ? parseFloat(score) : undefined,
+        score_achieved: score ? Number.parseFloat(score) : undefined,
         instructor_id: selectedInstructor
-          ? parseInt(selectedInstructor)
+          ? Number.parseInt(selectedInstructor)
           : undefined,
       });
       onAddSuccess();
