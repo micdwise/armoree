@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@components/Table";
 import { Spinner } from "@components/Spinner";
-import { Toolbar, ToolbarContent, ToolbarItem } from "@components/Layout";
 import { Button } from "@components/Button";
 import { Plus } from "lucide-react";
 import { GetPersonnelTraining, PersonnelTraining } from "./PersonnelData";
@@ -23,30 +22,17 @@ export const TrainingHistory = ({
   personnelId,
   refreshTrigger = 0,
 }: TrainingHistoryProps) => {
-  const [training, setTraining] = useState<PersonnelTraining[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const {
+    data: training,
+    isLoading,
+    isError,
+    refetch,
+  } = GetPersonnelTraining(personnelId);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  const fetchTraining = useCallback(async () => {
-    setIsLoading(true);
-    setIsError(false);
-    try {
-      const data = await GetPersonnelTraining(personnelId);
-      setTraining(data);
-    } catch (error) {
-      console.error("Error fetching training history:", error);
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [personnelId]);
-
   useEffect(() => {
-    if (personnelId) {
-      fetchTraining();
-    }
-  }, [personnelId, refreshTrigger, fetchTraining]);
+    refetch();
+  }, [refreshTrigger, refetch]);
 
   if (isLoading) {
     return (
@@ -70,23 +56,19 @@ export const TrainingHistory = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <Toolbar>
-        <ToolbarContent>
-          <ToolbarItem className="flex-1">
-            <div />
-          </ToolbarItem>
-          <ToolbarItem>
-            <Button
-              size="sm"
-              variant="primary"
-              onClick={() => setIsAddModalOpen(true)}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Training
-            </Button>
-          </ToolbarItem>
-        </ToolbarContent>
-      </Toolbar>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-semibold text-default-font">
+          Training History
+        </h3>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => setIsAddModalOpen(true)}
+        >
+          <Plus className="h-3 w-3 mr-2" />
+          Add Entry
+        </Button>
+      </div>
 
       <div className="border">
         <Table>
@@ -132,7 +114,7 @@ export const TrainingHistory = ({
       <AddTrainingModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onAddSuccess={fetchTraining}
+        onAddSuccess={refetch}
         personnelId={personnelId}
       />
     </div>

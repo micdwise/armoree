@@ -217,6 +217,7 @@ export {
   AddFirearms,
   DeleteFirearm,
   GetManufacturers,
+  GetModels,
   GetCalibers,
   GetMaintenanceLogs,
   AddMaintenanceLog,

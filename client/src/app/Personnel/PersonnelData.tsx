@@ -140,43 +140,64 @@ export async function DeletePersonnel(id: number) {
     if (error) throw error;
 }
 
-export async function GetPersonnelTraining(personnelId: number) {
-    const { data: trainingData, error: trainingError } = await supabase
-        .from("personnel_training")
-        .select(`
+export function GetPersonnelTraining(personnelId: number) {
+    const [data, setData] = useState<PersonnelTraining[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
+
+    const fetchData = useCallback(async () => {
+        if (!personnelId) return;
+        setIsLoading(true);
+        setIsError(false);
+        try {
+            const { data: trainingData, error: trainingError } = await supabase
+                .from("personnel_training")
+                .select(`
             *,
             course:training_course (*)
         `)
-        .eq("personnel_id", personnelId)
-        .order("date_completed", { ascending: false });
+                .eq("personnel_id", personnelId)
+                .order("date_completed", { ascending: false });
 
-    if (trainingError) throw trainingError;
+            if (trainingError) throw trainingError;
 
-    const data = trainingData as PersonnelTraining[];
+            const data = trainingData as PersonnelTraining[];
 
-    // Manual join for instructor
-    const instructorIds = [...new Set(data.filter(t => t.instructor_id).map(t => t.instructor_id))];
+            // Manual join for instructor
+            const instructorIds = [...new Set(data.filter(t => t.instructor_id).map(t => t.instructor_id))];
 
-    if (instructorIds.length > 0) {
-        const { data: instructors, error: instructorError } = await supabase
-            .from("personnel")
-            .select("personnel_id, first_name, last_name, badge_number")
-            .in("personnel_id", instructorIds);
+            if (instructorIds.length > 0) {
+                const { data: instructors, error: instructorError } = await supabase
+                    .from("personnel")
+                    .select("personnel_id, first_name, last_name, badge_number")
+                    .in("personnel_id", instructorIds);
 
-        if (instructorError) {
-            console.warn("Could not fetch instructors", instructorError);
-            // Don't throw, just return data without instructor details
-        } else {
-            const instructorMap = new Map(instructors?.map(i => [i.personnel_id, i]));
-            data.forEach(t => {
-                if (t.instructor_id && instructorMap.has(t.instructor_id)) {
-                    t.instructor = instructorMap.get(t.instructor_id);
+                if (instructorError) {
+                    console.warn("Could not fetch instructors", instructorError);
+                    // Don't throw, just return data without instructor details
+                } else {
+                    const instructorMap = new Map(instructors?.map(i => [i.personnel_id, i]));
+                    data.forEach(t => {
+                        if (t.instructor_id && instructorMap.has(t.instructor_id)) {
+                            t.instructor = instructorMap.get(t.instructor_id);
+                        }
+                    });
                 }
-            });
+            }
+            setData(data);
+        } catch (error) {
+            console.error("Error fetching personnel training:", error);
+            setIsError(true);
+        } finally {
+            setIsLoading(false);
         }
-    }
+    }, [personnelId]);
 
-    return data;
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    return { data, isLoading, isError, refetch: fetchData };
 }
 
 export async function GetExpiringPersonnelIds(): Promise<number[]> {
