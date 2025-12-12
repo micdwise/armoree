@@ -15,6 +15,7 @@ import {
   GetAllProjectileTypes,
   ProjectileType,
 } from "@app/Settings/ProjectileTypesTab";
+import { Plus } from "lucide-react";
 
 interface AmmoFormState {
   manufacturer: string;
@@ -198,6 +199,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         onClick={handleModalToggle}
         disabled={isDisabled}
       >
+        <Plus className="w-4 h-4 mr-2" />
         Add Ammunition
       </Button>
       <Modal

@@ -121,7 +121,10 @@ export async function GetAllLocations() {
   return data as LocationRef[];
 }
 
-export async function AddLocation(location_name: string, security_level: number) {
+export async function AddLocation(
+  location_name: string,
+  security_level: number
+) {
   const { data, error } = await supabase
     .from("location")
     .insert([{ location_name, security_level }])
@@ -134,7 +137,7 @@ export async function AddLocation(location_name: string, security_level: number)
 export async function UpdateLocation(
   id: number,
   location_name: string,
-  security_level: number,
+  security_level: number
 ) {
   const { data, error } = await supabase
     .from("location")

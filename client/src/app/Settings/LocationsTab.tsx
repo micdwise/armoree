@@ -74,7 +74,7 @@ export const LocationsTab = () => {
   const handleDelete = async (id: number) => {
     if (
       !confirm(
-        "Are you sure? This may affect firearms or ammunition assigned to this location!",
+        "Are you sure? This may affect firearms or ammunition assigned to this location!"
       )
     )
       return;

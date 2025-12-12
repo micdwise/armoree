@@ -15,7 +15,7 @@ import { Spinner } from "@components/Spinner";
 import { Select } from "@components/Select";
 import { GetAllCalibers } from "./ReferenceDataFunctions";
 import { GetAllProjectileTypes, ProjectileType } from "./ProjectileTypesTab";
-import { Edit2 } from "lucide-react";
+import { Edit2, Plus } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 
 interface AmmoStockRequirement {
@@ -67,7 +67,7 @@ const fetchStockRequirements = async () => {
 const updateStockRequirement = async (
   caliber: string,
   projectileType: string,
-  minStockLevel: number
+  minStockLevel: number,
 ) => {
   // Update all matching ammunition_inventory records
   const { data, error } = await supabase
@@ -87,12 +87,13 @@ export const AmmoStockRequirementsTab = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<AmmoStockRequirement | null>(
-    null
+    null,
   );
   const [minStockValue, setMinStockValue] = useState("");
   const [minStockCreateValue, setMinStockCreateValue] = useState("");
   const [selectedCaliber, setSelectedCaliber] = useState<string>("");
-  const [selectedProjectileType, setSelectedProjectileType] = useState<string>("");
+  const [selectedProjectileType, setSelectedProjectileType] =
+    useState<string>("");
   const [caliberOptions, setCaliberOptions] = useState<
     { label: string; value: string }[]
   >([]);
@@ -121,11 +122,11 @@ export const AmmoStockRequirementsTab = () => {
       try {
         const calibers = await GetAllCalibers();
         setCaliberOptions(
-          calibers.map((c) => ({ label: c.name, value: c.name }))
+          calibers.map((c) => ({ label: c.name, value: c.name })),
         );
         const projectiles: ProjectileType[] = await GetAllProjectileTypes();
         setProjectileTypeOptions(
-          projectiles.map((p) => ({ label: p.name, value: p.name }))
+          projectiles.map((p) => ({ label: p.name, value: p.name })),
         );
       } catch (err) {
         console.error(err);
@@ -149,7 +150,7 @@ export const AmmoStockRequirementsTab = () => {
       await updateStockRequirement(
         editingItem.caliber_gauge,
         editingItem.projectile_type,
-        minStock
+        minStock,
       );
       setIsModalOpen(false);
       setEditingItem(null);
@@ -178,12 +179,12 @@ export const AmmoStockRequirementsTab = () => {
       const updated = await updateStockRequirement(
         selectedCaliber,
         selectedProjectileType,
-        minStock
+        minStock,
       );
 
       if (updated === 0) {
         setError(
-          "No inventory records found for that caliber and projectile type"
+          "No inventory records found for that caliber and projectile type",
         );
         return;
       }
@@ -240,6 +241,7 @@ export const AmmoStockRequirementsTab = () => {
 
       <div className="flex justify-end mb-4">
         <Button size="sm" onClick={() => setIsCreateModalOpen(true)}>
+          <Plus className="w-4 h-4 mr-2" />
           Add Stock Requirement
         </Button>
       </div>
@@ -279,7 +281,8 @@ export const AmmoStockRequirementsTab = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => openEditModal(req)}
-                    aria-label={`Edit stock requirement for ${req.caliber_gauge} ${req.projectile_type}`}>
+                    aria-label={`Edit stock requirement for ${req.caliber_gauge} ${req.projectile_type}`}
+                  >
                     <Edit2 className="h-4 w-4" />
                   </Button>
                 </TableCell>
@@ -297,7 +300,8 @@ export const AmmoStockRequirementsTab = () => {
           setMinStockValue("");
           setError(null);
         }}
-        title={`Set Stock Requirement - ${editingItem?.caliber_gauge} ${editingItem?.projectile_type}`}>
+        title={`Set Stock Requirement - ${editingItem?.caliber_gauge} ${editingItem?.projectile_type}`}
+      >
         <div className="space-y-4">
           <Field label="Minimum Stock Level" required>
             <Input
@@ -334,7 +338,8 @@ export const AmmoStockRequirementsTab = () => {
                 setEditingItem(null);
                 setMinStockValue("");
                 setError(null);
-              }}>
+              }}
+            >
               Cancel
             </Button>
             <Button onClick={handleSave}>Save</Button>
@@ -351,7 +356,8 @@ export const AmmoStockRequirementsTab = () => {
           setMinStockCreateValue("");
           setError(null);
         }}
-        title="Add Stock Requirement">
+        title="Add Stock Requirement"
+      >
         <div className="space-y-4">
           <Field label="Caliber" required>
             <Select
@@ -390,7 +396,8 @@ export const AmmoStockRequirementsTab = () => {
                 setSelectedProjectileType("");
                 setMinStockCreateValue("");
                 setError(null);
-              }}>
+              }}
+            >
               Cancel
             </Button>
             <Button onClick={handleCreate}>Save</Button>

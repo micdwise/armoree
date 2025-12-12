@@ -107,17 +107,15 @@ function SidebarItem({
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const hasChildren = route.routes && route.routes.length > 0;
+  const isChildActive =
+    hasChildren && route.routes.some((r: any) => r.path === currentPath);
 
   // Auto expand if child is active and sidebar is open
   React.useEffect(() => {
-    if (
-      isSidebarOpen &&
-      hasChildren &&
-      route.routes.some((r: any) => r.path === currentPath)
-    ) {
+    if (isSidebarOpen && isChildActive) {
       setIsExpanded(true);
     }
-  }, [currentPath, hasChildren, route.routes, isSidebarOpen]);
+  }, [currentPath, hasChildren, route.routes, isSidebarOpen, isChildActive]);
 
   // Collapse children when sidebar collapses
   React.useEffect(() => {
@@ -149,8 +147,8 @@ function SidebarItem({
           className={cn(
             "flex w-full items-center rounded-md py-2 text-sm font-medium transition-colors",
             isSidebarOpen ? "px-3 justify-between" : "justify-center px-0",
-            isExpanded
-              ? "bg-screen-background text-default-font"
+            isChildActive
+              ? "bg-brand-highlight-bg text-brand-highlight-text"
               : "text-subtext-color hover:bg-screen-background hover:text-default-font",
           )}
           title={isSidebarOpen ? undefined : route.label}

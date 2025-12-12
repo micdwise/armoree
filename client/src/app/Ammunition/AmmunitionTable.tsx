@@ -219,7 +219,9 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                   {repo.caliber_gauge} • {repo.projectile_type}
                 </p>
                 <p className="text-xs text-subtext-color mt-1">
-                  {repo.location?.location_name || repo.storage_location_id || "No location"}
+                  {repo.location?.location_name ||
+                    repo.storage_location_id ||
+                    "No location"}
                 </p>
               </div>
               <Button
