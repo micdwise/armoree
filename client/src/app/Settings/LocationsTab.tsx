@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -13,43 +13,31 @@ import { Field } from "@components/Field";
 import { Modal } from "@components/Modal";
 import { Spinner } from "@components/Spinner";
 import { Trash2, Edit2, Plus } from "lucide-react";
-import { Caliber } from "../Firearms/hooks";
-import { supabase } from "../../lib/supabase"; // Direct access for generic list or add a helper
 import {
-  AddCaliber,
-  UpdateCaliber,
-  DeleteCaliber,
+  GetAllLocations,
+  AddLocation,
+  UpdateLocation,
+  DeleteLocation,
+  LocationRef,
 } from "./ReferenceDataFunctions";
 
-// The existing GetCalibers is for a specific model. I need to fetch ALL calibers.
-// I should add GetAllCalibers to ReferenceDataFunctions or here.
-// I'll add it here for now or use direct query.
-
-const GetAllCalibers = async () => {
-  const { data, error } = await supabase
-    .from("reference_calibers")
-    .select("*")
-    .order("name");
-  if (error) throw error;
-  return data as Caliber[];
-};
-
-export const CalibersTab = () => {
-  const [calibers, setCalibers] = useState<Caliber[]>([]);
+export const LocationsTab = () => {
+  const [locations, setLocations] = useState<LocationRef[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<Caliber | null>(null);
-  const [newItemName, setNewItemName] = useState("");
+  const [editingItem, setEditingItem] = useState<LocationRef | null>(null);
+  const [locationName, setLocationName] = useState("");
+  const [securityLevel, setSecurityLevel] = useState("1");
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await GetAllCalibers();
-      setCalibers(data);
+      const data = await GetAllLocations();
+      setLocations(data);
     } catch (err) {
       console.error(err);
-      setError("Failed to load calibers");
+      setError("Failed to load locations");
     } finally {
       setIsLoading(false);
     }
@@ -60,45 +48,56 @@ export const CalibersTab = () => {
   }, []);
 
   const handleSave = async () => {
+    const level = Number.parseInt(securityLevel);
+    if (Number.isNaN(level) || level < 0) {
+      setError("Security level must be 0 or greater");
+      return;
+    }
+
     try {
       if (editingItem) {
-        await UpdateCaliber(editingItem.caliber_id, newItemName);
+        await UpdateLocation(editingItem.location_id, locationName, level);
       } else {
-        await AddCaliber(newItemName);
+        await AddLocation(locationName, level);
       }
       setIsModalOpen(false);
-      setNewItemName("");
       setEditingItem(null);
+      setLocationName("");
+      setSecurityLevel("1");
       fetchData();
     } catch (err) {
       console.error(err);
-      setError("Failed to save caliber");
+      setError("Failed to save location");
     }
   };
 
   const handleDelete = async (id: number) => {
     if (
-      !confirm("Are you sure? This may remove this caliber from linked models!")
+      !confirm(
+        "Are you sure? This may affect firearms or ammunition assigned to this location!",
+      )
     )
       return;
     try {
-      await DeleteCaliber(id);
+      await DeleteLocation(id);
       fetchData();
     } catch (err) {
       console.error(err);
-      setError("Failed to delete caliber");
+      setError("Failed to delete location");
     }
   };
 
   const openAddModal = () => {
     setEditingItem(null);
-    setNewItemName("");
+    setLocationName("");
+    setSecurityLevel("1");
     setIsModalOpen(true);
   };
 
-  const openEditModal = (item: Caliber) => {
+  const openEditModal = (item: LocationRef) => {
     setEditingItem(item);
-    setNewItemName(item.name);
+    setLocationName(item.location_name);
+    setSecurityLevel(String(item.security_level ?? ""));
     setIsModalOpen(true);
   };
 
@@ -120,44 +119,46 @@ export const CalibersTab = () => {
 
       <div className="mb-4">
         <p className="text-sm text-subtext-color">
-          Manage calibers available for firearms and ammunition.
+          Manage storage locations for assets and ammunition.
         </p>
       </div>
 
       <div className="flex justify-end mb-4">
         <Button onClick={openAddModal} size="sm">
           <Plus className="w-4 h-4 mr-2" />
-          Add Caliber
+          Add Location
         </Button>
       </div>
 
-      {calibers.length === 0 ? (
+      {locations.length === 0 ? (
         <div className="text-center py-8 text-subtext-color">
-          No calibers found.
+          No locations found.
         </div>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
+              <TableHead>Security Level</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {calibers.map((m) => (
-              <TableRow key={m.caliber_id}>
-                <TableCell>{m.name}</TableCell>
+            {locations.map((loc) => (
+              <TableRow key={loc.location_id}>
+                <TableCell>{loc.location_name}</TableCell>
+                <TableCell>{loc.security_level}</TableCell>
                 <TableCell className="text-right space-x-2">
                   <Button
                     variant="link"
                     className="p-1"
-                    onClick={() => openEditModal(m)}>
+                    onClick={() => openEditModal(loc)}>
                     <Edit2 className="w-4 h-4" />
                   </Button>
                   <Button
                     variant="link"
                     className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1"
-                    onClick={() => handleDelete(m.caliber_id)}>
+                    onClick={() => handleDelete(loc.location_id)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </TableCell>
@@ -170,7 +171,7 @@ export const CalibersTab = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingItem ? "Edit Caliber" : "Add Caliber"}
+        title={editingItem ? "Edit Location" : "Add Location"}
         footer={
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
@@ -179,13 +180,22 @@ export const CalibersTab = () => {
             <Button onClick={handleSave}>Save</Button>
           </div>
         }>
-        <div className="p-4">
-          <Field label="Name">
+        <div className="p-4 space-y-4">
+          <Field label="Name" required>
             <Input
-              value={newItemName}
-              onChange={(e) => setNewItemName(e.target.value)}
-              placeholder="Enter caliber name"
+              value={locationName}
+              onChange={(e) => setLocationName(e.target.value)}
+              placeholder="Enter location name"
               autoFocus
+            />
+          </Field>
+          <Field label="Security Level" required>
+            <Input
+              type="number"
+              min="0"
+              value={securityLevel}
+              onChange={(e) => setSecurityLevel(e.target.value)}
+              placeholder="Enter security level"
             />
           </Field>
         </div>

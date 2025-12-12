@@ -6,18 +6,29 @@ import { Modal } from "@components/Modal";
 import { Field } from "@components/Field";
 import { addAmmunition } from "@app/Ammunition/hooks";
 import { getManufacturers, Manufacturer, Caliber } from "@app/Firearms/hooks";
-import { GetAllCalibers } from "@app/Settings/ReferenceDataFunctions";
+import {
+  GetAllCalibers,
+  GetAllLocations,
+  LocationRef,
+} from "@app/Settings/ReferenceDataFunctions";
+import {
+  GetAllProjectileTypes,
+  ProjectileType,
+} from "@app/Settings/ProjectileTypesTab";
 
 interface AmmoFormState {
   manufacturer: string;
   caliber_gauge: string;
+  projectile_type: string;
   lot_number: string;
   quantity_on_hand: string;
+  storage_location_id: string;
 }
 
 interface ValidationState {
   manufacturer: string | boolean;
   caliber_gauge: string | boolean;
+  projectile_type: string | boolean;
   lot_number: string | boolean;
   quantity_on_hand: string | boolean;
 }
@@ -25,15 +36,19 @@ interface ValidationState {
 const initialFormState: AmmoFormState = {
   manufacturer: "",
   caliber_gauge: "",
+  projectile_type: "",
   lot_number: "",
   quantity_on_hand: "",
+  storage_location_id: "",
 };
 
 const initialValidationState: ValidationState = {
   manufacturer: false,
   caliber_gauge: false,
+  projectile_type: false,
   lot_number: false,
   quantity_on_hand: false,
+  storage_location_id: false,
 };
 
 interface AddAmmoFormProps {
@@ -49,10 +64,14 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   const [formState, setFormState] =
     React.useState<AmmoFormState>(initialFormState);
   const [validationState, setValidationState] = React.useState<ValidationState>(
-    initialValidationState
+    initialValidationState,
   );
   const [manufacturers, setManufacturers] = React.useState<Manufacturer[]>([]);
   const [calibers, setCalibers] = React.useState<Caliber[]>([]);
+  const [projectileTypes, setProjectileTypes] = React.useState<
+    ProjectileType[]
+  >([]);
+  const [locations, setLocations] = React.useState<LocationRef[]>([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +80,10 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         setManufacturers(m);
         const c = await GetAllCalibers();
         setCalibers(c);
+        const p = await GetAllProjectileTypes();
+        setProjectileTypes(p);
+        const l = await GetAllLocations();
+        setLocations(l);
       } catch (e) {
         console.error("Failed to load reference data", e);
       }
@@ -76,6 +99,16 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   const caliberOptions = calibers.map((c) => ({
     label: c.name,
     value: c.name,
+  }));
+
+  const projectileTypeOptions = projectileTypes.map((p) => ({
+    label: p.name,
+    value: p.name,
+  }));
+
+  const locationOptions = locations.map((loc) => ({
+    label: loc.location_name,
+    value: String(loc.location_id),
   }));
 
   const handleInputChange = (field: keyof AmmoFormState, value: string) => {
@@ -103,12 +136,19 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         formState.caliber_gauge === "Select a caliber"
           ? "Please select a caliber"
           : false,
+      projectile_type:
+        formState.projectile_type === "Select a projectile type"
+          ? "Please select a projectile type"
+          : false,
       lot_number: formState.lot_number.trim()
         ? false
         : "Please enter a lot number",
       quantity_on_hand: formState.quantity_on_hand
         ? false
         : "Please enter a quantity",
+      storage_location_id: formState.storage_location_id
+        ? false
+        : "Please select a location",
     };
 
     setValidationState(updatedState);
@@ -120,6 +160,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
     const payload = {
       ...formState,
       quantity_on_hand: Number(formState.quantity_on_hand),
+      storage_location_id: Number(formState.storage_location_id),
     };
     addAmmunition(payload)
       .then(() => {
@@ -155,7 +196,8 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
       <Button
         variant="primary"
         onClick={handleModalToggle}
-        disabled={isDisabled}>
+        disabled={isDisabled}
+      >
         Add Ammunition
       </Button>
       <Modal
@@ -164,13 +206,15 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
         title="Add Ammunition"
         description="Enter information below."
         footer={footer}
-        size="md">
+        size="md"
+      >
         <form id="modal-with-form-form-ammo" className="flex flex-col gap-4">
           <Field
             label="Manufacturer"
             required
             error={validationState.manufacturer}
-            id="manufacturer">
+            id="manufacturer"
+          >
             <Select
               value={
                 formState.manufacturer === "Select a manufacturer"
@@ -188,7 +232,8 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
             label="Caliber"
             required
             error={validationState.caliber_gauge}
-            id="caliber">
+            id="caliber"
+          >
             <Select
               value={
                 formState.caliber_gauge === "Select a caliber"
@@ -203,10 +248,49 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
           </Field>
 
           <Field
+            label="Projectile Type"
+            required
+            error={validationState.projectile_type}
+            id="projectile_type"
+          >
+            <Select
+              value={
+                formState.projectile_type === "Select a projectile type"
+                  ? undefined
+                  : formState.projectile_type
+              }
+              onChange={(val) => handleInputChange("projectile_type", val)}
+              options={projectileTypeOptions}
+              placeholder="Select a projectile type"
+              error={!!validationState.projectile_type}
+            />
+          </Field>
+
+          <Field
+            label="Location"
+            required
+            error={validationState.storage_location_id}
+            id="storage_location_id"
+          >
+            <Select
+              value={
+                formState.storage_location_id === "Select a location"
+                  ? undefined
+                  : formState.storage_location_id
+              }
+              onChange={(val) => handleInputChange("storage_location_id", val)}
+              options={locationOptions}
+              placeholder="Select a location"
+              error={!!validationState.storage_location_id}
+            />
+          </Field>
+
+          <Field
             label="Lot Number"
             required
             error={validationState.lot_number}
-            id="lot_number">
+            id="lot_number"
+          >
             <Input
               required
               type="text"
@@ -221,7 +305,8 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
             label="Quantity"
             required
             error={validationState.quantity_on_hand}
-            id="qty">
+            id="qty"
+          >
             <Input
               required
               type="number"

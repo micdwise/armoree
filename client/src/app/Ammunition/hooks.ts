@@ -5,9 +5,14 @@ export interface Ammunition {
   ammo_id: number;
   manufacturer: string;
   caliber_gauge: string;
+  projectile_type: string;
   lot_number: string;
   quantity_on_hand: number;
   min_stock_level: number;
+  storage_location_id?: number;
+  location?: {
+    location_name: string;
+  };
 }
 
 export interface AmmunitionSummary {
@@ -43,7 +48,7 @@ export function useAmmunition() {
     try {
       const { data, error } = await supabase
         .from("ammunition_inventory")
-        .select("*");
+        .select("*, location:location(location_name)");
       if (error) throw error;
       setData((data || []) as Ammunition[]);
     } catch (error) {
@@ -104,4 +109,23 @@ export function useAmmunitionSummary() {
   }, [fetchSummaryData]);
 
   return { data, isLoading, isError, refetch: fetchSummaryData };
+}
+
+// Sets the minimum stock level for all ammo rows matching a caliber/projectile type.
+export async function setAmmoStockRequirement(
+  caliber: string,
+  projectileType: string,
+  minStockLevel: number
+) {
+  if (minStockLevel < 0 || Number.isNaN(minStockLevel)) {
+    throw new Error("minStockLevel must be zero or greater");
+  }
+
+  const { error } = await supabase
+    .from("ammunition_inventory")
+    .update({ min_stock_level: minStockLevel })
+    .eq("caliber_gauge", caliber)
+    .eq("projectile_type", projectileType);
+
+  if (error) throw error;
 }
