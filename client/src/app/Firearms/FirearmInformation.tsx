@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { GetFirearm, GetMaintenanceLogs } from "@app/Firearms/FirearmsData";
+import { AddMaintenanceModal } from "./AddMaintenanceModal";
 import {
   Table,
   TableHeader,
@@ -13,7 +14,7 @@ import { PageSection, Title } from "@components/Layout";
 import { Card, CardContent } from "@components/Card";
 import { Spinner } from "@components/Spinner";
 import { Button } from "@components/Button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 
 const getStatusColor = (status: string) => {
   if (status === "Active") return "bg-green-100 text-green-800";
@@ -29,7 +30,9 @@ export const FirearmInformation: React.FunctionComponent = () => {
     data: maintenanceLogs,
     isLoading: isLogsLoading,
     isError: isLogsError,
+    refetch: refetchLogs,
   } = GetMaintenanceLogs(id);
+  const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
 
   if (isLoading) {
     return (
@@ -81,7 +84,7 @@ export const FirearmInformation: React.FunctionComponent = () => {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="space-y-6">
         <Card>
           <CardContent className="p-6">
             <h3 className="mb-4 text-lg font-semibold text-default-font">
@@ -139,9 +142,19 @@ export const FirearmInformation: React.FunctionComponent = () => {
         {/* Placeholder for future sections like Maintenance Log or Assignment History */}
         <Card>
           <CardContent className="p-6">
-            <h3 className="mb-4 text-lg font-semibold text-default-font">
-              History
-            </h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-default-font">
+                Maintenance History
+              </h3>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => setIsAddModalOpen(true)}
+              >
+                <Plus className="h-3 w-3 mr-2" />
+                Add Entry
+              </Button>
+            </div>
             {isLogsLoading ? (
               <div className="flex justify-center p-4">
                 <Spinner size="md" />
@@ -178,10 +191,16 @@ export const FirearmInformation: React.FunctionComponent = () => {
                             ? `${log.personnel.first_name} ${log.personnel.last_name}`
                             : "Unknown"}
                         </TableCell>
-                        <TableCell className="max-w-xs truncate" title={log.problem_reported}>
+                        <TableCell
+                          className="max-w-xs truncate"
+                          title={log.problem_reported}
+                        >
                           {log.problem_reported || "-"}
                         </TableCell>
-                        <TableCell className="max-w-xs truncate" title={log.work_performed}>
+                        <TableCell
+                          className="max-w-xs truncate"
+                          title={log.work_performed}
+                        >
                           {log.work_performed || "-"}
                         </TableCell>
                       </TableRow>
@@ -193,6 +212,13 @@ export const FirearmInformation: React.FunctionComponent = () => {
           </CardContent>
         </Card>
       </div>
-    </PageSection >
+
+      <AddMaintenanceModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAddSuccess={refetchLogs}
+        firearmId={firearm.firearm_id}
+      />
+    </PageSection>
   );
 };

@@ -7,9 +7,17 @@ import {
   Outlet,
   useLocation,
 } from "react-router-dom";
-import { AppLayout } from "@app/AppLayout/AppLayout";
+import { AppLayout } from "@app/Layout/AppLayout";
 import { NotFound } from "@app/NotFound/NotFound";
-import { LayoutDashboard, Users, Package, Backpack, Archive, Settings, Database } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  Package,
+  Backpack,
+  Archive,
+  Settings,
+  Database,
+} from "lucide-react";
 
 // Lazy Loaded Pages
 const Dashboard = React.lazy(() =>
@@ -148,7 +156,6 @@ const AppRoot = () => {
   );
 };
 
-
 import { ProtectedRoute } from "@app/Auth/ProtectedRoute";
 import { LoginPage } from "@app/Auth/LoginPage";
 
@@ -167,13 +174,15 @@ export const router = createBrowserRouter(
           <Route path="Firearms" element={<FirearmsPage />} />
           <Route path="Firearms/:id" element={<FirearmInformation />} />
           <Route path="Ammunition/*" element={<AmmunitionPage />} />
-          <Route path="Settings/ReferenceTables" element={<ReferenceDataPage />} />
+          <Route
+            path="Settings/ReferenceTables"
+            element={<ReferenceDataPage />}
+          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
-    </>
+    </>,
   ),
 );
-
 
 export { navigationRoutes as routes };

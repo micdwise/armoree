@@ -220,4 +220,14 @@ export {
   GetModels,
   GetCalibers,
   GetMaintenanceLogs,
+  AddMaintenanceLog,
 };
+
+async function AddMaintenanceLog(log: Partial<MaintenanceLog>) {
+  const { data, error } = await supabase
+    .from("maintenance_log")
+    .insert([log])
+    .select();
+  if (error) throw error;
+  return data;
+}
