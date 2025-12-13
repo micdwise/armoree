@@ -77,7 +77,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     manufacturer: "Manufacturer",
     model: "Model",
     type: "Type",
-    aquisition_date: "Aquisition Date",
+    acquisition_date: "Acquisition Date",
     caliber_gauge: "Caliber",
     serial_number: "Serial Number",
     asset_tag: "Asset Tag",
@@ -88,8 +88,8 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
     { title: columnNames.manufacturer, key: "manufacturer" },
     { title: columnNames.model, key: "model" },
     { title: columnNames.type, key: "type" },
-    { title: columnNames.aquisition_date, key: "aquisition_date" },
-    { title: columnNames.caliber_gauge, key: "caliber" },
+    { title: columnNames.acquisition_date, key: "acquisition_date" },
+    { title: columnNames.caliber_gauge, key: "caliber_gauge" },
     { title: columnNames.serial_number, key: "serial_number" },
     { title: columnNames.asset_tag, key: "asset_tag" },
     { title: columnNames.current_status, key: "current_status" },
@@ -109,7 +109,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
       return (
         <TableRow>
           <TableCell colSpan={columns.length} className="h-48 text-center">
-            <div className="flex flex-col items-center justify-center gap-2 text-red-600">
+            <div className="flex flex-col items-center justify-center gap-2 text-text-error">
               <AlertTriangle className="h-8 w-8" />
               <p>Error loading firearms</p>
               <p className="text-sm text-subtext-color">
@@ -125,7 +125,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
       return (
         <TableRow>
           <TableCell colSpan={columns.length} className="h-48 text-center">
-            <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
+            <div className="flex flex-col items-center justify-center gap-2 text-subtext-color">
               {filterValue ? (
                 <>
                   <Search className="h-8 w-8 opacity-50" />
@@ -149,17 +149,23 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
       );
     }
 
+    const formatDate = (value: string | null) => {
+      if (!value) return "—";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime())
+        ? "—"
+        : date.toLocaleDateString("en-US");
+    };
+
     return firearms.map((repo: Firearm) => (
       <TableRow
         key={repo.firearm_id}
         onClick={() => navigate(`/Firearms/${repo.firearm_id}`)}
-        className="cursor-pointer hover:bg-gray-50">
+        className="cursor-pointer hover:bg-brand-highlight-bg">
         <TableCell>{repo.manufacturer}</TableCell>
         <TableCell>{repo.model}</TableCell>
         <TableCell>{repo.type}</TableCell>
-        <TableCell>
-          {new Date(repo.acquisition_date).toLocaleDateString("en-US")}
-        </TableCell>
+        <TableCell>{formatDate(repo.acquisition_date)}</TableCell>
         <TableCell>{repo.caliber_gauge}</TableCell>
         <TableCell>{repo.serial_number}</TableCell>
         <TableCell>{repo.asset_tag}</TableCell>
@@ -173,7 +179,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
               onDeleteFirearm(repo);
             }}
             aria-label="Delete"
-            className="text-gray-500 hover:text-red-600">
+            className="text-subtext-color hover:text-text-error">
             <Trash2 className="h-4 w-4" />
           </Button>
         </TableCell>
@@ -184,7 +190,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
   const renderMobileContent = () => {
     if (isError) {
       return (
-        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-red-600">
+        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-text-error">
           <AlertTriangle className="h-8 w-8" />
           <p>Error loading firearms</p>
           <p className="text-sm text-subtext-color">
@@ -196,7 +202,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
 
     if (firearms.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-gray-500">
+        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-subtext-color">
           {filterValue ? (
             <>
               <Search className="h-8 w-8 opacity-50" />
@@ -264,7 +270,7 @@ const FirearmsTable: React.FunctionComponent<FirearmsTableProps> = ({
                   onDeleteFirearm(repo);
                 }}
                 aria-label="Delete"
-                className="text-gray-500 hover:text-red-600">
+                className="text-subtext-color hover:text-text-error">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>

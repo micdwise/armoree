@@ -171,7 +171,7 @@ export const ModelsTab = () => {
   return (
     <div>
       {error && (
-        <div className="mb-4 p-4 bg-warning-50 border border-warning-200 rounded-md text-warning-800">
+        <div className="mb-4 p-4 bg-bg-warning border border-border-warning rounded-md text-text-warning">
           {error}
         </div>
       )}
@@ -243,7 +243,7 @@ export const ModelsTab = () => {
                   </Button>
                   <Button
                     variant="link"
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1"
+                    className="text-text-error hover:bg-bg-error p-1"
                     onClick={() => handleDelete(m.model_id)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -287,7 +287,7 @@ export const ModelsTab = () => {
                     type="checkbox"
                     checked={selectedCaliberIds.includes(c.caliber_id)}
                     onChange={() => toggleCaliber(c.caliber_id)}
-                    className="rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                    className="rounded border-neutral-border text-brand-primary focus:ring-brand-primary"
                   />
                   <span>{c.name}</span>
                 </label>

@@ -11,20 +11,20 @@ export const ComplianceOverviewCard: React.FC = () => {
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                         <span>Last Audit Score</span>
-                        <span className="font-bold text-green-600">98%</span>
+                        <span className="font-bold text-text-success">98%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-green-600 h-2 rounded-full" style={{ width: "98%" }}></div>
+                    <div className="w-full bg-muted rounded-full h-2">
+                        <div className="bg-bg-success h-2 rounded-full" style={{ width: "98%" }}></div>
                     </div>
 
                     <div className="flex items-center justify-between mt-4">
                         <span>Discrepancies (Last 30 days)</span>
-                        <span className="font-bold text-gray-900 dark:text-gray-100">0</span>
+                        <span className="font-bold text-default-font">0</span>
                     </div>
 
                     <div className="flex items-center justify-between mt-4">
                         <span>Pending Inspections</span>
-                        <span className="font-bold text-yellow-500">3</span>
+                        <span className="font-bold text-text-warning">3</span>
                     </div>
                 </div>
             </CardContent>

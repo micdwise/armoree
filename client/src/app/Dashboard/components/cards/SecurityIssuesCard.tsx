@@ -14,16 +14,16 @@ export const SecurityIssuesCard: React.FC<SecurityIssuesCardProps> = ({ count, i
         return (
             <Card className="animate-pulse">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <div className="h-4 w-1/2 bg-gray-200 rounded"></div>
+                    <div className="h-4 w-1/2 bg-muted rounded"></div>
                 </CardHeader>
                 <CardContent>
-                    <div className="h-8 w-1/4 bg-gray-200 rounded"></div>
+                    <div className="h-8 w-1/4 bg-muted rounded"></div>
                 </CardContent>
             </Card>
         );
     }
 
-    const severity = count > 0 ? "text-red-600" : "text-green-600";
+    const severity = count > 0 ? "text-text-error" : "text-text-success";
 
     return (
         <Link to="/Settings/Security?filter=issues">

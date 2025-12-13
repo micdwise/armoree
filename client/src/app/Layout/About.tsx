@@ -13,7 +13,7 @@ const AboutModalBasic: React.FunctionComponent = () => {
         variant="link"
         onClick={() => setIsModalOpen(true)}
       >
-        <HelpCircle className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+        <HelpCircle className="h-5 w-5 text-subtext-color hover:text-default-font" />
       </Button>
       <Modal
         isOpen={isModalOpen}
@@ -29,7 +29,7 @@ const AboutModalBasic: React.FunctionComponent = () => {
               className="h-16 w-auto"
             />
           </div>
-          <div className="space-y-2 text-sm text-gray-600">
+          <div className="space-y-2 text-sm text-subtext-color">
             <div className="grid grid-cols-2 gap-2">
               <span className="font-semibold">Version:</span>
               <span>1.0.0</span>
@@ -48,7 +48,7 @@ const AboutModalBasic: React.FunctionComponent = () => {
             </div>
           </div>
         </div>
-        <div className="mt-6 border-t pt-4 text-xs text-gray-500 text-center">
+        <div className="mt-6 border-t pt-4 text-xs text-subtext-color text-center">
           &copy; {new Date().getFullYear()} Armoree. All rights reserved.
         </div>
         <div className="mt-4 flex justify-end">

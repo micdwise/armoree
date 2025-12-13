@@ -1,11 +1,18 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../../components/Card";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "../../../../components/Card";
 
 interface AssignmentRateCardProps {
     rate: number;
 }
 
-export const AssignmentRateCard: React.FC<AssignmentRateCardProps> = ({ rate }) => {
+export const AssignmentRateCard: React.FC<AssignmentRateCardProps> = ({
+    rate,
+}) => {
     return (
         <Card className="col-span-7">
             <CardHeader>
@@ -13,9 +20,9 @@ export const AssignmentRateCard: React.FC<AssignmentRateCardProps> = ({ rate }) 
             </CardHeader>
             <CardContent>
                 <div className="flex items-center space-x-4">
-                    <div className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
+                    <div className="w-full bg-muted rounded-full h-4">
                         <div
-                            className="bg-blue-600 h-4 rounded-full"
+                            className="bg-brand-primary h-4 rounded-full"
                             style={{ width: `${rate}%` }}
                         ></div>
                     </div>

@@ -94,7 +94,7 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
       return (
         <TableRow>
           <TableCell colSpan={columns.length} className="h-48 text-center">
-            <div className="flex flex-col items-center justify-center gap-2 text-red-600">
+            <div className="flex flex-col items-center justify-center gap-2 text-text-error">
               <AlertTriangle className="h-8 w-8" />
               <p>Error loading personnel data.</p>
               <p className="text-sm text-subtext-color">
@@ -111,7 +111,7 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
       return (
         <TableRow>
           <TableCell colSpan={columns.length} className="h-48 text-center">
-            <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
+            <div className="flex flex-col items-center justify-center gap-2 text-subtext-color">
               {filterValue ? (
                 <>
                   <Search className="h-8 w-8 opacity-50" />
@@ -139,7 +139,7 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
       <TableRow
         key={person.personnel_id}
         onClick={() => navigate(`/Personnel/${person.personnel_id}`)}
-        className="cursor-pointer hover:bg-neutral-50">
+        className="cursor-pointer hover:bg-brand-highlight-bg">
         <TableCell>{person.badge_number}</TableCell>
         <TableCell>{person.first_name}</TableCell>
         <TableCell>{person.last_name}</TableCell>
@@ -155,7 +155,7 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
                 onDeletePersonnel(person);
               }}
               aria-label="Delete personnel">
-              <Trash2 className="h-4 w-4 text-red-500" />
+              <Trash2 className="h-4 w-4 text-text-error" />
             </Button>
           </div>
         </TableCell>
@@ -166,7 +166,7 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
   const renderMobileContent = () => {
     if (isError) {
       return (
-        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-red-600">
+        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-text-error">
           <AlertTriangle className="h-8 w-8" />
           <p>Error loading personnel data</p>
           <p className="text-sm text-subtext-color">
@@ -179,7 +179,7 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
 
     if (personnel.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-gray-500">
+        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-subtext-color">
           {filterValue ? (
             <>
               <Search className="h-8 w-8 opacity-50" />
@@ -241,7 +241,7 @@ export const PersonnelTable: React.FunctionComponent<PersonnelTableProps> = ({
                   onDeletePersonnel(person);
                 }}
                 aria-label="Delete personnel">
-                <Trash2 className="h-4 w-4 text-red-500" />
+                <Trash2 className="h-4 w-4 text-text-error" />
               </Button>
             </div>
           </div>

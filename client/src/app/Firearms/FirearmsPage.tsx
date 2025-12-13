@@ -51,6 +51,14 @@ const FirearmsPage: React.FunctionComponent = () => {
   ) => {
     setFilterValue(value);
     setPage(1);
+
+    const newParams = new URLSearchParams(searchParams);
+    if (value) {
+      newParams.set("search", value);
+    } else {
+      newParams.delete("search");
+    }
+    setSearchParams(newParams);
   };
 
   const filteredData = React.useMemo(() => {
@@ -114,11 +122,14 @@ const FirearmsPage: React.FunctionComponent = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleDeleteFirearm = () => {
-    if (firearmToDelete) {
-      deleteFirearm(firearmToDelete.firearm_id)
-        .then(refetch)
-        .then(handleCloseDeleteModal);
+  const handleDeleteFirearm = async () => {
+    if (!firearmToDelete) return;
+
+    try {
+      await deleteFirearm(firearmToDelete.firearm_id);
+      await refetch();
+    } finally {
+      handleCloseDeleteModal();
     }
   };
 

@@ -29,13 +29,18 @@ export const Dashboard: React.FunctionComponent = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Armory Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-default-font">
+          Armory Dashboard
+        </h1>
         <Button
           onClick={fetchMetrics}
           disabled={isLoading}
           variant="secondary"
-          className="gap-2">
-          <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+          className="gap-2 text-default-font"
+        >
+          <RefreshCw
+            className={`h-4 w-4 text-default-font ${isLoading ? "animate-spin" : ""}`}
+          />
           Refresh
         </Button>
       </div>

@@ -103,7 +103,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
       return (
         <TableRow>
           <TableCell colSpan={columns.length} className="h-48 text-center">
-            <div className="flex flex-col items-center justify-center gap-2 text-red-600">
+            <div className="flex flex-col items-center justify-center gap-2 text-text-error">
               <AlertTriangle className="h-8 w-8" />
               <p>Error loading ammunition</p>
               <p className="text-sm text-subtext-color">
@@ -119,7 +119,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
       return (
         <TableRow>
           <TableCell colSpan={columns.length} className="h-48 text-center">
-            <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
+            <div className="flex flex-col items-center justify-center gap-2 text-subtext-color">
               {filterValue ? (
                 <>
                   <Search className="h-8 w-8 opacity-50" />
@@ -159,7 +159,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
             size="sm"
             onClick={() => onDeleteAmmunition(repo)}
             aria-label="Delete"
-            className="text-gray-500 hover:text-red-600">
+            className="text-subtext-color hover:text-text-error">
             <Trash2 className="h-4 w-4" />
           </Button>
         </TableCell>
@@ -170,7 +170,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
   const renderMobileContent = () => {
     if (isError) {
       return (
-        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-red-600">
+        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-text-error">
           <AlertTriangle className="h-8 w-8" />
           <p>Error loading ammunition</p>
           <p className="text-sm text-subtext-color">
@@ -182,7 +182,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
 
     if (ammunition.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-gray-500">
+        <div className="flex flex-col items-center justify-center gap-2 p-8 text-center text-subtext-color">
           {filterValue ? (
             <>
               <Search className="h-8 w-8 opacity-50" />
@@ -229,7 +229,7 @@ const AmmunitionTable: React.FunctionComponent<AmmunitionTableProps> = ({
                 size="sm"
                 onClick={() => onDeleteAmmunition(repo)}
                 aria-label="Delete"
-                className="text-gray-500 hover:text-red-600">
+                className="text-subtext-color hover:text-text-error">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
