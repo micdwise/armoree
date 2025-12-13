@@ -35,8 +35,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             setUser(session?.user ?? null);
 
             if (session?.user) {
-                // Fetch tenant schema
+                // Fetch tenant schema from public.user_tenants
+                // Must explicitly use .schema('public') since switchClient may have changed the default
                 const { data, error } = await supabase
+                    .schema('public')
                     .from('user_tenants')
                     .select('schema_name')
                     .eq('user_id', session.user.id)
@@ -46,7 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                     setTenantId(data.schema_name);
                 } else {
                     console.error("Failed to fetch tenant for user", error);
-                    // Fallback or handle error?
+                    setTenantId(null);
                 }
             } else {
                 setTenantId(null);

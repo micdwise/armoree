@@ -34,8 +34,9 @@ export async function registerTenant(
       throw new Error(`Failed to create schema: ${schemaError.message}`);
     }
 
-    // Link user to tenant
+    // Link user to tenant in public.user_tenants
     const { error: linkError } = await supabase
+      .schema('public')
       .from('user_tenants')
       .insert({
         user_id: userId,
@@ -68,12 +69,14 @@ export async function ensurePublicTables(env: Env) {
 
   try {
     // Check if user_tenants table exists, create if not
+    // Explicitly use public schema
     const { error } = await supabase
+      .schema('public')
       .from('user_tenants')
       .select('id')
       .limit(1);
 
-    if (error && error.message.includes('does not exist')) {
+    if (error?.message?.includes('does not exist')) {
       // Table doesn't exist, need to create it via SQL
       console.log('user_tenants table needs to be created in Supabase dashboard');
       // Note: You'll need to run this SQL in Supabase SQL Editor:
