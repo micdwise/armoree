@@ -1,0 +1,19 @@
+{
+  "name": "armoree-workers",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers API for Armoree",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:production": "wrangler deploy --env production"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "typescript": "^5.7.2",
+    "wrangler": "^3.95.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.48.1"
+  }
+}

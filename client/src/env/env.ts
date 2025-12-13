@@ -21,6 +21,7 @@ export const env = createEnv({
   client: {
     VITE_SUPABASE_URL: z.url(),
     VITE_SUPABASE_ANON_KEY: z.string().min(1),
+    VITE_API_URL: z.url().default('https://armoree-api.your-username.workers.dev'),
   },
 
   /**

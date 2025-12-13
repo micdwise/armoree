@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
+import { env } from "../../env/env";
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { Card, CardContent } from "@components/Card";
@@ -29,8 +30,9 @@ export const SignUpPage: React.FunctionComponent = () => {
             if (authError) throw authError;
             if (!authData.user) throw new Error("No user created");
 
-            // 2. Register Tenant via Backend
-            const response = await fetch("http://localhost:3001/api/register-tenant", {
+            // 2. Register Tenant via Backend (Cloudflare Workers)
+            const apiUrl = env.VITE_API_URL || "http://localhost:8787";
+            const response = await fetch(`${apiUrl}/api/register-tenant`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -1,0 +1,15 @@
+name = "armoree-api"
+main = "src/index.ts"
+compatibility_date = "2025-12-13"
+
+[vars]
+# Environment variables (non-sensitive)
+# Add SUPABASE_URL and SUPABASE_SERVICE_KEY via wrangler secret put
+
+# For development
+[env.development]
+vars = { ENVIRONMENT = "development" }
+
+# For production
+[env.production]
+vars = { ENVIRONMENT = "production" }
