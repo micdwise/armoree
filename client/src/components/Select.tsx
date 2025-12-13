@@ -36,7 +36,7 @@ export function Select<T extends string = string>({
             <BaseSelect.Trigger
                 id={id}
                 className={cn(
-                    'flex h-10 w-full items-center justify-between rounded-md border border-neutral-border bg-default-background px-3 py-2 text-sm text-default-font placeholder:text-subtext-color focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200',
+                    'flex h-10 w-full items-center justify-between rounded-xl border border-neutral-border bg-default-background px-3 py-2 text-sm text-default-font placeholder:text-subtext-color focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200',
                     error && 'border-red-500 focus:ring-red-500',
                     className
                 )}
@@ -57,7 +57,7 @@ export function Select<T extends string = string>({
             </BaseSelect.Trigger>
             <BaseSelect.Portal>
                 <BaseSelect.Positioner sideOffset={5} className="z-[9999]">
-                    <BaseSelect.Popup className="min-w-[8rem] rounded-md border border-neutral-border bg-default-background shadow-xl p-1 max-h-60 overflow-auto">
+                    <BaseSelect.Popup className="min-w-[8rem] rounded-xl border border-neutral-border bg-default-background shadow-xl p-1 max-h-60 overflow-auto">
                         {options.map((option) => (
                             <BaseSelect.Item
                                 key={option.value}

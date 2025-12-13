@@ -76,7 +76,7 @@ export function Sidebar({
         <button
           onClick={() => supabase.auth.signOut()}
           className={cn(
-            "flex w-full items-center rounded-md py-2 text-sm font-medium text-subtext-color transition-colors hover:bg-screen-background hover:text-red-600",
+            "flex w-full items-center rounded-md py-2 text-sm font-medium text-subtext-color transition-colors hover:bg-screen-background hover:text-text-error",
             isOpen ? "px-3 gap-3" : "justify-center px-0"
           )}
           title={isOpen ? undefined : "Logout"}>

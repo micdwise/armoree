@@ -17,13 +17,13 @@ export const Field = ({ children, className, error, label, id, required }: Field
         <BaseField.Root className={cn('flex flex-col gap-2', className)}>
             {label && (
                 <BaseField.Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    {label} {required && <span className="text-red-500">*</span>}
+                    {label} {required && <span className="text-text-error">*</span>}
                 </BaseField.Label>
             )}
             {children}
             {/* We can render error here if it's a string, or just support Field.Error child usage */}
             {typeof error === 'string' && (
-                <BaseField.Error className="text-[0.8rem] font-medium text-red-500 flex items-center gap-1">
+                <BaseField.Error className="text-[0.8rem] font-medium text-text-error flex items-center gap-1">
                     <AlertCircle className="h-4 w-4" />
                     {error}
                 </BaseField.Error>
