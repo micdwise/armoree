@@ -17,7 +17,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   const [perPage, setPerPage] = React.useState(10);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [firearmToDelete, setFirearmToDelete] = React.useState<Firearm | null>(
-    null
+    null,
   );
 
   // Initialize filterValue from searchParams
@@ -40,14 +40,14 @@ const FirearmsPage: React.FunctionComponent = () => {
   const onSort = (
     _event: React.MouseEvent,
     index: number,
-    direction: "asc" | "desc"
+    direction: "asc" | "desc",
   ) => {
     setSortBy({ index, direction });
   };
 
   const onFilterChange = (
     _event: React.FormEvent<HTMLInputElement>,
-    value: string
+    value: string,
   ) => {
     setFilterValue(value);
     setPage(1);
@@ -79,8 +79,8 @@ const FirearmsPage: React.FunctionComponent = () => {
 
     return filtered.filter((firearm) =>
       Object.values(firearm).some((val) =>
-        String(val).toLowerCase().includes(filterValue.toLowerCase())
-      )
+        String(val).toLowerCase().includes(filterValue.toLowerCase()),
+      ),
     );
   }, [data, filterValue, activeFilterType]);
 
@@ -92,7 +92,7 @@ const FirearmsPage: React.FunctionComponent = () => {
     if (!sortKey) return filteredData;
 
     const sorted = [...filteredData].sort((a, b) =>
-      a[sortKey] < b[sortKey] ? -1 : 1
+      a[sortKey] < b[sortKey] ? -1 : 1,
     );
     return sortBy.direction === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
@@ -104,7 +104,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   const onPerPageSelect = (
     _event: any,
     newPerPage: number,
-    newPage: number
+    newPage: number,
   ) => {
     setPerPage(newPerPage);
     setPage(newPage);
@@ -136,7 +136,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   return (
     <PageSection>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Firearms</h1>
+        <h1 className="text-2xl font-bold text-default-font">Firearms</h1>
         <AddFirearmForm onAddSuccess={refetch} isDisabled={isError} />
       </div>
 
