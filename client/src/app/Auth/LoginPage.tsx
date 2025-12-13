@@ -116,6 +116,15 @@ export const LoginPage: React.FunctionComponent = () => {
                   {loading ? "Signing in..." : "Sign in"}
                 </Button>
               </div>
+
+              <div className="text-center text-sm">
+                <a
+                  href="/signup"
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Don't have an account? Sign up
+                </a>
+              </div>
             </form>
           </CardContent>
         </Card>

@@ -158,6 +158,7 @@ const AppRoot = () => {
 
 import { ProtectedRoute } from "@app/Auth/ProtectedRoute";
 import { LoginPage } from "@app/Auth/LoginPage";
+import { SignUpPage } from "@app/Auth/SignUpPage";
 
 // ... previous imports ...
 
@@ -165,6 +166,7 @@ export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<AppRoot />}>
           <Route index element={<Dashboard />} />

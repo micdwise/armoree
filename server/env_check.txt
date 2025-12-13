@@ -1,0 +1,4 @@
+Current Dir: /home/micwise/Projects/Home/armoree/server
+Env Path: /home/micwise/Projects/Home/armoree/.env
+Exists: false
+DATABASE_URL present: false
