@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import { useTenant } from "../../lib/TenantContext";
+
+/**
+ * All queries in this file rely on the TenantContext.
+ * Must be called within a component tree wrapped by <TenantProvider> and <AuthProvider>.
+ * Tenant ID is set in AuthContext after login.
+ */
 
 export interface Firearm {
   firearm_id: number;
@@ -63,11 +70,17 @@ export async function deleteFirearm(id: number) {
 }
 
 export function useFirearms() {
+  const { tenantId } = useTenant();
   const [data, setData] = useState<Firearm[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const fetchFirearmData = useCallback(async () => {
+    if (!tenantId) {
+      setData([]);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setIsError(false);
     try {
@@ -86,7 +99,7 @@ export function useFirearms() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [tenantId]);
 
   useEffect(() => {
     fetchFirearmData();
@@ -96,13 +109,18 @@ export function useFirearms() {
 }
 
 export function useFirearm(id: string | undefined) {
+  const { tenantId } = useTenant();
   const [data, setData] = useState<Firearm | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchFirearm = async () => {
-      if (!id) return;
+      if (!id || !tenantId) {
+        setData(null);
+        setIsLoading(false);
+        return;
+      }
       setIsLoading(true);
       try {
         const { data, error } = await supabase
@@ -121,18 +139,23 @@ export function useFirearm(id: string | undefined) {
     };
 
     fetchFirearm();
-  }, [id]);
+  }, [id, tenantId]);
 
   return { data, isLoading, isError };
 }
 
 export function useMaintenanceLogs(firearmId: string | undefined) {
+  const { tenantId } = useTenant();
   const [data, setData] = useState<MaintenanceLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const fetchLogs = useCallback(async () => {
-    if (!firearmId) return;
+    if (!firearmId || !tenantId) {
+      setData([]);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setIsError(false);
     try {
@@ -149,7 +172,7 @@ export function useMaintenanceLogs(firearmId: string | undefined) {
     } finally {
       setIsLoading(false);
     }
-  }, [firearmId]);
+  }, [firearmId, tenantId]);
 
   useEffect(() => {
     fetchLogs();

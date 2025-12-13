@@ -241,3 +241,26 @@ CREATE TABLE reference_projectile_types (
     projectile_type_id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
 );
+
+-- Create user_tenants table
+CREATE TABLE IF NOT EXISTS public.user_tenants (
+  id SERIAL PRIMARY KEY,
+  user_id UUID NOT NULL,
+  schema_name VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(user_id)
+);
+
+-- Create function to create tenant schemas
+CREATE OR REPLACE FUNCTION create_tenant_schema(schema_name TEXT)
+RETURNS VOID AS $$
+BEGIN
+  EXECUTE format('CREATE SCHEMA IF NOT EXISTS %I', schema_name);
+  EXECUTE format('SET search_path TO %I', schema_name);
+
+  -- Add your table creation SQL here from database-supabase.sql
+  -- For now, this creates the basic structure
+
+  SET search_path TO public;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;

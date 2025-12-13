@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import { useTenant } from "../../lib/TenantContext";
+
+/**
+ * All queries in this file rely on the TenantContext.
+ * Must be called within a component tree wrapped by <TenantProvider> and <AuthProvider>.
+ * Tenant ID is set in AuthContext after login.
+ */
 
 export interface Ammunition {
   ammo_id: number;
@@ -38,11 +45,17 @@ export async function deleteAmmunition(id: number) {
 }
 
 export function useAmmunition() {
+  const { tenantId } = useTenant();
   const [data, setData] = useState<Ammunition[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
 
   const fetchAmmoData = useCallback(async () => {
+    if (!tenantId) {
+      setData([]);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setIsError(false);
     try {
@@ -57,7 +70,7 @@ export function useAmmunition() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [tenantId]);
 
   useEffect(() => {
     fetchAmmoData();
@@ -67,11 +80,17 @@ export function useAmmunition() {
 }
 
 export function useAmmunitionSummary() {
+  const { tenantId } = useTenant();
   const [data, setData] = useState<AmmunitionSummary[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
 
   const fetchSummaryData = useCallback(async () => {
+    if (!tenantId) {
+      setData([]);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setIsError(false);
     try {
@@ -102,7 +121,7 @@ export function useAmmunitionSummary() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [tenantId]);
 
   useEffect(() => {
     fetchSummaryData();

@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import { useTenant } from "../../lib/TenantContext";
+
+/**
+ * All queries in this file rely on the TenantContext.
+ * Must be called within a component tree wrapped by <TenantProvider> and <AuthProvider>.
+ * Tenant ID is set in AuthContext after login.
+ */
 
 export interface Personnel {
   personnel_id: number;
@@ -38,22 +45,34 @@ export interface PersonnelTraining {
 }
 
 export async function addPersonnel(newPersonnel: Partial<Personnel>) {
-  const { data, error } = await supabase.from("personnel").insert([newPersonnel]).select();
+  const { data, error } = await supabase
+    .from("personnel")
+    .insert([newPersonnel])
+    .select();
   if (error) throw error;
   return data as Personnel[];
 }
 
 export async function deletePersonnel(id: number) {
-  const { error } = await supabase.from("personnel").delete().eq("personnel_id", id);
+  const { error } = await supabase
+    .from("personnel")
+    .delete()
+    .eq("personnel_id", id);
   if (error) throw error;
 }
 
 export function usePersonnel() {
+  const { tenantId } = useTenant();
   const [data, setData] = useState<Personnel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const fetchData = useCallback(async () => {
+    if (!tenantId) {
+      setData([]);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setIsError(false);
     try {
@@ -71,7 +90,7 @@ export function usePersonnel() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [tenantId]);
 
   useEffect(() => {
     fetchData();
@@ -91,12 +110,17 @@ export async function getPersonnelList() {
 }
 
 export function usePersonnelById(id: string | undefined) {
+  const { tenantId } = useTenant();
   const [data, setData] = useState<Personnel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const fetchData = useCallback(async () => {
-    if (!id) return;
+    if (!id || !tenantId) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setIsError(false);
     try {
@@ -114,7 +138,7 @@ export function usePersonnelById(id: string | undefined) {
     } finally {
       setIsLoading(false);
     }
-  }, [id]);
+  }, [id, tenantId]);
 
   useEffect(() => {
     fetchData();
@@ -124,12 +148,17 @@ export function usePersonnelById(id: string | undefined) {
 }
 
 export function usePersonnelTraining(personnelId: number) {
+  const { tenantId } = useTenant();
   const [data, setData] = useState<PersonnelTraining[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const fetchData = useCallback(async () => {
-    if (!personnelId) return;
+    if (!personnelId || !tenantId) {
+      setData([]);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setIsError(false);
     try {
@@ -142,7 +171,11 @@ export function usePersonnelTraining(personnelId: number) {
       if (trainingError) throw trainingError;
 
       const records = (trainingData || []) as PersonnelTraining[];
-      const instructorIds = [...new Set(records.filter((t) => t.instructor_id).map((t) => t.instructor_id))];
+      const instructorIds = [
+        ...new Set(
+          records.filter((t) => t.instructor_id).map((t) => t.instructor_id)
+        ),
+      ];
 
       if (instructorIds.length > 0) {
         const { data: instructors, error: instructorError } = await supabase
@@ -153,7 +186,9 @@ export function usePersonnelTraining(personnelId: number) {
         if (instructorError) {
           console.warn("Could not fetch instructors", instructorError);
         } else {
-          const instructorMap = new Map((instructors || []).map((i) => [i.personnel_id, i]));
+          const instructorMap = new Map(
+            (instructors || []).map((i) => [i.personnel_id, i])
+          );
           records.forEach((t) => {
             if (t.instructor_id && instructorMap.has(t.instructor_id)) {
               t.instructor = instructorMap.get(t.instructor_id) as Personnel;
@@ -169,7 +204,7 @@ export function usePersonnelTraining(personnelId: number) {
     } finally {
       setIsLoading(false);
     }
-  }, [personnelId]);
+  }, [personnelId, tenantId]);
 
   useEffect(() => {
     fetchData();
@@ -207,8 +242,13 @@ export async function getTrainingCourses() {
   return (data || []) as TrainingCourse[];
 }
 
-export async function addPersonnelTraining(training: Partial<PersonnelTraining>) {
-  const { data, error } = await supabase.from("personnel_training").insert([training]).select();
+export async function addPersonnelTraining(
+  training: Partial<PersonnelTraining>
+) {
+  const { data, error } = await supabase
+    .from("personnel_training")
+    .insert([training])
+    .select();
   if (error) throw error;
   return data as PersonnelTraining[];
 }

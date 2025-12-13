@@ -1,3 +1,8 @@
+/**
+ * Reference data functions - All queries are tenant-scoped.
+ * Ensure this file is used within a component tree wrapped by <TenantProvider> and <AuthProvider>.
+ * Tenant ID is set in AuthContext after login, and schema is automatically switched.
+ */
 import { supabase } from "../../lib/supabase";
 import { Manufacturer, Model, Caliber } from "../Firearms/hooks";
 
