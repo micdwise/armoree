@@ -81,7 +81,7 @@ Before you begin, ensure you have the following installed:
 - **`client/`**: The frontend application source code.
   - **`src/`**: React components, pages, and logic.
   - **`public/`**: Static assets.
-- **`databaase/`**: SQL scripts for database initialization and seeding.
+- **`database/`**: SQL scripts for database initialization and seeding.
 
 ## Scripts
 
