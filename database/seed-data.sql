@@ -118,3 +118,62 @@ INSERT INTO maintenance_log (firearm_id, date_performed, type, armorer_id, probl
 (4, CURRENT_DATE - 90, 'inspection', 5, 'Annual safety inspection', 'Detailed inspection of all components. Verified headspace and bore condition. Passed.'),
 (1, CURRENT_DATE - 120, 'routine_cleaning', 5, 'Post-range cleaning', 'Standard cleaning after qualification.'),
 (3, CURRENT_DATE - 5, 'repair', 5, 'Slide not locking back on empty', 'Replaced magazine catch spring. Pending test fire.');
+
+-- Insert Initial Manufacturers
+INSERT INTO reference_manufacturers (name) VALUES
+('Smith & Wesson'),
+('Colt'),
+('Sig Sauer'),
+('Remington');
+
+-- Insert Initial Calibers
+INSERT INTO reference_calibers (name) VALUES
+('9mm'),
+('5.56'),
+('.357');
+
+-- Insert Initial Models
+-- Sig Sauer Models
+INSERT INTO reference_models (manufacturer_id, name)
+SELECT manufacturer_id, 'P320' FROM reference_manufacturers WHERE name = 'Sig Sauer';
+
+INSERT INTO reference_models (manufacturer_id, name)
+SELECT manufacturer_id, 'P365' FROM reference_manufacturers WHERE name = 'Sig Sauer';
+
+-- Remington Models
+INSERT INTO reference_models (manufacturer_id, name)
+SELECT manufacturer_id, 'Super Blackhawk' FROM reference_manufacturers WHERE name = 'Remington';
+
+-- Link Models to Calibers
+-- Default mappings based on typical values (User can update later, this is initial seed)
+-- P320 -> 9mm
+INSERT INTO model_valid_calibers (model_id, caliber_id)
+SELECT m.model_id, c.caliber_id
+FROM reference_models m, reference_calibers c
+WHERE m.name = 'P320' AND m.manufacturer_id = (SELECT manufacturer_id FROM reference_manufacturers WHERE name = 'Sig Sauer')
+AND c.name = '9mm';
+
+-- P365 -> 9mm
+INSERT INTO model_valid_calibers (model_id, caliber_id)
+SELECT m.model_id, c.caliber_id
+FROM reference_models m, reference_calibers c
+WHERE m.name = 'P365' AND m.manufacturer_id = (SELECT manufacturer_id FROM reference_manufacturers WHERE name = 'Sig Sauer')
+AND c.name = '9mm';
+
+-- Super Blackhawk -> .357
+INSERT INTO model_valid_calibers (model_id, caliber_id)
+SELECT m.model_id, c.caliber_id
+FROM reference_models m, reference_calibers c
+WHERE m.name = 'Super Blackhawk' AND m.manufacturer_id = (SELECT manufacturer_id FROM reference_manufacturers WHERE name = 'Remington')
+AND c.name = '.357';
+
+-- Insert Initial Projectile Types
+INSERT INTO reference_projectile_types (name) VALUES
+('FMJ'),
+('JHP'),
+('HP'),
+('Ball'),
+('AP'),
+('Tracer'),
+('Frangible'),
+('Match');

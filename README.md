@@ -1,49 +1,96 @@
 # Armoree
 
-Used to keep an inventory of your firearm collection and ammunition.  It can be extended to manage other items in the future. The current plans are to be able to display data from the database and add items and call it v0.1.
+**Armoree** is a comprehensive inventory management system designed for firearm enthusiasts and professionals. It allows users to track their firearm collection, ammunition inventory, maintenance logs, and personnel assignments with precision and ease.
 
-Thoughts are:
+## Features
 
-* run both the client and server in OCI containers
-* add the ability to set variables such as database host, database and user name at first run
-* capture more details about ammo and firearms
-* whatever else comes to mind
+- **Firearm Inventory**: Track details like manufacturer, model, serial number, and location.
+- **Ammunition Management**: Monitor ammo stock, lot numbers, and usage.
+- **Maintenance Logs**: Keep a history of cleaning, repairs, and inspections.
+- **Personnel & Assignments**: Manage users and assign equipment (if applicable).
+- **Data Visualization**: View inventory statistics and trends with integrated charts.
 
-## Architecture
+## Tech Stack
 
-The project is divided into three parts.  The client, server api's, and a postgresql database.
+- **Frontend**: [React](https://react.dev/) (via [Vite](https://vitejs.dev/))
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Charts**: [Victory](https://formidable.com/open-source/victory/)
+- **Backend / Database**: [Supabase](https://supabase.com/) (PostgreSQL)
 
-### Postgresql Database
+## Prerequisites
 
-Postgresql can be installed locally or on a separate server.  To setup the data base run the database script found in the server folder.
+Before you begin, ensure you have the following installed:
 
-```psql
-psql -h [database host] -d postgres < [project directory]/server/database.sql
-```
+- [Node.js](https://nodejs.org/) (Version 18+ recommended)
+- A [Supabase](https://supabase.com/) account and project
 
-Copy the `.env.sample` to `.env` and replace the placeholders with you database information
+## Installation & Setup
 
-### API Server
+1.  **Clone the repository:**
 
-#### `npm start:dev`
+    ```bash
+    git clone <repository_url>
+    cd armoree
+    ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2.  **Install Client Dependencies:**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+    Navigate to the `client` directory and install the necessary packages.
 
-#### `npm test`
+    ```bash
+    cd client
+    npm install
+    ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3.  **Environment Configuration:**
 
-#### `npm run build`
+    Create a `.env` file in the `client` directory based on the `.env.sample` (if available) or simply add your Supabase credentials.
 
-Builds the app for production to the `dist` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    ```bash
+    touch .env
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    Add the following variables to `.env`:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    ```env
+    VITE_SUPABASE_URL=your_supabase_project_url
+    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
+
+4.  **Database Setup:**
+
+    You need to set up the database schema in your Supabase project. SQL scripts are located in the `database` directory.
+
+    - Open your Supabase Dashboard -> SQL Editor.
+    - Run the contents of `database/database-supabase.sql` to create tables and relationships.
+    - (Optional) Run `database/seed-data.sql` if you want initial test data.
+
+5.  **Run the Application:**
+
+    Start the development server:
+
+    ```bash
+    npm run dev
+    ```
+
+    Open [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal) to view the app.
+
+## Project Structure
+
+- **`client/`**: The frontend application source code.
+  - **`src/`**: React components, pages, and logic.
+  - **`public/`**: Static assets.
+- **`database/`**: SQL scripts for database initialization and seeding.
+
+## Scripts
+
+Inside the `client` folder, you can run:
+
+- `npm run dev`: Starts the development server.
+- `npm run build`: Builds the app for production.
+- `npm run preview`: Previews the production build locally.
+
+## License
+
+[Add License Information Here]

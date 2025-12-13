@@ -42,10 +42,10 @@ export const LoginPage: React.FunctionComponent = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-screen-background px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
+          <h2 className="mt-6 text-3xl font-bold tracking-tight text-default-font">
             Sign in to your account
           </h2>
         </div>
@@ -53,13 +53,13 @@ export const LoginPage: React.FunctionComponent = () => {
           <CardContent className="p-8">
             <form className="space-y-6" onSubmit={handleLogin}>
               {error && (
-                <div className="rounded-md bg-red-50 p-4">
+                <div className="rounded-md bg-bg-error p-4">
                   <div className="flex">
                     <div className="ml-3">
-                      <h3 className="text-sm font-medium text-red-800">
+                      <h3 className="text-sm font-medium text-text-error">
                         Login failed
                       </h3>
-                      <div className="mt-2 text-sm text-red-700">
+                      <div className="mt-2 text-sm text-text-error">
                         <p>{error}</p>
                       </div>
                     </div>
@@ -69,7 +69,7 @@ export const LoginPage: React.FunctionComponent = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-default-font"
                 >
                   Email address
                 </label>
@@ -89,7 +89,7 @@ export const LoginPage: React.FunctionComponent = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-default-font"
                 >
                   Password
                 </label>
