@@ -13,7 +13,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
                 <textarea
                     ref={ref}
                     className={cn(
-                        'flex min-h-[80px] w-full rounded-md border border-neutral-border bg-default-background px-3 py-2 text-sm text-default-font placeholder:text-subtext-color focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 resize-y',
+                        'flex min-h-[80px] w-full rounded-xl border border-neutral-border bg-default-background px-3 py-2 text-sm text-default-font placeholder:text-subtext-color focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 resize-y',
                         error && 'border-red-500 focus:ring-red-500',
                         className
                     )}
