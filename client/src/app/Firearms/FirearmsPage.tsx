@@ -2,6 +2,7 @@ import * as React from "react";
 import { PageSection } from "@components/Layout";
 import { FirearmsTable, SortBy } from "@app/Firearms/FirearmsTable";
 import { AddFirearmForm } from "@app/Firearms/AddFirearmForm";
+import { useTenant } from "@lib/TenantContext";
 import { useFirearms, Firearm, deleteFirearm } from "@app/Firearms/hooks";
 import { DeleteFirearmModal } from "@app/Firearms/DeleteFirearmModal";
 
@@ -9,6 +10,7 @@ import { useSearchParams } from "react-router-dom";
 // ... imports
 
 const FirearmsPage: React.FunctionComponent = () => {
+  const { getTenantClient } = useTenant();
   const { data, isLoading, isError, refetch } = useFirearms();
   const [searchParams, setSearchParams] = useSearchParams(); // Get URL params
   const [sortBy, setSortBy] = React.useState<SortBy>({});
@@ -17,7 +19,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   const [perPage, setPerPage] = React.useState(10);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [firearmToDelete, setFirearmToDelete] = React.useState<Firearm | null>(
-    null,
+    null
   );
 
   // Initialize filterValue from searchParams
@@ -40,14 +42,14 @@ const FirearmsPage: React.FunctionComponent = () => {
   const onSort = (
     _event: React.MouseEvent,
     index: number,
-    direction: "asc" | "desc",
+    direction: "asc" | "desc"
   ) => {
     setSortBy({ index, direction });
   };
 
   const onFilterChange = (
     _event: React.FormEvent<HTMLInputElement>,
-    value: string,
+    value: string
   ) => {
     setFilterValue(value);
     setPage(1);
@@ -79,8 +81,8 @@ const FirearmsPage: React.FunctionComponent = () => {
 
     return filtered.filter((firearm) =>
       Object.values(firearm).some((val) =>
-        String(val).toLowerCase().includes(filterValue.toLowerCase()),
-      ),
+        String(val).toLowerCase().includes(filterValue.toLowerCase())
+      )
     );
   }, [data, filterValue, activeFilterType]);
 
@@ -92,7 +94,7 @@ const FirearmsPage: React.FunctionComponent = () => {
     if (!sortKey) return filteredData;
 
     const sorted = [...filteredData].sort((a, b) =>
-      a[sortKey] < b[sortKey] ? -1 : 1,
+      a[sortKey] < b[sortKey] ? -1 : 1
     );
     return sortBy.direction === "asc" ? sorted : sorted.reverse();
   }, [filteredData, sortBy]);
@@ -104,7 +106,7 @@ const FirearmsPage: React.FunctionComponent = () => {
   const onPerPageSelect = (
     _event: any,
     newPerPage: number,
-    newPage: number,
+    newPage: number
   ) => {
     setPerPage(newPerPage);
     setPage(newPage);
@@ -126,7 +128,8 @@ const FirearmsPage: React.FunctionComponent = () => {
     if (!firearmToDelete) return;
 
     try {
-      await deleteFirearm(firearmToDelete.firearm_id);
+      const tenantSupabase = getTenantClient();
+      await deleteFirearm(tenantSupabase, firearmToDelete.firearm_id);
       await refetch();
     } finally {
       handleCloseDeleteModal();

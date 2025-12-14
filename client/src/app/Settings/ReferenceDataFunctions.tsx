@@ -3,7 +3,7 @@
  * Ensure this file is used within a component tree wrapped by <TenantProvider> and <AuthProvider>.
  * Tenant ID is set in AuthContext after login, and schema is automatically switched.
  */
-import { supabase } from "../../lib/supabase";
+import { getTenantSupabase } from "../../lib/supabase";
 import { Manufacturer, Model, Caliber } from "../Firearms/hooks";
 
 // Locations
@@ -15,8 +15,11 @@ export interface LocationRef {
 
 // --- Manufacturers ---
 
-export async function AddManufacturer(name: string) {
-  const { data, error } = await supabase
+export async function AddManufacturer(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  name: string
+) {
+  const { data, error } = await tenantSupabase
     .from("reference_manufacturers")
     .insert([{ name }])
     .select()
@@ -25,8 +28,12 @@ export async function AddManufacturer(name: string) {
   return data as Manufacturer;
 }
 
-export async function UpdateManufacturer(id: number, name: string) {
-  const { data, error } = await supabase
+export async function UpdateManufacturer(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  id: number,
+  name: string
+) {
+  const { data, error } = await tenantSupabase
     .from("reference_manufacturers")
     .update({ name })
     .eq("manufacturer_id", id)
@@ -36,8 +43,11 @@ export async function UpdateManufacturer(id: number, name: string) {
   return data as Manufacturer;
 }
 
-export async function DeleteManufacturer(id: number) {
-  const { error } = await supabase
+export async function DeleteManufacturer(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  id: number
+) {
+  const { error } = await tenantSupabase
     .from("reference_manufacturers")
     .delete()
     .eq("manufacturer_id", id);
@@ -46,8 +56,10 @@ export async function DeleteManufacturer(id: number) {
 
 // --- Calibers ---
 
-export async function GetAllCalibers() {
-  const { data, error } = await supabase
+export async function GetAllCalibers(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>
+) {
+  const { data, error } = await tenantSupabase
     .from("reference_calibers")
     .select("*")
     .order("name");
@@ -55,8 +67,11 @@ export async function GetAllCalibers() {
   return data as Caliber[];
 }
 
-export async function AddCaliber(name: string) {
-  const { data, error } = await supabase
+export async function AddCaliber(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  name: string
+) {
+  const { data, error } = await tenantSupabase
     .from("reference_calibers")
     .insert([{ name }])
     .select()
@@ -65,8 +80,12 @@ export async function AddCaliber(name: string) {
   return data as Caliber;
 }
 
-export async function UpdateCaliber(id: number, name: string) {
-  const { data, error } = await supabase
+export async function UpdateCaliber(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  id: number,
+  name: string
+) {
+  const { data, error } = await tenantSupabase
     .from("reference_calibers")
     .update({ name })
     .eq("caliber_id", id)
@@ -76,8 +95,11 @@ export async function UpdateCaliber(id: number, name: string) {
   return data as Caliber;
 }
 
-export async function DeleteCaliber(id: number) {
-  const { error } = await supabase
+export async function DeleteCaliber(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  id: number
+) {
+  const { error } = await tenantSupabase
     .from("reference_calibers")
     .delete()
     .eq("caliber_id", id);

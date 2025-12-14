@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { getTenantSupabase } from "../../lib/supabase";
 import { useTenant } from "../../lib/TenantContext";
 
 /**
@@ -27,8 +27,11 @@ export interface AmmunitionSummary {
   total_rounds: number;
 }
 
-export async function addAmmunition(newAmmunition: Partial<Ammunition>) {
-  const { data, error } = await supabase
+export async function addAmmunition(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  newAmmunition: Partial<Ammunition>
+) {
+  const { data, error } = await tenantSupabase
     .from("ammunition_inventory")
     .insert([newAmmunition])
     .select();
@@ -36,8 +39,11 @@ export async function addAmmunition(newAmmunition: Partial<Ammunition>) {
   return data as Ammunition[];
 }
 
-export async function deleteAmmunition(id: number) {
-  const { error } = await supabase
+export async function deleteAmmunition(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  id: number
+) {
+  const { error } = await tenantSupabase
     .from("ammunition_inventory")
     .delete()
     .eq("ammo_id", id);
@@ -45,7 +51,7 @@ export async function deleteAmmunition(id: number) {
 }
 
 export function useAmmunition() {
-  const { tenantId } = useTenant();
+  const { tenantId, getTenantClient } = useTenant();
   const [data, setData] = useState<Ammunition[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
@@ -59,7 +65,8 @@ export function useAmmunition() {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase
+      const tenantSupabase = getTenantClient();
+      const { data, error } = await tenantSupabase
         .from("ammunition_inventory")
         .select("*, location:location(location_name)");
       if (error) throw error;
@@ -80,7 +87,7 @@ export function useAmmunition() {
 }
 
 export function useAmmunitionSummary() {
-  const { tenantId } = useTenant();
+  const { tenantId, getTenantClient } = useTenant();
   const [data, setData] = useState<AmmunitionSummary[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
@@ -94,7 +101,8 @@ export function useAmmunitionSummary() {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase
+      const tenantSupabase = getTenantClient();
+      const { data, error } = await tenantSupabase
         .from("ammunition_inventory")
         .select("caliber_gauge, quantity_on_hand");
 
@@ -132,6 +140,7 @@ export function useAmmunitionSummary() {
 
 // Sets the minimum stock level for all ammo rows matching a caliber/projectile type.
 export async function setAmmoStockRequirement(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
   caliber: string,
   projectileType: string,
   minStockLevel: number
@@ -140,7 +149,7 @@ export async function setAmmoStockRequirement(
     throw new Error("minStockLevel must be zero or greater");
   }
 
-  const { error } = await supabase
+  const { error } = await tenantSupabase
     .from("ammunition_inventory")
     .update({ min_stock_level: minStockLevel })
     .eq("caliber_gauge", caliber)

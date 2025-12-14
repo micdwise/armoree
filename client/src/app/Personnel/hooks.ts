@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { getTenantSupabase } from "../../lib/supabase";
 import { useTenant } from "../../lib/TenantContext";
 
 /**
@@ -44,8 +44,11 @@ export interface PersonnelTraining {
   };
 }
 
-export async function addPersonnel(newPersonnel: Partial<Personnel>) {
-  const { data, error } = await supabase
+export async function addPersonnel(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  newPersonnel: Partial<Personnel>
+) {
+  const { data, error } = await tenantSupabase
     .from("personnel")
     .insert([newPersonnel])
     .select();
@@ -53,8 +56,11 @@ export async function addPersonnel(newPersonnel: Partial<Personnel>) {
   return data as Personnel[];
 }
 
-export async function deletePersonnel(id: number) {
-  const { error } = await supabase
+export async function deletePersonnel(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  id: number
+) {
+  const { error } = await tenantSupabase
     .from("personnel")
     .delete()
     .eq("personnel_id", id);
@@ -62,7 +68,7 @@ export async function deletePersonnel(id: number) {
 }
 
 export function usePersonnel() {
-  const { tenantId } = useTenant();
+  const { tenantId, getTenantClient } = useTenant();
   const [data, setData] = useState<Personnel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -76,7 +82,8 @@ export function usePersonnel() {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase
+      const tenantSupabase = getTenantClient();
+      const { data, error } = await tenantSupabase
         .from("personnel")
         .select(`*, unit:unit_id ( unit_name )`)
         .order("last_name");
@@ -99,8 +106,10 @@ export function usePersonnel() {
   return { data, isLoading, isError, refetch: fetchData };
 }
 
-export async function getPersonnelList() {
-  const { data, error } = await supabase
+export async function getPersonnelList(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>
+) {
+  const { data, error } = await tenantSupabase
     .from("personnel")
     .select("personnel_id, first_name, last_name, badge_number")
     .order("last_name");
@@ -110,7 +119,7 @@ export async function getPersonnelList() {
 }
 
 export function usePersonnelById(id: string | undefined) {
-  const { tenantId } = useTenant();
+  const { tenantId, getTenantClient } = useTenant();
   const [data, setData] = useState<Personnel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -124,7 +133,8 @@ export function usePersonnelById(id: string | undefined) {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase
+      const tenantSupabase = getTenantClient();
+      const { data, error } = await tenantSupabase
         .from("personnel")
         .select(`*, unit:unit_id ( unit_name )`)
         .eq("personnel_id", id)
@@ -148,7 +158,7 @@ export function usePersonnelById(id: string | undefined) {
 }
 
 export function usePersonnelTraining(personnelId: number) {
-  const { tenantId } = useTenant();
+  const { tenantId, getTenantClient } = useTenant();
   const [data, setData] = useState<PersonnelTraining[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -162,7 +172,8 @@ export function usePersonnelTraining(personnelId: number) {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data: trainingData, error: trainingError } = await supabase
+      const tenantSupabase = getTenantClient();
+      const { data: trainingData, error: trainingError } = await tenantSupabase
         .from("personnel_training")
         .select(`*, course:training_course ( * )`)
         .eq("personnel_id", personnelId)
@@ -178,10 +189,11 @@ export function usePersonnelTraining(personnelId: number) {
       ];
 
       if (instructorIds.length > 0) {
-        const { data: instructors, error: instructorError } = await supabase
-          .from("personnel")
-          .select("personnel_id, first_name, last_name, badge_number")
-          .in("personnel_id", instructorIds);
+        const { data: instructors, error: instructorError } =
+          await tenantSupabase
+            .from("personnel")
+            .select("personnel_id, first_name, last_name, badge_number")
+            .in("personnel_id", instructorIds);
 
         if (instructorError) {
           console.warn("Could not fetch instructors", instructorError);
@@ -213,12 +225,14 @@ export function usePersonnelTraining(personnelId: number) {
   return { data, isLoading, isError, refetch: fetchData };
 }
 
-export async function getExpiringPersonnelIds(): Promise<number[]> {
+export async function getExpiringPersonnelIds(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>
+): Promise<number[]> {
   const today = new Date();
   const thirtyDaysFromNow = new Date();
   thirtyDaysFromNow.setDate(today.getDate() + 30);
 
-  const { data, error } = await supabase
+  const { data, error } = await tenantSupabase
     .from("personnel_training")
     .select("personnel_id")
     .lte("date_expires", thirtyDaysFromNow.toISOString())
@@ -232,8 +246,10 @@ export async function getExpiringPersonnelIds(): Promise<number[]> {
   return [...new Set((data || []).map((d) => d.personnel_id))];
 }
 
-export async function getTrainingCourses() {
-  const { data, error } = await supabase
+export async function getTrainingCourses(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>
+) {
+  const { data, error } = await tenantSupabase
     .from("training_course")
     .select("*")
     .order("course_name");
@@ -243,9 +259,10 @@ export async function getTrainingCourses() {
 }
 
 export async function addPersonnelTraining(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
   training: Partial<PersonnelTraining>
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await tenantSupabase
     .from("personnel_training")
     .insert([training])
     .select();

@@ -2,6 +2,7 @@ import * as React from "react";
 import { PageSection } from "@components/Layout";
 import { AmmunitionTable, SortBy } from "@app/Ammunition/AmmunitionTable";
 import { AddAmmoForm } from "@app/Ammunition/AddAmmoForm";
+import { useTenant } from "@lib/TenantContext";
 import {
   Ammunition,
   useAmmunition,
@@ -13,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 // ... imports
 
 const AmmunitionPage: React.FunctionComponent = () => {
+  const { getTenantClient } = useTenant();
   const { data, isLoading, isError, refetch } = useAmmunition();
   const [searchParams, setSearchParams] = useSearchParams();
   const [sortBy, setSortBy] = React.useState<SortBy>({});
@@ -112,7 +114,8 @@ const AmmunitionPage: React.FunctionComponent = () => {
 
   const handleDeleteAmmunition = () => {
     if (ammunitionToDelete) {
-      deleteAmmunition(ammunitionToDelete.ammo_id)
+      const tenantSupabase = getTenantClient();
+      deleteAmmunition(tenantSupabase, ammunitionToDelete.ammo_id)
         .then(refetch)
         .then(handleClosedDeleteModal);
     }

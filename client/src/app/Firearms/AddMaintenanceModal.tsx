@@ -1,5 +1,13 @@
 import * as React from "react";
-import { Modal, Button, Input, TextArea, Select, Field } from "@components/index";
+import {
+  Modal,
+  Button,
+  Input,
+  TextArea,
+  Select,
+  Field,
+} from "@components/index";
+import { useTenant } from "@lib/TenantContext";
 import { getPersonnelList, Personnel } from "../Personnel/hooks";
 import { addMaintenanceLog } from "./hooks";
 
@@ -13,6 +21,7 @@ interface AddMaintenanceModalProps {
 export const AddMaintenanceModal: React.FunctionComponent<
   AddMaintenanceModalProps
 > = ({ isOpen, onClose, onAddSuccess, firearmId }) => {
+  const { getTenantClient } = useTenant();
   const [personnel, setPersonnel] = React.useState<Personnel[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -40,7 +49,8 @@ export const AddMaintenanceModal: React.FunctionComponent<
 
   const loadOptions = async () => {
     try {
-      const data = await getPersonnelList();
+      const tenantSupabase = getTenantClient();
+      const data = await getPersonnelList(tenantSupabase);
       setPersonnel(data);
     } catch (error) {
       console.error("Error loading personnel", error);
@@ -59,7 +69,8 @@ export const AddMaintenanceModal: React.FunctionComponent<
     e.preventDefault();
     setIsLoading(true);
     try {
-      await addMaintenanceLog({
+      const tenantSupabase = getTenantClient();
+      await addMaintenanceLog(tenantSupabase, {
         firearm_id: firearmId,
         date_performed: datePerformed,
         type: type,
@@ -91,10 +102,7 @@ export const AddMaintenanceModal: React.FunctionComponent<
           <Button variant="secondary" onClick={onClose} type="button">
             Cancel
           </Button>
-          <Button
-            type="submit"
-            onClick={handleSubmit}
-            isLoading={isLoading}>
+          <Button type="submit" onClick={handleSubmit} isLoading={isLoading}>
             Save Record
           </Button>
         </>

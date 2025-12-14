@@ -4,6 +4,7 @@ import { Input } from "@components/Input";
 import { Select } from "@components/Select";
 import { Modal } from "@components/Modal";
 import { Field } from "@components/Field";
+import { useTenant } from "@lib/TenantContext";
 import { addAmmunition } from "@app/Ammunition/hooks";
 import { getManufacturers, Manufacturer, Caliber } from "@app/Firearms/hooks";
 import {
@@ -62,6 +63,7 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   onAddSuccess,
   isDisabled,
 }) => {
+  const { getTenantClient } = useTenant();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [formState, setFormState] =
     React.useState<AmmoFormState>(initialFormState);
@@ -78,13 +80,14 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const m = await getManufacturers();
+        const tenantSupabase = getTenantClient();
+        const m = await getManufacturers(tenantSupabase);
         setManufacturers(m);
-        const c = await GetAllCalibers();
+        const c = await GetAllCalibers(tenantSupabase);
         setCalibers(c);
-        const p = await GetAllProjectileTypes();
+        const p = await GetAllProjectileTypes(tenantSupabase);
         setProjectileTypes(p);
-        const l = await GetAllLocations();
+        const l = await GetAllLocations(tenantSupabase);
         setLocations(l);
       } catch (e) {
         console.error("Failed to load reference data", e);
@@ -164,7 +167,8 @@ const AddAmmoForm: React.FunctionComponent<AddAmmoFormProps> = ({
       quantity_on_hand: Number(formState.quantity_on_hand),
       storage_location_id: Number(formState.storage_location_id),
     };
-    addAmmunition(payload)
+    const tenantSupabase = getTenantClient();
+    addAmmunition(tenantSupabase, payload)
       .then(() => {
         onAddSuccess();
         setFormState(initialFormState);

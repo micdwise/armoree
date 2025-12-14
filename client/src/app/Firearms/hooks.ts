@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { getTenantSupabase } from "../../lib/supabase";
 import { useTenant } from "../../lib/TenantContext";
 
 /**
@@ -52,8 +52,11 @@ export interface Caliber {
   name: string;
 }
 
-export async function addFirearm(newFirearm: Partial<Firearm>) {
-  const { data, error } = await supabase
+export async function addFirearm(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  newFirearm: Partial<Firearm>
+) {
+  const { data, error } = await tenantSupabase
     .from("firearm")
     .insert([newFirearm])
     .select();
@@ -61,8 +64,11 @@ export async function addFirearm(newFirearm: Partial<Firearm>) {
   return data as Firearm[];
 }
 
-export async function deleteFirearm(id: number) {
-  const { error } = await supabase
+export async function deleteFirearm(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  id: number
+) {
+  const { error } = await tenantSupabase
     .from("firearm")
     .delete()
     .eq("firearm_id", id);
@@ -70,7 +76,7 @@ export async function deleteFirearm(id: number) {
 }
 
 export function useFirearms() {
-  const { tenantId } = useTenant();
+  const { tenantId, getTenantClient } = useTenant();
   const [data, setData] = useState<Firearm[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -84,7 +90,8 @@ export function useFirearms() {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase
+      const tenantSupabase = getTenantClient();
+      const { data, error } = await tenantSupabase
         .from("firearm")
         .select(`*, service_schedule ( next_due_date )`);
       if (error) throw error;
@@ -109,7 +116,7 @@ export function useFirearms() {
 }
 
 export function useFirearm(id: string | undefined) {
-  const { tenantId } = useTenant();
+  const { tenantId, getTenantClient } = useTenant();
   const [data, setData] = useState<Firearm | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -123,7 +130,8 @@ export function useFirearm(id: string | undefined) {
       }
       setIsLoading(true);
       try {
-        const { data, error } = await supabase
+        const tenantSupabase = getTenantClient();
+        const { data, error } = await tenantSupabase
           .from("firearm")
           .select("*")
           .eq("firearm_id", id)
@@ -145,7 +153,7 @@ export function useFirearm(id: string | undefined) {
 }
 
 export function useMaintenanceLogs(firearmId: string | undefined) {
-  const { tenantId } = useTenant();
+  const { tenantId, getTenantClient } = useTenant();
   const [data, setData] = useState<MaintenanceLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -159,7 +167,8 @@ export function useMaintenanceLogs(firearmId: string | undefined) {
     setIsLoading(true);
     setIsError(false);
     try {
-      const { data, error } = await supabase
+      const tenantSupabase = getTenantClient();
+      const { data, error } = await tenantSupabase
         .from("maintenance_log")
         .select(`*, personnel ( first_name, last_name, badge_number )`)
         .eq("firearm_id", firearmId)
@@ -181,8 +190,11 @@ export function useMaintenanceLogs(firearmId: string | undefined) {
   return { data, isLoading, isError, refetch: fetchLogs };
 }
 
-export async function addMaintenanceLog(log: Partial<MaintenanceLog>) {
-  const { data, error } = await supabase
+export async function addMaintenanceLog(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  log: Partial<MaintenanceLog>
+) {
+  const { data, error } = await tenantSupabase
     .from("maintenance_log")
     .insert([log])
     .select();
@@ -190,8 +202,10 @@ export async function addMaintenanceLog(log: Partial<MaintenanceLog>) {
   return data as MaintenanceLog[];
 }
 
-export async function getManufacturers() {
-  const { data, error } = await supabase
+export async function getManufacturers(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>
+) {
+  const { data, error } = await tenantSupabase
     .from("reference_manufacturers")
     .select("*")
     .order("name", { ascending: true });
@@ -199,8 +213,11 @@ export async function getManufacturers() {
   return (data || []) as Manufacturer[];
 }
 
-export async function getModels(manufacturerId: number) {
-  const { data, error } = await supabase
+export async function getModels(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  manufacturerId: number
+) {
+  const { data, error } = await tenantSupabase
     .from("reference_models")
     .select("*")
     .eq("manufacturer_id", manufacturerId)
@@ -209,8 +226,11 @@ export async function getModels(manufacturerId: number) {
   return (data || []) as Model[];
 }
 
-export async function getCalibers(modelId: number) {
-  const { data, error } = await supabase
+export async function getCalibers(
+  tenantSupabase: ReturnType<typeof getTenantSupabase>,
+  modelId: number
+) {
+  const { data, error } = await tenantSupabase
     .from("model_valid_calibers")
     .select(`caliber_id, reference_calibers ( caliber_id, name )`)
     .eq("model_id", modelId);

@@ -7,12 +7,13 @@ import React, {
   useMemo,
 } from "react";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { switchClient, supabase } from "./supabase";
+import { setTenantSchema, supabase, getTenantSupabase } from "./supabase";
 
 interface TenantContextType {
   tenantId: string | null;
   setTenantId: (id: string | null) => void;
   supabase: SupabaseClient;
+  getTenantClient: () => ReturnType<typeof getTenantSupabase>;
 }
 
 const TenantContext = createContext<TenantContextType | undefined>(undefined);
@@ -21,11 +22,16 @@ export function TenantProvider({ children }: { readonly children: ReactNode }) {
   const [tenantId, setTenantId] = useState<string | null>(null);
 
   useEffect(() => {
-    switchClient(tenantId);
+    setTenantSchema(tenantId);
   }, [tenantId]);
 
   const value = useMemo(
-    () => ({ tenantId, setTenantId, supabase }),
+    () => ({
+      tenantId,
+      setTenantId,
+      supabase,
+      getTenantClient: getTenantSupabase,
+    }),
     [tenantId]
   );
 

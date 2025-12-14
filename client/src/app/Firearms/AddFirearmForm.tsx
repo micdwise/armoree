@@ -4,6 +4,7 @@ import { Input } from "@components/Input";
 import { Select } from "@components/Select";
 import { Modal } from "@components/Modal";
 import { Field } from "@components/Field";
+import { useTenant } from "@lib/TenantContext";
 import {
   addFirearm,
   getManufacturers,
@@ -68,11 +69,12 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
   onAddSuccess,
   isDisabled,
 }) => {
+  const { getTenantClient } = useTenant();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [formState, setFormState] =
     React.useState<FirearmFormState>(initialFormState);
   const [validationState, setValidationState] = React.useState<ValidationState>(
-    initialValidationState,
+    initialValidationState
   );
 
   // Dynamic Options State
@@ -82,8 +84,11 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
 
   // Fetch Manufacturers on Load
   React.useEffect(() => {
-    getManufacturers().then(setManufacturers).catch(console.error);
-  }, []);
+    const tenantSupabase = getTenantClient();
+    getManufacturers(tenantSupabase)
+      .then(setManufacturers)
+      .catch(console.error);
+  }, [getTenantClient]);
 
   const manufacturerOptions = manufacturers.map((m) => ({
     label: m.name,
@@ -142,7 +147,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       const selectedMfg = manufacturers.find((m) => m.name === value);
       if (selectedMfg) {
         // Fetch Models
-        getModels(selectedMfg.manufacturer_id)
+        const tenantSupabase = getTenantClient();
+        getModels(tenantSupabase, selectedMfg.manufacturer_id)
           .then((data) => {
             setModels(data);
             setCalibers([]); // Reset calibers
@@ -158,7 +164,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       const selectedModel = models.find((m) => m.name === value);
       if (selectedModel) {
         // Fetch Calibers
-        getCalibers(selectedModel.model_id)
+        const tenantSupabase = getTenantClient();
+        getCalibers(tenantSupabase, selectedModel.model_id)
           .then(setCalibers)
           .catch(console.error);
       } else {
@@ -203,7 +210,8 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
 
   const handleSubmitFirearm = () => {
     if (!validate()) return;
-    addFirearm(formState)
+    const tenantSupabase = getTenantClient();
+    addFirearm(tenantSupabase, formState)
       .then(() => {
         onAddSuccess();
         setFormState(initialFormState);
@@ -242,8 +250,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
       <Button
         variant="primary"
         onClick={handleModalToggle}
-        disabled={isDisabled}
-      >
+        disabled={isDisabled}>
         <Plus className="w-4 h-4 mr-2" />
         Add Firearm
       </Button>
@@ -253,15 +260,13 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
         title="Add Firearm"
         description="Enter information below."
         footer={footer}
-        size="md"
-      >
+        size="md">
         <form id="modal-with-form-form" className="flex flex-col gap-4">
           <Field
             label="Manufacturer"
             required
             error={validationState.manufacturer}
-            id="manufacturer"
-          >
+            id="manufacturer">
             <Select
               value={
                 formState.manufacturer === "Select a manufacturer"
@@ -279,8 +284,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Model"
             required
             error={validationState.model}
-            id="model"
-          >
+            id="model">
             <Select
               value={
                 !formState.model || formState.model === "Select a model"
@@ -311,8 +315,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Caliber"
             required
             error={validationState.caliber_gauge}
-            id="caliber"
-          >
+            id="caliber">
             <Select
               value={
                 formState.caliber_gauge === "Select a caliber"
@@ -330,8 +333,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Purchase Date"
             required
             error={validationState.acquisition_date}
-            id="acquisition_date"
-          >
+            id="acquisition_date">
             <Input
               type="date"
               id="acquisition_date"
@@ -349,8 +351,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Serial Number"
             required
             error={validationState.serial_number}
-            id="serial_number"
-          >
+            id="serial_number">
             <Input
               type="text"
               id="serial_number"
@@ -368,8 +369,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Asset Tag"
             required
             error={validationState.asset_tag}
-            id="asset_tag"
-          >
+            id="asset_tag">
             <Input
               type="text"
               id="asset_tag"
@@ -385,8 +385,7 @@ const AddFirearmForm: React.FunctionComponent<AddFirearmFormProps> = ({
             label="Status"
             required
             error={validationState.current_status}
-            id="current_status"
-          >
+            id="current_status">
             <Select
               value={
                 formState.current_status === "Select a status"
